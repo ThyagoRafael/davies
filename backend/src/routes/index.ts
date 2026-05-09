@@ -11,7 +11,7 @@ const routes = Router();
 routes.use("/users", userRoutes);
 routes.use("/products", productRoutes);
 routes.use("/products/:productId", productImageRoutes);
-routes.use("/carts", cartRoutes);
-routes.use("/cart-items", cartItemRoutes);
+routes.use("/cart", cartRoutes);
+routes.use("/cart/items", cartItemRoutes);
 
 export { routes };
