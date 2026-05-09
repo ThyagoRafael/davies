@@ -5,11 +5,7 @@ import { Prisma } from "../generated/prisma/client.js";
 
 export class CartController {
 	getProducts = async (req: Request, res: Response) => {
-		const userId = Number(req.params.userId);
-
-		if (!req.user || userId !== req.user.id) {
-			return res.status(403).json({ message: "Acesso negado" });
-		}
+		const userId = req.user!.id;
 
 		const cart = await prisma.cart.findFirst({
 			where: {
@@ -60,11 +56,7 @@ export class CartController {
 	};
 
 	finishCart = async (req: Request, res: Response) => {
-		const userId = Number(req.params.userId);
-
-		if (!req.user || userId !== req.user.id) {
-			return res.status(403).json({ message: "Acesso negado" });
-		}
+		const userId = req.user!.id;
 
 		const cart = await prisma.cart.findFirst({
 			where: {
