@@ -6,7 +6,7 @@ export async function authenticationMiddleware(req: Request, res: Response, next
 	const authHeader = req.headers.authorization;
 
 	if (!authHeader) {
-		throw new AppError("O token não foi enviado", 404);
+		throw new AppError("O token não foi enviado", 401);
 	}
 
 	const [, token] = authHeader.split(" ");
@@ -26,14 +26,10 @@ export async function authenticationMiddleware(req: Request, res: Response, next
 }
 
 export async function authorizationMiddleware(req: Request, res: Response, next: NextFunction) {
-	const userRole = req.user?.role;
-
-	if (!userRole) {
-		throw new AppError("Role não fornecida", 404);
-	}
+	const userRole = req.user!.role;
 
 	if (userRole !== "admin") {
-		throw new AppError("Usuário não tem permissão para acessar esse recurso");
+		throw new AppError("Usuário não tem permissão para acessar esse recurso", 403);
 	}
 
 	next();
