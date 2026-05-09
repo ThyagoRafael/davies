@@ -5,9 +5,9 @@ import { authenticationMiddleware } from "../middlewares/auth.middleware.js";
 const cartItemRoutes = Router();
 const cartItemController = new CartItemController();
 
-cartItemRoutes.post("/:userId", authenticationMiddleware, cartItemController.addToCart);
-cartItemRoutes.put("/:userId", authenticationMiddleware, cartItemController.updateCartItem);
-cartItemRoutes.delete("/:userId", authenticationMiddleware, cartItemController.deleteCartItem);
-cartItemRoutes.delete("/:userId/all", authenticationMiddleware, cartItemController.deleteAllCartItems);
+cartItemRoutes.post("/:productId", authenticationMiddleware, cartItemController.addToCart);
+cartItemRoutes.put("/:productId", authenticationMiddleware, cartItemController.updateCartItem);
+cartItemRoutes.delete("/:productId", authenticationMiddleware, cartItemController.deleteCartItem);
+cartItemRoutes.delete("/", authenticationMiddleware, cartItemController.deleteAllCartItems);
 
 export { cartItemRoutes };
