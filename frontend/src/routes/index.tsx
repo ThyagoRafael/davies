@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import AuthLayout from "../templates/AuthLayout";
 import MainLayout from "../templates/MainLayout";
 import ProductDetails from "../pages/ProductDetails";
+import Cart from "../pages/Cart";
 
 export default function Router() {
 	return (
@@ -19,11 +20,16 @@ export default function Router() {
 					path="produtos/:productId"
 					element={<ProductDetails />}
 				/>
+
+				<Route
+					path="carrinho"
+					element={<Cart />}
+				/>
 			</Route>
 
 			<Route element={<AuthLayout />}>
 				<Route
-					path="login"
+					path="entrar"
 					element={<Login />}
 				/>
 				<Route
