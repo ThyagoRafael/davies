@@ -68,9 +68,3 @@
 .productPrice {
 	font-size: 0.875rem;
 }
-
-/* @media (min-width: 600px) {
-	.productsList {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
-} */
