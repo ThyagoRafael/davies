@@ -5,7 +5,7 @@ export function errorMiddleware(err: unknown, req: Request, res: Response, _next
 	console.log(err);
 
 	if (err instanceof AppError) {
-		res.status(400).json({ message: err.message });
+		res.status(err.statusCode).json({ message: err.message });
 		return;
 	}
 
