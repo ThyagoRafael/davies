@@ -1,23 +1,29 @@
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { formatPrice } from "../../../utils/formatPrice";
 import styles from "./CartItem.module.css";
+import { Link } from "react-router-dom";
+import type { UpdateAction } from "../../../types/cartItem/updateAction";
 
 interface CartItemProps {
+	id: number;
 	name: string;
-	price: number;
+	price: string;
 	stock: number;
 	imageUrl: string;
 	quantity: number;
+	handleQuantityItem: (action: UpdateAction, productId: number) => void;
 }
 
-export default function CartItem({ name, price, stock, imageUrl, quantity }: CartItemProps) {
+export default function CartItem({ id, name, price, stock, imageUrl, quantity, handleQuantityItem }: CartItemProps) {
 	return (
 		<article className={styles.cartItemContainer}>
 			<div className={styles.imageWrapper}>
-				<img
-					src={imageUrl}
-					alt={`Foto de ${name}`}
-				/>
+				<Link to={`/produtos/${id}`}>
+					<img
+						src={imageUrl}
+						alt={`Foto de ${name}`}
+					/>
+				</Link>
 			</div>
 
 			<div className={styles.cartItemContent}>
@@ -29,11 +35,17 @@ export default function CartItem({ name, price, stock, imageUrl, quantity }: Car
 					<p>{stock > 0 ? "Em estoque" : "Esgotado"}</p>
 					<div className={styles.cartItemActions}>
 						<div>
-							<button>
+							<button
+								onClick={() => handleQuantityItem("decrement", id)}
+								disabled={quantity <= 1}
+							>
 								<FaMinus size={16} />
 							</button>
 							<output>{quantity}</output>
-							<button>
+							<button
+								onClick={() => handleQuantityItem("increment", id)}
+								disabled={quantity >= stock}
+							>
 								<FaPlus size={16} />
 							</button>
 						</div>
