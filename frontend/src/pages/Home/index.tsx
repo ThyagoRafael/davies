@@ -1,27 +1,17 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import type { Product } from "../../types/Product";
 import { formatPrice } from "../../utils/formatPrice";
+import { getAllProducts } from "../../services/api/products";
 
 export default function Home() {
 	const [products, setProducts] = useState<Product[]>([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			try {
-				const response = await axios.get("http://localhost:3000/api/products");
-
-				setProducts(response.data);
-			} catch (error) {
-				if (axios.isAxiosError(error)) {
-					return alert(error.response?.data.message);
-				}
-
-				console.error(error);
-				alert("Aconteceu um erro inesperado");
-			}
+			const data = await getAllProducts();
+			setProducts(data);
 		};
 
 		fetchData();
@@ -35,24 +25,19 @@ export default function Home() {
 			</header>
 
 			<ul className={styles.productsList}>
-				{products.length > 0 &&
+				{products.length > 0 ? (
 					products.map((product) => (
 						<li key={product.id}>
 							<article className={styles.productCard}>
 								<Link to={`/produtos/${product.id}`}>
-									<figure className={styles.productImage}>
+									<div className={styles.productImage}>
 										<img
 											src={product.productImages[0].url}
-											alt="Nome do produto"
+											alt={`Foto de ${product.name}`}
 										/>
-									</figure>
+									</div>
 
-									<h3
-										className={styles.productName}
-										title="Nome do produto"
-									>
-										{product.name}
-									</h3>
+									<h3 className={styles.productName}>{product.name}</h3>
 								</Link>
 
 								<p className={styles.productPrice}>
@@ -60,7 +45,10 @@ export default function Home() {
 								</p>
 							</article>
 						</li>
-					))}
+					))
+				) : (
+					<p>Não há produtos disponíveis</p>
+				)}
 			</ul>
 		</section>
 	);
