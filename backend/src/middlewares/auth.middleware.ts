@@ -12,7 +12,7 @@ export async function authenticationMiddleware(req: Request, res: Response, next
 	const [, token] = authHeader.split(" ");
 
 	if (!token) {
-		throw new AppError("O token está mal formatado", 400);
+		throw new AppError("O token está mal formatado", 401);
 	}
 
 	const decodedToken = await validateToken(token);
