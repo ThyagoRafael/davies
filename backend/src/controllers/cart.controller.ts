@@ -19,7 +19,7 @@ export class CartController {
 							include: {
 								productImages: {
 									where: {
-										position: 1,
+										position: 0,
 									},
 								},
 							},
