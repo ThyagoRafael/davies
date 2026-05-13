@@ -2,16 +2,11 @@ import axios from "axios";
 import { api } from ".";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import { AppError } from "../../errors/AppError";
+import { getUserStorage } from "../../helpers/getUserStorage";
 
 export async function getCartData() {
 	try {
-		const userStorage = localStorage.getItem("user");
-
-		if (!userStorage) {
-			throw new UnauthorizedError("Usuário não autenticado");
-		}
-
-		const user = JSON.parse(userStorage);
+		const user = getUserStorage();
 
 		const response = await api.get("/cart", {
 			headers: {
