@@ -65,12 +65,13 @@ model Cart {
 }
 
 model CartItem {
-  cartId    Int     @map("cart_id")
-  productId Int     @map("product_id")
+  cartId    Int      @map("cart_id")
+  productId Int      @map("product_id")
   quantity  Int
-  subtotal  Decimal @db.Decimal(10, 2)
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  subtotal  Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now()) @map("created_at")
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 
   @@id([cartId, productId])
   @@map("cart_items")
