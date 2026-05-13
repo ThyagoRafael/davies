@@ -7,7 +7,7 @@ import type { CartData } from "../../types/cart/CartData";
 import { useNavigate } from "react-router-dom";
 import { AppError } from "../../errors/AppError";
 import type { UpdateAction } from "../../types/cartItem/updateAction";
-import { updateQuantityItem } from "../../services/api/cartItem";
+import { deleteItem, updateQuantityItem } from "../../services/api/cartItem";
 
 // 	items: [
 // 		{
@@ -96,6 +96,30 @@ export default function Cart() {
 		}
 	};
 
+	const handleDeleteItem = async (productId: number) => {
+		try {
+			const data = await deleteItem(productId);
+
+			const updatedCartItems = cartData.items.filter((item) => item.id !== productId);
+
+			setCartData({ items: updatedCartItems, total: data.total });
+			alert(data.message);
+		} catch (error) {
+			if (error instanceof AppError) {
+				if (error.statusCode === 401) {
+					localStorage.removeItem("user");
+					navigate("/entrar");
+					return;
+				}
+
+				alert(error.message);
+				return;
+			}
+
+			alert("Erro inesperado");
+		}
+	};
+
 	return (
 		<section className={styles.container}>
 			<header className={styles.header}>
@@ -122,6 +146,7 @@ export default function Cart() {
 							imageUrl={item.imageUrl}
 							quantity={item.quantity}
 							handleQuantityItem={handleQuantityItem}
+							handleDeleteItem={handleDeleteItem}
 						/>
 					</li>
 				))}
