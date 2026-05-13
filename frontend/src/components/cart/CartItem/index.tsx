@@ -12,9 +12,19 @@ interface CartItemProps {
 	imageUrl: string;
 	quantity: number;
 	handleQuantityItem: (action: UpdateAction, productId: number) => void;
+	handleDeleteItem: (productId: number) => void;
 }
 
-export default function CartItem({ id, name, price, stock, imageUrl, quantity, handleQuantityItem }: CartItemProps) {
+export default function CartItem({
+	id,
+	name,
+	price,
+	stock,
+	imageUrl,
+	quantity,
+	handleQuantityItem,
+	handleDeleteItem,
+}: CartItemProps) {
 	return (
 		<article className={styles.cartItemContainer}>
 			<div className={styles.imageWrapper}>
@@ -50,7 +60,7 @@ export default function CartItem({ id, name, price, stock, imageUrl, quantity, h
 							</button>
 						</div>
 
-						<button>
+						<button onClick={() => handleDeleteItem(id)}>
 							<FaTrash size={16} />
 						</button>
 					</div>
