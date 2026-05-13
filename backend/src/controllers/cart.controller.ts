@@ -14,6 +14,9 @@ export class CartController {
 			},
 			include: {
 				cartItems: {
+					orderBy: {
+						createdAt: "desc",
+					},
 					include: {
 						product: {
 							include: {
