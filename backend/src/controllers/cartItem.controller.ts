@@ -80,6 +80,7 @@ export class CartItemController {
 						product: {
 							select: {
 								price: true,
+								stock: true,
 							},
 						},
 					},
@@ -88,13 +89,21 @@ export class CartItemController {
 		});
 
 		if (!cart) {
-			throw new Error("Erro no carrinho");
+			throw new AppError("Erro no carrinho", 400);
 		}
 
 		const cartItem = cart.cartItems.find((item) => item.productId === productId);
 
 		if (!cartItem) {
-			throw new Error("Item não encontrado");
+			throw new AppError("Item não encontrado", 404);
+		}
+
+		if (action === "decrement" && cartItem.quantity <= 1) {
+			throw new AppError("Item já está com a quantidade mínima", 400);
+		}
+
+		if (action === "increment" && cartItem.quantity >= cartItem.product.stock) {
+			throw new AppError("Item já está com a quantidade máxima", 400);
 		}
 
 		const newQuantity = action === "increment" ? cartItem.quantity + 1 : cartItem.quantity - 1;
