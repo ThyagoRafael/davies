@@ -65,6 +65,18 @@
 	text-overflow: ellipsis;
 }
 
-.productPrice {
-	font-size: 0.875rem;
+.cardFooter {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.cardFooter p {
+	font-size: 1rem;
+}
+
+.cardFooter button {
+	all: unset;
+
+	padding: 0.25rem 0.5rem;
 }
