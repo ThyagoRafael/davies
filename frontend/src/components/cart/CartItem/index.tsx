@@ -13,6 +13,7 @@ interface CartItemProps {
 	quantity: number;
 	handleQuantityItem: (action: UpdateAction, productId: number) => void;
 	handleDeleteItem: (productId: number) => void;
+	loading: boolean;
 }
 
 export default function CartItem({
@@ -24,6 +25,7 @@ export default function CartItem({
 	quantity,
 	handleQuantityItem,
 	handleDeleteItem,
+	loading,
 }: CartItemProps) {
 	return (
 		<article className={styles.cartItemContainer}>
@@ -47,20 +49,23 @@ export default function CartItem({
 						<div>
 							<button
 								onClick={() => handleQuantityItem("decrement", id)}
-								disabled={quantity <= 1}
+								disabled={loading || quantity <= 1}
 							>
 								<FaMinus size={16} />
 							</button>
 							<output>{quantity}</output>
 							<button
 								onClick={() => handleQuantityItem("increment", id)}
-								disabled={quantity >= stock}
+								disabled={loading || quantity >= stock}
 							>
 								<FaPlus size={16} />
 							</button>
 						</div>
 
-						<button onClick={() => handleDeleteItem(id)}>
+						<button
+							onClick={() => handleDeleteItem(id)}
+							disabled={loading}
+						>
 							<FaTrash size={16} />
 						</button>
 					</div>
