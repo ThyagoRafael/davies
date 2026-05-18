@@ -78,7 +78,18 @@
 }
 
 .paymentPrice {
-	font-size: 1rem;
+	font-size: 1.2rem;
+}
+
+.actionsContainer {
+	display: flex;
+	gap: 0.25rem;
+}
+
+.actionsContainer .addToCartButton {
+	all: unset;
+
+	padding: 0.5rem;
 }
 
 .aboutContainer {
