@@ -81,3 +81,19 @@
 .checkoutButtonContainer button:hover {
 	background-color: var(--dark-primary-color);
 }
+
+.emptyCartDescription {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.emptyCartDescription a {
+	padding: 0.25rem 0.5rem;
+	color: #0f007d;
+}
+
+.emptyCartDescription a:hover {
+	text-decoration: underline;
+}
