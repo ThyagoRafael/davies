@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Home from "../pages/Home";
@@ -37,6 +37,11 @@ export default function Router() {
 					element={<Register />}
 				/>
 			</Route>
+
+			<Route
+				path="*"
+				element={<Navigate to="/" />}
+			/>
 		</Routes>
 	);
 }
