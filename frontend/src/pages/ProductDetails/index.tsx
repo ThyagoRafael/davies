@@ -1,14 +1,21 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ProductDetails.module.css";
 import Button from "../../components/form/Button";
 import { useEffect, useState, useRef } from "react";
 import type { Product } from "../../types/Product";
 import axios from "axios";
 import { formatPrice } from "../../utils/formatPrice";
+import { FaCartPlus } from "react-icons/fa";
+import { AppError } from "../../errors/AppError";
+import { addToCart } from "../../services/api/cartItem";
+import { BsCartCheck } from "react-icons/bs";
 
 export default function ProductDetails() {
 	const [product, setProduct] = useState<Product | null>(null);
+	const [addedToCart, setAddedToCart] = useState<boolean>(false);
 	const { productId } = useParams();
+	const navigate = useNavigate();
+
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const carouselRef = useRef(null);
 
@@ -30,6 +37,29 @@ export default function ProductDetails() {
 
 		fetchData();
 	}, [productId]);
+
+	const handleAddToCart = async (productId: number) => {
+		try {
+			const data = await addToCart(productId);
+
+			setAddedToCart(true);
+
+			alert(data.message);
+		} catch (error) {
+			if (error instanceof AppError) {
+				if (error.statusCode === 401) {
+					localStorage.removeItem("user");
+					navigate("/entrar");
+					return;
+				}
+
+				alert(error.message);
+				return;
+			}
+
+			alert("Erro inesperado");
+		}
+	};
 
 	const handleScroll = () => {
 		if (carouselRef.current) {
@@ -74,12 +104,22 @@ export default function ProductDetails() {
 									<strong>{formatPrice(product.price)}</strong>
 								</p>
 
-								<Button
-									handleClick={() => console.log("clicou")}
-									disabled={false}
-								>
-									Comprar agora
-								</Button>
+								<div className={styles.actionsContainer}>
+									<Button
+										handleClick={() => console.log("clicou")}
+										disabled={false}
+									>
+										Comprar agora
+									</Button>
+
+									<button
+										className={styles.addToCartButton}
+										onClick={() => handleAddToCart(product.id)}
+										disabled={addedToCart}
+									>
+										{addedToCart ? <BsCartCheck size={20} /> : <FaCartPlus size={20} />}
+									</button>
+								</div>
 							</div>
 						</section>
 					</header>
