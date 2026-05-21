@@ -7,20 +7,21 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
+enum UserRole {
   admin
   client
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  name         String  @db.VarChar(50)
-  email        String  @unique @db.VarChar(100)
-  passwordHash String  @map("password_hash")
-  cpf          String  @unique @db.VarChar(11)
-  phone        String? @unique @db.VarChar(11)
-  role         Role    @default(client)
-  carts        Cart[]
+  id                Int               @id @default(autoincrement())
+  name              String            @db.VarChar(50)
+  email             String            @unique @db.VarChar(100)
+  passwordHash      String            @map("password_hash")
+  cpf               String            @unique @db.VarChar(11)
+  phone             String?           @unique @db.VarChar(11)
+  role              UserRole          @default(client)
+  carts             Cart[]
+  shippingAddresses ShippingAddress[]
 
   @@map("users")
 }
@@ -33,6 +34,7 @@ model Product {
   stock         Int
   productImages ProductImage[]
   cartItems     CartItem[]
+  orderItems    OrderItem[]
 
   @@map("products")
 }
@@ -49,7 +51,7 @@ model ProductImage {
   @@map("product_images")
 }
 
-enum Status {
+enum CartStatus {
   active
   finished
 }
@@ -57,7 +59,7 @@ enum Status {
 model Cart {
   id        Int        @id @default(autoincrement())
   userId    Int        @map("user_id")
-  status    Status
+  status    CartStatus
   user      User       @relation(fields: [userId], references: [id])
   cartItems CartItem[]
 
@@ -75,4 +77,50 @@ model CartItem {
 
   @@id([cartId, productId])
   @@map("cart_items")
+}
+
+model ShippingAddress {
+  id                Int     @id @default(autoincrement())
+  userId            Int     @map("user_id")
+  street            String  @db.VarChar(150)
+  number            String  @db.VarChar(10)
+  addressComplement String? @map("address_complement") @db.VarChar(100)
+  city              String  @db.VarChar(50)
+  state             String  @db.Char(2)
+  zipCode           String  @map("zip_code") @db.VarChar(9)
+  user              User    @relation(fields: [userId], references: [id])
+
+  @@map("shipping_addresses")
+}
+
+enum StatusOrder {
+  pending
+  shipped
+  delivered
+  canceled
+}
+
+model Order {
+  id                Int         @id @default(autoincrement())
+  status            StatusOrder @default(pending)
+  shippingAddressId Int         @map("shipping_address_id")
+  userId            Int         @map("user_id")
+  total             Decimal     @db.Decimal(10, 2)
+  createdAt         DateTime    @default(now()) @map("created_at")
+  orderItems        OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  orderId   Int     @map("order_id")
+  productId Int     @map("product_id")
+  quantity  Int
+  unitPrice Decimal @map("unit_price") @db.Decimal(10, 2)
+  subtotal  Decimal @db.Decimal(10, 2)
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@id([orderId, productId])
+  @@map("order_items")
 }
