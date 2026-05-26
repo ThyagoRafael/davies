@@ -5,6 +5,7 @@ import { productRoutes } from "./product.routes.js";
 import { productImageRoutes } from "./productImages.routes.js";
 import { cartRoutes } from "./cart.routes.js";
 import { cartItemRoutes } from "./cartItems.routes.js";
+import { addressRoutes } from "./shippingAddress.routes.js";
 
 const routes = Router();
 
@@ -13,5 +14,6 @@ routes.use("/products", productRoutes);
 routes.use("/products/:productId", productImageRoutes);
 routes.use("/cart", cartRoutes);
 routes.use("/cart/items", cartItemRoutes);
+routes.use("/address", addressRoutes);
 
 export { routes };
