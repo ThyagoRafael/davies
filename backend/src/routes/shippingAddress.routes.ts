@@ -6,5 +6,6 @@ const addressRoutes = Router();
 const addressController = new ShippingAddressController();
 
 addressRoutes.post("/", authenticationMiddleware, addressController.create);
+addressRoutes.get("/", authenticationMiddleware, addressController.list);
 
 export { addressRoutes };
