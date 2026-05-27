@@ -9,5 +9,6 @@ addressRoutes.post("/", authenticationMiddleware, addressController.create);
 addressRoutes.get("/", authenticationMiddleware, addressController.list);
 addressRoutes.get("/:addressId", authenticationMiddleware, addressController.detail);
 addressRoutes.patch("/:addressId", authenticationMiddleware, addressController.update);
+addressRoutes.delete("/:addressId", authenticationMiddleware, addressController.destroy);
 
 export { addressRoutes };
