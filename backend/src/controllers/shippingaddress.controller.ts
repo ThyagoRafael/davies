@@ -38,4 +38,22 @@ export class ShippingAddressController {
 
 		res.status(200).json(addresses);
 	};
+
+	detail = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+		const addressId = Number(req.params.addressId);
+
+		const address = await prisma.shippingAddress.findFirst({
+			where: {
+				id: addressId,
+				userId,
+			},
+		});
+
+		if (!address) {
+			return res.status(404).json({ message: "Endereço não encontrado" });
+		}
+
+		res.status(200).json(address);
+	};
 }
