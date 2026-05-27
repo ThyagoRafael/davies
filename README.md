@@ -38,8 +38,8 @@ Abaixo está o planejamento de desenvolvimento e o status atual das entregas:
 - [x] Modelagem do Banco de Dados com PostgreSQL e Prisma
 - [x] Sistema de Autenticação e Autorização de Usuários
 - [x] Listagem e Detalhes de Produtos
-- [ ] **Carrinho de Compras** *(Em andamento 👨‍💻)*
-- [ ] Checkout e Sistema de Pedidos
+- [x] Carrinho de Compras
+- [ ] **Checkout e Sistema de Pedidos** *(Em andamento 👨‍💻)*
 - [ ] Integração final com Stripe
 - [ ] Painel Administrativo para gestão de produtos
 - [ ] Implementação de cache com **Redis**
