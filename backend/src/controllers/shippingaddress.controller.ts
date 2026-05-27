@@ -26,4 +26,16 @@ export class ShippingAddressController {
 
 		res.status(201).json(newAddress);
 	};
+
+	list = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+
+		const addresses = await prisma.shippingAddress.findMany({
+			where: {
+				userId,
+			},
+		});
+
+		res.status(200).json(addresses);
+	};
 }
