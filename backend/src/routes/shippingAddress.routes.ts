@@ -8,5 +8,6 @@ const addressController = new ShippingAddressController();
 addressRoutes.post("/", authenticationMiddleware, addressController.create);
 addressRoutes.get("/", authenticationMiddleware, addressController.list);
 addressRoutes.get("/:addressId", authenticationMiddleware, addressController.detail);
+addressRoutes.patch("/:addressId", authenticationMiddleware, addressController.update);
 
 export { addressRoutes };
