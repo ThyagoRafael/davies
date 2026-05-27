@@ -56,4 +56,42 @@ export class ShippingAddressController {
 
 		res.status(200).json(address);
 	};
+
+	update = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+		const addressId = Number(req.params.addressId);
+
+		const allowedFields = ["street", "number", "address_complement", "city", "state", "zip_code"] as const;
+		type AllowedField = (typeof allowedFields)[number];
+
+		const bodyFields = Object.keys(req.body);
+		const invalidFields = bodyFields.filter((field) => !allowedFields.includes(field as AllowedField));
+
+		if (invalidFields.length > 0) {
+			return res.status(400).json({
+				message: "Campos inválidos",
+				invalidFields,
+			});
+		}
+
+		const address = await prisma.shippingAddress.findFirst({
+			where: {
+				id: addressId,
+				userId,
+			},
+		});
+
+		if (!address) {
+			return res.status(404).json({ message: "Endereço não encontrado" });
+		}
+
+		const updatedAddress = await prisma.shippingAddress.update({
+			where: {
+				id: address.id,
+			},
+			data: req.body,
+		});
+
+		res.status(200).json({ updatedAddress });
+	};
 }
