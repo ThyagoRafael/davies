@@ -94,4 +94,28 @@ export class ShippingAddressController {
 
 		res.status(200).json({ updatedAddress });
 	};
+
+	destroy = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+		const addressId = Number(req.params.addressId);
+
+		const address = await prisma.shippingAddress.findFirst({
+			where: {
+				id: addressId,
+				userId,
+			},
+		});
+
+		if (!address) {
+			return res.status(404).json({ message: "Endereço não encontrado" });
+		}
+
+		await prisma.shippingAddress.delete({
+			where: {
+				id: address.id,
+			},
+		});
+
+		res.status(200).json({ message: "Endereço excluído com sucesso" });
+	};
 }
