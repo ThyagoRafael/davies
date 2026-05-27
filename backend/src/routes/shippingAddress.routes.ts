@@ -7,5 +7,6 @@ const addressController = new ShippingAddressController();
 
 addressRoutes.post("/", authenticationMiddleware, addressController.create);
 addressRoutes.get("/", authenticationMiddleware, addressController.list);
+addressRoutes.get("/:addressId", authenticationMiddleware, addressController.detail);
 
 export { addressRoutes };
