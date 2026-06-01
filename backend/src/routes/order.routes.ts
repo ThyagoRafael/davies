@@ -7,5 +7,6 @@ const orderController = new OrderController();
 
 orderRoutes.post("/checkout", authenticationMiddleware, orderController.checkout);
 orderRoutes.get("/", authenticationMiddleware, orderController.list);
+orderRoutes.get("/:orderId", authenticationMiddleware, orderController.detail);
 
 export { orderRoutes };

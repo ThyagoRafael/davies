@@ -110,4 +110,22 @@ export class OrderController {
 
 		res.status(200).json(orders);
 	};
+
+	detail = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+		const orderId = Number(req.params.orderId);
+
+		const order = await prisma.order.findFirst({
+			where: {
+				id: orderId,
+				userId,
+			},
+		});
+
+		if (!order) {
+			throw new AppError("Pedido não encontrado", 404);
+		}
+
+		res.status(200).json(order);
+	};
 }
