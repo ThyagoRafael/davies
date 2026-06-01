@@ -98,4 +98,16 @@ export class OrderController {
 
 		res.status(201).json(order);
 	};
+
+	list = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+
+		const orders = await prisma.order.findMany({
+			where: {
+				userId,
+			},
+		});
+
+		res.status(200).json(orders);
+	};
 }
