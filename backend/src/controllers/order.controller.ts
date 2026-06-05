@@ -145,4 +145,21 @@ export class OrderController {
 
 		res.status(200).json({ message: "Pedido foi enviado" });
 	};
+
+	deliverOrder = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+		const orderId = Number(req.params.orderId);
+
+		await prisma.order.update({
+			where: {
+				id: orderId,
+				userId,
+			},
+			data: {
+				status: "delivered",
+			},
+		});
+
+		res.status(200).json({ message: "Pedido foi entregue" });
+	};
 }
