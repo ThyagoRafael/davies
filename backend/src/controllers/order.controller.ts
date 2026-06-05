@@ -162,4 +162,21 @@ export class OrderController {
 
 		res.status(200).json({ message: "Pedido foi entregue" });
 	};
+
+	cancelOrder = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+		const orderId = Number(req.params.orderId);
+
+		await prisma.order.update({
+			where: {
+				id: orderId,
+				userId,
+			},
+			data: {
+				status: "canceled",
+			},
+		});
+
+		res.status(200).json({ message: "Pedido cancelado com sucesso" });
+	};
 }
