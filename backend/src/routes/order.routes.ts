@@ -8,8 +8,8 @@ const orderController = new OrderController();
 orderRoutes.post("/checkout", authenticationMiddleware, orderController.checkout);
 orderRoutes.get("/", authenticationMiddleware, orderController.list);
 orderRoutes.get("/:orderId", authenticationMiddleware, orderController.detail);
-orderRoutes.patch("/:orderId", authenticationMiddleware, orderController.shipOrder);
-orderRoutes.patch("/:orderId", authenticationMiddleware, orderController.deliverOrder);
-orderRoutes.patch("/:orderId", authenticationMiddleware, orderController.cancelOrder);
+orderRoutes.patch("/:orderId/ship", authenticationMiddleware, orderController.shipOrder);
+orderRoutes.patch("/:orderId/deliver", authenticationMiddleware, orderController.deliverOrder);
+orderRoutes.patch("/:orderId/cancel", authenticationMiddleware, orderController.cancelOrder);
 
 export { orderRoutes };
