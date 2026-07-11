@@ -82,6 +82,8 @@ model CartItem {
 model ShippingAddress {
   id                Int     @id @default(autoincrement())
   userId            Int     @map("user_id")
+  receiverName      String  @map("receiver_name") @db.VarChar(50)
+  receiverPhone     String  @map("receiver_phone") @db.VarChar(11)
   street            String  @db.VarChar(150)
   number            String  @db.VarChar(10)
   addressComplement String? @map("address_complement") @db.VarChar(100)
