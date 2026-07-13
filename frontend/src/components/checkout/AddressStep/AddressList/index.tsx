@@ -3,7 +3,7 @@ import CheckoutAddressCard from "../CheckoutAddressCard";
 
 interface AddressListProps {
 	addresses: Address[];
-	selectedAddress?: Address;
+	selectedAddress: Address | null;
 	onCreate: () => void;
 	onSelect: (address: Address) => void;
 	onEdit: (address: Address) => void;
