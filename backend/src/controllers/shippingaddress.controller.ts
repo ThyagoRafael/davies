@@ -13,9 +13,11 @@ export class ShippingAddressController {
 			city: req.body.city,
 			state: req.body.state,
 			zipCode: req.body.zipCode,
+			receiverName: req.body.receiverName,
+			receiverPhone: req.body.receiverPhone,
 		};
 
-		const requiredFields = ["street", "number", "city", "state", "zipCode"] as const;
+		const requiredFields = ["street", "number", "city", "state", "zipCode", "receiverName", "receiverPhone"] as const;
 		const hasEmptyFields = requiredFields.some((field) => isEmptyField(newAddressData[field]));
 
 		if (hasEmptyFields) {
@@ -61,7 +63,16 @@ export class ShippingAddressController {
 		const userId = req.user!.id;
 		const addressId = Number(req.params.addressId);
 
-		const allowedFields = ["street", "number", "address_complement", "city", "state", "zip_code"] as const;
+		const allowedFields = [
+			"street",
+			"number",
+			"address_complement",
+			"city",
+			"state",
+			"zip_code",
+			"receiverName",
+			"receiverPhone",
+		] as const;
 		type AllowedField = (typeof allowedFields)[number];
 
 		const bodyFields = Object.keys(req.body);
@@ -92,7 +103,7 @@ export class ShippingAddressController {
 			data: req.body,
 		});
 
-		res.status(200).json({ updatedAddress });
+		res.status(200).json(updatedAddress);
 	};
 
 	destroy = async (req: Request, res: Response) => {
