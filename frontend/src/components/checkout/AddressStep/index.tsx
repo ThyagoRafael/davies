@@ -4,16 +4,18 @@ import AddressList from "./AddressList";
 import AddressForm from "./AddressForm";
 
 interface AddressStepProps {
+	selectedAddress: Address | null;
+	onSelectAddress: (address: Address | null) => void;
 	onNext: () => void;
 }
 
 type AddressStepMode = "list" | "form";
-type AddressFormData = Omit<Address, "id" | "userId">;
+type AddressFormData = Omit<Address, "id">;
 
-export default function AddressStep({ onNext }: AddressStepProps) {
+export default function AddressStep({ selectedAddress, onSelectAddress, onNext }: AddressStepProps) {
 	const [userAddresses, setUserAddresses] = useState<Address[]>([]);
 	const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-	const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const [mode, setMode] = useState<AddressStepMode>("list");
@@ -28,7 +30,7 @@ export default function AddressStep({ onNext }: AddressStepProps) {
 
 				setUserAddresses(addresses);
 				if (addresses.length > 0) {
-					setSelectedAddress(addresses[0]);
+					onSelectAddress(addresses[0]);
 				}
 			} catch (error) {
 				setError("Erro ao carregar a lista de endereços");
@@ -39,14 +41,14 @@ export default function AddressStep({ onNext }: AddressStepProps) {
 		};
 
 		loadAddresses();
-	}, []);
+	}, [onSelectAddress]);
 
 	const handleCreateAddress = () => {
 		setMode("form");
 	};
 
 	const handleSelectAddress = (address: Address) => {
-		setSelectedAddress(address);
+		onSelectAddress(address);
 		setError(null);
 	};
 
@@ -93,7 +95,7 @@ export default function AddressStep({ onNext }: AddressStepProps) {
 		});
 
 		setEditingAddress(null);
-		setSelectedAddress(address);
+		onSelectAddress(address);
 		setMode("list");
 	};
 
@@ -109,9 +111,9 @@ export default function AddressStep({ onNext }: AddressStepProps) {
 		setEditingAddress(null);
 
 		if (updated.length === 0) {
-			setSelectedAddress(null);
+			onSelectAddress(null);
 		} else {
-			setSelectedAddress(updated[0]);
+			onSelectAddress(updated[0]);
 		}
 
 		setMode("list");

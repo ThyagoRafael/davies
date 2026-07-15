@@ -11,15 +11,24 @@ interface CardFormData {
 }
 
 interface PaymentStepProps {
+	paymentMethod: "pix" | "card";
+	selectedCard: UserCard | null;
+	onChangePaymentMethod: (paymentMethod: "pix" | "card") => void;
+	onSelectCard: (selectedCard: UserCard | null) => void;
 	onBack: () => void;
 	onNext: () => void;
 }
 
-export default function PaymentStep({ onBack, onNext }: PaymentStepProps) {
-	const [paymentMethod, setPaymentMethod] = useState<"pix" | "card">("card");
+export default function PaymentStep({
+	paymentMethod,
+	selectedCard,
+	onChangePaymentMethod,
+	onSelectCard,
+	onBack,
+	onNext,
+}: PaymentStepProps) {
 	const [paymentView, setPaymentView] = useState<"card-list" | "card-form" | "pix">("card-list");
 	const [userCards, setUserCards] = useState<UserCard[]>([]);
-	const [selectedCard, setSelectedCard] = useState<UserCard | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -32,7 +41,7 @@ export default function PaymentStep({ onBack, onNext }: PaymentStepProps) {
 				setUserCards(userCards);
 
 				if (userCards.length > 0) {
-					setSelectedCard(userCards[0]);
+					onSelectCard(userCards[0]);
 				}
 			} catch (error) {
 				alert("Erro ao carregar a lista de endereços");
@@ -43,7 +52,7 @@ export default function PaymentStep({ onBack, onNext }: PaymentStepProps) {
 		};
 
 		loadUserCards();
-	}, []);
+	}, [onSelectCard]);
 
 	const handleAddCard = () => {
 		setPaymentView("card-form");
@@ -72,12 +81,12 @@ export default function PaymentStep({ onBack, onNext }: PaymentStepProps) {
 
 	const handleCardSaved = (card: UserCard) => {
 		setUserCards((prev) => [...prev, card]);
-		setSelectedCard(card);
+		onSelectCard(card);
 		setPaymentView("card-list");
 	};
 
 	const handleSelectCard = (card: UserCard) => {
-		setSelectedCard(card);
+		onSelectCard(card);
 	};
 
 	const handleNext = () => {
@@ -94,7 +103,7 @@ export default function PaymentStep({ onBack, onNext }: PaymentStepProps) {
 			<nav>
 				<button
 					onClick={() => {
-						setPaymentMethod("pix");
+						onChangePaymentMethod("pix");
 						setPaymentView("pix");
 					}}
 					disabled={paymentView === "pix"}
@@ -103,7 +112,7 @@ export default function PaymentStep({ onBack, onNext }: PaymentStepProps) {
 				</button>
 				<button
 					onClick={() => {
-						setPaymentMethod("card");
+						onChangePaymentMethod("card");
 						setPaymentView("card-list");
 					}}
 					disabled={paymentView !== "pix"}
