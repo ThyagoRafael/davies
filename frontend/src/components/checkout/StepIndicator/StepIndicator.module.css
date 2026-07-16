@@ -1,0 +1,36 @@
+.stepContainer {
+	width: 100%;
+}
+
+.stepContainer ol {
+	display: flex;
+	justify-content: space-between;
+}
+
+.stepItem {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.stepItem div {
+	width: 1rem;
+	height: 1rem;
+	background-color: var(--light-color);
+	border: 1px solid #000000;
+	border-radius: 50%;
+}
+
+.stepItem div.active {
+	background-color: var(--terciary-color);
+}
+
+.stepItem div.success {
+	background-color: var(--success-color);
+}
+
+.stepItem span {
+	font-size: 0.875rem;
+	color: #000000;
+}
