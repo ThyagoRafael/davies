@@ -22,29 +22,28 @@ O projeto utiliza as tecnologias mais modernas do ecossistema Full Stack para ga
 * [TypeScript](https://www.typescriptlang.org/)
 * [Prisma ORM](https://www.prisma.io/)
 * [PostgreSQL](https://www.postgresql.org/)
-* *Em breve:* **Redis** (Cache de catálogo para otimização de performance)
 
 **Integrações & Infraestrutura:**
 * [Cloudinary](https://cloudinary.com/) (Armazenamento de imagens atual)
-* [Stripe](https://stripe.com/) (Gateway de Pagamentos)
-* *Em breve:* **Docker** (Containerização da aplicação)
-* *Em breve:* **AWS S3** (Migração para armazenamento de alta disponibilidade)
 
 ## 🚀 Funcionalidades e Roadmap
 
 Abaixo está o planejamento de desenvolvimento e o status atual das entregas:
 
-- [x] Estruturação inicial do monorepo (Front-end e Back-end)
-- [x] Modelagem do Banco de Dados com PostgreSQL e Prisma
-- [x] Sistema de Autenticação e Autorização de Usuários
-- [x] Listagem e Detalhes de Produtos
-- [x] Carrinho de Compras
-- [ ] **Checkout e Sistema de Pedidos** *(Em andamento 👨‍💻)*
-- [ ] Integração final com Stripe
-- [ ] Painel Administrativo para gestão de produtos
-- [ ] Implementação de cache com **Redis**
-- [ ] Orquestração do ambiente com **Docker**
-- [ ] Migração de armazenamento para **AWS S3**
+### Funcionalidades
+- [x] Autenticação
+- [x] Catálogo de produtos
+- [x] Carrinho de compras
+- [ ] Checkout
+- [ ] Integração com Stripe
+- [ ] Painel administrativo
+
+### Infraestrutura
+- [ ] Deploy inicial da aplicação
+- [ ] Containerização com Docker
+- [ ] Implantação em AWS EC2
+- [ ] Cache com Redis
+- [ ] Migração do armazenamento para AWS S3
 
 ## ⚙️ Como executar o projeto localmente
 
@@ -103,6 +102,12 @@ Inicie os dois serviços simultaneamente em terminais separados:
 * **Terminal 2 (Front-end):** Dentro de `/frontend` -> `npm run dev`
 
 ---
+
+<!--
+## 🌐 Deploy
+
+Esta seção será atualizada após a publicação da aplicação.
+-->
 
 ## 👨‍💻 Autor
 
