@@ -31,11 +31,11 @@ export default function PaymentStep({
 	onBack,
 	onNext,
 }: PaymentStepProps) {
-	const [paymentView, setPaymentView] = useState<"card-list" | "card-form" | "pix">("card-list");
+	const [isCardFormOpen, setIsCardFormOpen] = useState(false);
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const handleAddCard = () => {
-		setPaymentView("card-form");
+		setIsCardFormOpen(true);
 	};
 
 	const handleSaveCard = (data: CardFormData) => {
@@ -64,7 +64,7 @@ export default function PaymentStep({
 
 		onChangeUserCards(updated);
 		onSelectCard(card);
-		setPaymentView("card-list");
+		setIsCardFormOpen(false);
 	};
 
 	const handleSelectCard = (card: UserCard) => {
@@ -86,39 +86,37 @@ export default function PaymentStep({
 				<button
 					onClick={() => {
 						onChangePaymentMethod("pix");
-						setPaymentView("pix");
 					}}
-					disabled={paymentView === "pix"}
+					disabled={paymentMethod === "pix"}
 				>
 					PIX
 				</button>
 				<button
 					onClick={() => {
 						onChangePaymentMethod("card");
-						setPaymentView("card-list");
 					}}
-					disabled={paymentView !== "pix"}
+					disabled={paymentMethod === "card"}
 				>
 					Cartão
 				</button>
 			</nav>
 
-			{paymentView === "pix" ? (
+			{paymentMethod === "pix" ? (
 				<PixPayment />
 			) : (
 				<CardPayment
 					cards={userCards}
-					isForm={paymentView === "card-form"}
+					isForm={isCardFormOpen}
 					selectedCard={selectedCard}
 					loading={loading}
 					onAddCard={handleAddCard}
 					onSaveCard={handleSaveCard}
 					onSelect={handleSelectCard}
-					onCancel={() => setPaymentView("card-list")}
+					onCancel={() => setIsCardFormOpen(false)}
 				/>
 			)}
 
-			{paymentView !== "card-form" && (
+			{!isCardFormOpen && (
 				<div>
 					<button onClick={handleNext}>Ir para confirmação</button>
 					<button onClick={onBack}>Voltar para endereço</button>
