@@ -1,10 +1,22 @@
+import type { Address } from "../../../types/api/address";
+import type { UserCard } from "../../../types/api/userCard";
+import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { formatPrice } from "../../../utils/formatPrice";
+import { formatZipCode } from "../../../utils/formatZipCode";
 
 interface ConfirmationStepProps {
+	selectedAddress: Address | null;
+	paymentMethod: "pix" | "card";
+	selectedCard: UserCard | null;
 	onBack: () => void;
 }
 
-export default function ConfirmationStep({ onBack }: ConfirmationStepProps) {
+export default function ConfirmationStep({
+	selectedAddress,
+	paymentMethod,
+	selectedCard,
+	onBack,
+}: ConfirmationStepProps) {
 	return (
 		<section>
 			<dl>
@@ -32,9 +44,24 @@ export default function ConfirmationStep({ onBack }: ConfirmationStepProps) {
 				</header>
 
 				<article>
-					<h3>Cartão - Visa ****0000</h3>
-					<p>João R A Batista</p>
-					<p>Expira em 01/01/2027</p>
+					{paymentMethod === "pix" ? (
+						<>
+							<h3>PIX</h3>
+							<p>O código PIX gerado para pagamento é válido por 30 minutos após a finalização do pedido.</p>
+						</>
+					) : (
+						selectedCard && (
+							<>
+								<h3>
+									Cartão - {selectedCard.cardBrand} ****{selectedCard.lastDigits}
+								</h3>
+								<div>
+									<p>{selectedCard.holderName}</p>
+									<p>Expira em {selectedCard.expiryDate}</p>
+								</div>
+							</>
+						)
+					)}
 				</article>
 			</section>
 
@@ -43,13 +70,21 @@ export default function ConfirmationStep({ onBack }: ConfirmationStepProps) {
 					<h2>Endereço de entrega</h2>
 				</header>
 
-				<div>
-					<p>
-						<strong>João Batista</strong> - (61) 9 1234-5678
-					</p>
+				{selectedAddress && (
+					<div>
+						<p>
+							<strong>{selectedAddress.receiverName}</strong> -{" "}
+							{formatPhoneNumber(selectedAddress.receiverPhone)}
+						</p>
 
-					<address>Quadra 10 Rua 12 Bloco B 04, Ceilândia - DF, 12345-678</address>
-				</div>
+						<address>
+							{selectedAddress.street}
+							{selectedAddress.addressComplement && ` ${selectedAddress.addressComplement}`},{" "}
+							{selectedAddress.number}, {selectedAddress.city} - {selectedAddress.state},{" "}
+							{formatZipCode(selectedAddress.zipCode)}
+						</address>
+					</div>
+				)}
 			</section>
 
 			<section>

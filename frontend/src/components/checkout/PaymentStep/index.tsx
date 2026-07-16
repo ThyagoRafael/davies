@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PixPayment from "./PixPayment";
 import CardPayment from "./CardPayment";
 import type { UserCard } from "../../../types/api/userCard";
@@ -11,8 +11,10 @@ interface CardFormData {
 }
 
 interface PaymentStepProps {
+	userCards: UserCard[];
 	paymentMethod: "pix" | "card";
 	selectedCard: UserCard | null;
+	onChangeUserCards: (userCard: UserCard[]) => void;
 	onChangePaymentMethod: (paymentMethod: "pix" | "card") => void;
 	onSelectCard: (selectedCard: UserCard | null) => void;
 	onBack: () => void;
@@ -20,39 +22,17 @@ interface PaymentStepProps {
 }
 
 export default function PaymentStep({
+	userCards,
 	paymentMethod,
 	selectedCard,
+	onChangeUserCards,
 	onChangePaymentMethod,
 	onSelectCard,
 	onBack,
 	onNext,
 }: PaymentStepProps) {
 	const [paymentView, setPaymentView] = useState<"card-list" | "card-form" | "pix">("card-list");
-	const [userCards, setUserCards] = useState<UserCard[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-
-	useEffect(() => {
-		const loadUserCards = async () => {
-			try {
-				setLoading(true);
-
-				const userCards: UserCard[] = [];
-
-				setUserCards(userCards);
-
-				if (userCards.length > 0) {
-					onSelectCard(userCards[0]);
-				}
-			} catch (error) {
-				alert("Erro ao carregar a lista de endereços");
-				console.error(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		loadUserCards();
-	}, [onSelectCard]);
 
 	const handleAddCard = () => {
 		setPaymentView("card-form");
@@ -80,7 +60,9 @@ export default function PaymentStep({
 	};
 
 	const handleCardSaved = (card: UserCard) => {
-		setUserCards((prev) => [...prev, card]);
+		const updated = [...userCards, card];
+
+		onChangeUserCards(updated);
 		onSelectCard(card);
 		setPaymentView("card-list");
 	};
