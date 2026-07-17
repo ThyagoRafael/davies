@@ -144,11 +144,7 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 
 			<button onClick={onCancel}>Cancelar</button>
 
-			{isEditing && (
-				<>
-					<button onClick={handleDeleteAddress}>Remover endereço</button>
-				</>
-			)}
+			{isEditing && <button onClick={handleDeleteAddress}>Remover endereço</button>}
 		</form>
 	);
 }
