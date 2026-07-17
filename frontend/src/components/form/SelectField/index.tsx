@@ -1,3 +1,5 @@
+import styles from "./SelectField.module.css";
+
 interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 	label: string;
 	name: string;
@@ -9,13 +11,19 @@ interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement>
 export default function SelectField({ label, handleChange, options, placeholder, ...props }: SelectFieldProps) {
 	return (
 		<div>
-			<label htmlFor={props.name}>{label}</label>
+			<label
+				htmlFor={props.name}
+				className={styles.label}
+			>
+				{label}
+			</label>
 
 			<select
 				{...props}
 				id={props.name}
 				name={props.name}
 				onChange={(e) => handleChange(props.name, e.target.value)}
+				className={styles.select}
 			>
 				<option
 					value=""
