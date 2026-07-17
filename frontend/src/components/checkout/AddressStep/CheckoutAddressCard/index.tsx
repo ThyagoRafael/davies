@@ -11,7 +11,10 @@ interface CheckoutAddressCardProps {
 
 export default function CheckoutAddressCard({ address, checked, onSelect, onEdit }: CheckoutAddressCardProps) {
 	return (
-		<div className={`${styles.cardContainer} ${checked ? styles.checked : ""}`}>
+		<div
+			className={`${styles.cardContainer} ${checked ? styles.checked : ""}`}
+			onClick={() => onSelect(address)}
+		>
 			<label className={styles.label}>
 				<input
 					type="radio"
