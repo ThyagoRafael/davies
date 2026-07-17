@@ -10,7 +10,7 @@ interface CheckoutAddressCardProps {
 
 export default function CheckoutAddressCard({ address, checked, onSelect, onEdit }: CheckoutAddressCardProps) {
 	return (
-		<>
+		<div>
 			<label>
 				<input
 					type="radio"
@@ -32,6 +32,6 @@ export default function CheckoutAddressCard({ address, checked, onSelect, onEdit
 			<button onClick={() => onEdit(address)}>
 				<FaPencilAlt />
 			</button>
-		</>
+		</div>
 	);
 }
