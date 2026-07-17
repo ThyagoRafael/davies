@@ -37,8 +37,6 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		console.log(formData);
-
 		onSubmit(formData);
 	};
 
