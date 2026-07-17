@@ -1,0 +1,84 @@
+.cardContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	border: 1px solid var(--primary-color);
+	border-radius: 16px;
+	padding: 0.5rem;
+
+	transition: background-color 0.2s linear;
+}
+
+.cardContainer.checked {
+	background-color: var(--secondary-color);
+}
+
+.label {
+	display: flex;
+	gap: 0.5rem;
+	align-items: flex-start;
+}
+
+.label > input {
+	appearance: none;
+	width: 1.25rem;
+	height: 1.25rem;
+	border: 2px solid #ccc;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.label > input:checked {
+	border: 5px solid #0070f3;
+}
+
+.details {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	min-width: 0;
+}
+
+.detailsHeader {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	gap: 0.25rem;
+}
+
+.receiverName {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.separator,
+.phone {
+	flex-shrink: 0;
+}
+
+.detailsDescription {
+	font-size: 0.875rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cardContainer > button {
+	all: unset;
+	padding: 0.25rem 0.5rem;
+	align-self: flex-end;
+
+	transition: color 0.2s linear;
+}
+
+.cardContainer > button:hover {
+	color: var(--primary-color);
+}
