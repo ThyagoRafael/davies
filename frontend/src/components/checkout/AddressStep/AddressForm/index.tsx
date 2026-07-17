@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import type { Address } from "../../../../types/api/address";
 import Field from "../../../form/Field";
 import SelectField from "../../../form/SelectField";
+import styles from "./AddressForm.module.css";
 
 interface AddressFormProps {
 	address: Address | null;
@@ -46,7 +47,10 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form
+			onSubmit={handleSubmit}
+			className={styles.addressForm}
+		>
 			{error && <div role="alert">{error}</div>}
 
 			<Field
@@ -89,7 +93,7 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 				required
 			/>
 
-			<div>
+			<div className={styles.inputRow}>
 				<Field
 					label="Complemento (Opcional)"
 					name="addressComplement"
@@ -110,7 +114,7 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 				/>
 			</div>
 
-			<div>
+			<div className={styles.inputRow}>
 				<Field
 					label="Cidade"
 					name="city"
@@ -135,16 +139,31 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 				/>
 			</div>
 
-			<button
-				disabled={loading}
-				type="submit"
-			>
-				{isEditing ? "Atualizar endereço" : "Adicionar endereço"}
-			</button>
+			<div className={styles.buttonsContainer}>
+				<button
+					disabled={loading}
+					type="submit"
+					className={styles.submitButton}
+				>
+					{isEditing ? "Atualizar endereço" : "Adicionar endereço"}
+				</button>
 
-			<button onClick={onCancel}>Cancelar</button>
+				<button
+					onClick={onCancel}
+					className={styles.cancelButton}
+				>
+					Cancelar
+				</button>
 
-			{isEditing && <button onClick={handleDeleteAddress}>Remover endereço</button>}
+				{isEditing && (
+					<button
+						onClick={handleDeleteAddress}
+						className={styles.removeButton}
+					>
+						Remover endereço
+					</button>
+				)}
+			</div>
 		</form>
 	);
 }
