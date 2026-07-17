@@ -37,6 +37,8 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
+		console.log(formData);
+
 		onSubmit(formData);
 	};
 
@@ -149,6 +151,7 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 				</button>
 
 				<button
+					type="button"
 					onClick={onCancel}
 					className={styles.cancelButton}
 				>
@@ -157,6 +160,7 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 
 				{isEditing && (
 					<button
+						type="button"
 						onClick={handleDeleteAddress}
 						className={styles.removeButton}
 					>

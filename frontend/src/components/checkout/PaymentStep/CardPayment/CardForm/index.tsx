@@ -82,7 +82,13 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 				>
 					Adicionar cartão
 				</button>
-				<button onClick={onCancel}>Cancelar</button>
+				<button
+					type="button"
+					onClick={onCancel}
+					disabled={loading}
+				>
+					Cancelar
+				</button>
 			</div>
 		</form>
 	);
