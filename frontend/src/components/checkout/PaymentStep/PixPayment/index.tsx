@@ -1,6 +1,8 @@
+import styles from "./PixPayment.module.css";
+
 export default function PixPayment() {
 	return (
-		<div>
+		<div className={styles.container}>
 			<p>O código PIX gerado para pagamento é válido por 30 minutos após a finalização do pedido.</p>
 		</div>
 	);
