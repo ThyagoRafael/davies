@@ -1,6 +1,7 @@
 import { FaPencilAlt } from "react-icons/fa";
 import type { Address } from "../../../../types/api/address";
 import styles from "./CheckoutAddressCard.module.css";
+import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 
 interface CheckoutAddressCardProps {
 	address: Address;
@@ -29,7 +30,7 @@ export default function CheckoutAddressCard({ address, checked, onSelect, onEdit
 
 						<span className={styles.separator}>-</span>
 
-						<span className={styles.phone}>{address.receiverPhone}</span>
+						<span className={styles.phone}>{formatPhoneNumber(address.receiverPhone)}</span>
 					</p>
 
 					<p className={styles.detailsDescription}>
