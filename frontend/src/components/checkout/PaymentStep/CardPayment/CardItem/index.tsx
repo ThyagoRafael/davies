@@ -1,4 +1,5 @@
 import type { UserCard } from "../../../../../types/api/userCard";
+import styles from "./CardItem.module.css";
 
 interface CardItemProps {
 	card: UserCard;
@@ -8,21 +9,22 @@ interface CardItemProps {
 
 export default function CardItem({ card, checked, onSelect }: CardItemProps) {
 	return (
-		<label>
+		<label className={`${styles.cardContainer} ${checked ? styles.checked : ""}`}>
 			<input
 				type="radio"
 				name="selected-card"
 				checked={checked}
 				onChange={() => onSelect(card)}
 			/>
-			<div>
-				<strong>
+			<div className={styles.details}>
+				<strong className={styles.detailsHeader}>
 					{card.cardBrand} ****{card.lastDigits}
 				</strong>
 
-				<div>
-					<p>{card.holderName}</p>
-					<p>Expira em {card.expiryDate}</p>
+				<div className={styles.detailsDescription}>
+					<span className={styles.holderName}>{card.holderName}</span>
+					<span className={styles.separator}>-</span>
+					<span className={styles.expiryDate}>Expira em {card.expiryDate}</span>
 				</div>
 			</div>
 		</label>

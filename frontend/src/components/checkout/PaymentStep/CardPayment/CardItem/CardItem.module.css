@@ -1,0 +1,61 @@
+.cardContainer {
+	display: flex;
+	gap: 0.5rem;
+	align-items: flex-start;
+
+	border: 1px solid var(--primary-color);
+	border-radius: 16px;
+	padding: 0.5rem;
+
+	transition: background-color 0.2s linear;
+}
+
+.cardContainer.checked {
+	background-color: var(--secondary-color);
+}
+
+.cardContainer > input {
+	appearance: none;
+	width: 1.25rem;
+	height: 1.25rem;
+	border: 2px solid #ccc;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.cardContainer > input:checked {
+	border: 5px solid #0070f3;
+}
+
+.details {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.detailsHeader {
+	font-size: 1rem;
+}
+
+.detailsDescription {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	gap: 0.25rem;
+}
+
+.detailsDescription span {
+	font-size: 0.875rem;
+}
+
+.holderName {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.separator,
+.expiryDate {
+	flex-shrink: 0;
+}
