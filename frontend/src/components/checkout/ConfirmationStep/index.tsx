@@ -1,8 +1,7 @@
 import type { Address } from "../../../types/api/address";
 import type { UserCard } from "../../../types/api/userCard";
-import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { formatPrice } from "../../../utils/formatPrice";
-import { formatZipCode } from "../../../utils/formatZipCode";
+import AddressCard from "./AddressCard";
 import PaymentCard from "./PaymentCard";
 import PriceCard from "./PriceCard";
 
@@ -28,27 +27,7 @@ export default function ConfirmationStep({
 				selectedCard={selectedCard}
 			/>
 
-			<section>
-				<header>
-					<h2>Endereço de entrega</h2>
-				</header>
-
-				{selectedAddress && (
-					<div>
-						<p>
-							<strong>{selectedAddress.receiverName}</strong> -{" "}
-							{formatPhoneNumber(selectedAddress.receiverPhone)}
-						</p>
-
-						<address>
-							{selectedAddress.street}
-							{selectedAddress.addressComplement && ` ${selectedAddress.addressComplement}`},{" "}
-							{selectedAddress.number}, {selectedAddress.city} - {selectedAddress.state},{" "}
-							{formatZipCode(selectedAddress.zipCode)}
-						</address>
-					</div>
-				)}
-			</section>
+			<AddressCard selectedAddress={selectedAddress} />
 
 			<section>
 				<header>
