@@ -1,0 +1,58 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin-top: 1.5rem;
+}
+
+.navBar {
+	display: flex;
+	gap: 1.5rem;
+}
+
+.navBar button {
+	background: none;
+	font-size: 0.875rem;
+	color: var(--dark-color);
+	border: 1px solid var(--dark-color);
+}
+
+.navBar button.selected {
+	background-color: var(--secondary-color);
+}
+
+.buttonsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.buttonsContainer button {
+	width: 100%;
+	padding: 0.5rem 0;
+
+	font-size: 1rem;
+
+	border-radius: 0.5rem;
+
+	cursor: pointer;
+	transition: background-color 0.2s linear;
+}
+
+.buttonsContainer .primaryButton {
+	border: none;
+	background-color: var(--primary-color);
+}
+
+.buttonsContainer .primaryButton:hover {
+	background-color: var(--dark-primary-color);
+}
+
+.buttonsContainer .secondaryButton {
+	border: 1px solid var(--primary-color);
+	background: none;
+}
+
+.buttonsContainer .secondaryButton:hover {
+	border: 1px solid var(--dark-primary-color);
+}

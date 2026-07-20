@@ -2,6 +2,7 @@ import { useState } from "react";
 import PixPayment from "./PixPayment";
 import CardPayment from "./CardPayment";
 import type { UserCard } from "../../../types/api/userCard";
+import styles from "./PaymentStep.module.css";
 
 interface CardFormData {
 	holderName: string;
@@ -81,13 +82,14 @@ export default function PaymentStep({
 	};
 
 	return (
-		<section>
-			<nav>
+		<section className={styles.container}>
+			<nav className={styles.navBar}>
 				<button
 					onClick={() => {
 						onChangePaymentMethod("pix");
 					}}
 					disabled={paymentMethod === "pix"}
+					className={`${paymentMethod === "pix" ? styles.selected : ""}`}
 				>
 					PIX
 				</button>
@@ -96,6 +98,7 @@ export default function PaymentStep({
 						onChangePaymentMethod("card");
 					}}
 					disabled={paymentMethod === "card"}
+					className={`${paymentMethod === "card" ? styles.selected : ""}`}
 				>
 					Cartão
 				</button>
@@ -117,9 +120,19 @@ export default function PaymentStep({
 			)}
 
 			{!isCardFormOpen && (
-				<div>
-					<button onClick={handleNext}>Ir para confirmação</button>
-					<button onClick={onBack}>Voltar para endereço</button>
+				<div className={styles.buttonsContainer}>
+					<button
+						onClick={handleNext}
+						className={styles.primaryButton}
+					>
+						Ir para confirmação
+					</button>
+					<button
+						onClick={onBack}
+						className={styles.secondaryButton}
+					>
+						Voltar para endereço
+					</button>
 				</div>
 			)}
 		</section>
