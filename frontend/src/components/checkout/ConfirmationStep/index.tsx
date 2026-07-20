@@ -3,6 +3,7 @@ import type { UserCard } from "../../../types/api/userCard";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { formatPrice } from "../../../utils/formatPrice";
 import { formatZipCode } from "../../../utils/formatZipCode";
+import PaymentCard from "./PaymentCard";
 import PriceCard from "./PriceCard";
 
 interface ConfirmationStepProps {
@@ -22,32 +23,10 @@ export default function ConfirmationStep({
 		<section>
 			<PriceCard />
 
-			<section>
-				<header>
-					<h2>Pagamento</h2>
-				</header>
-
-				<article>
-					{paymentMethod === "pix" ? (
-						<>
-							<h3>PIX</h3>
-							<p>O código PIX gerado para pagamento é válido por 30 minutos após a finalização do pedido.</p>
-						</>
-					) : (
-						selectedCard && (
-							<>
-								<h3>
-									Cartão - {selectedCard.cardBrand} ****{selectedCard.lastDigits}
-								</h3>
-								<div>
-									<p>{selectedCard.holderName}</p>
-									<p>Expira em {selectedCard.expiryDate}</p>
-								</div>
-							</>
-						)
-					)}
-				</article>
-			</section>
+			<PaymentCard
+				paymentMethod={paymentMethod}
+				selectedCard={selectedCard}
+			/>
 
 			<section>
 				<header>
