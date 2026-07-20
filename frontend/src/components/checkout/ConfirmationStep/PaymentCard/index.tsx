@@ -24,10 +24,10 @@ export default function PaymentCard({ paymentMethod, selectedCard }: PaymentCard
 							<h3>
 								Cartão - {selectedCard.cardBrand} ****{selectedCard.lastDigits}
 							</h3>
-							<div>
-								<p>{selectedCard.holderName}</p>
-								<p>Expira em {selectedCard.expiryDate}</p>
-							</div>
+							<p>
+								<span>{selectedCard.holderName}</span>
+								<span>Expira em {selectedCard.expiryDate}</span>
+							</p>
 						</>
 					)
 				)}
