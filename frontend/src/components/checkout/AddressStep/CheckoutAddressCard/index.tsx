@@ -2,6 +2,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import type { Address } from "../../../../types/api/address";
 import styles from "./CheckoutAddressCard.module.css";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
+import { formatZipCode } from "../../../../utils/formatZipCode";
 
 interface CheckoutAddressCardProps {
 	address: Address;
@@ -34,7 +35,7 @@ export default function CheckoutAddressCard({ address, checked, onSelect, onEdit
 					</p>
 
 					<p className={styles.detailsDescription}>
-						{`${address.street} ${address.addressComplement ?? ""} ${address.number}, ${address.city} - ${address.state}, ${address.zipCode}`}
+						{`${address.street} ${address.addressComplement ?? ""} ${address.number}, ${address.city} - ${address.state}, ${formatZipCode(address.zipCode)}`}
 					</p>
 				</div>
 			</label>
