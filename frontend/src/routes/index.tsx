@@ -6,6 +6,7 @@ import AuthLayout from "../templates/AuthLayout";
 import MainLayout from "../templates/MainLayout";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
+import Checkout from "../pages/Checkout";
 
 export default function Router() {
 	return (
@@ -24,6 +25,11 @@ export default function Router() {
 				<Route
 					path="carrinho"
 					element={<Cart />}
+				/>
+
+				<Route
+					path="checkout"
+					element={<Checkout />}
 				/>
 			</Route>
 
