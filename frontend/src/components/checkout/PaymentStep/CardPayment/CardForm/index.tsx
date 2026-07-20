@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import Field from "../../../../form/Field";
+import styles from "./CardForm.module.css";
 
 interface CardFormData {
 	holderName: string;
@@ -33,7 +34,10 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form
+			onSubmit={handleSubmit}
+			className={styles.form}
+		>
 			<Field
 				label="Nome apresentado no cartão"
 				name="holderName"
@@ -54,7 +58,7 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 				required
 			/>
 
-			<div>
+			<div className={styles.inputRow}>
 				<Field
 					label="Data de validade"
 					name="expiryDate"
@@ -75,10 +79,11 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 				/>
 			</div>
 
-			<div>
+			<div className={styles.buttonsContainer}>
 				<button
 					type="submit"
 					disabled={loading}
+					className={styles.primaryButton}
 				>
 					Adicionar cartão
 				</button>
@@ -86,6 +91,7 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 					type="button"
 					onClick={onCancel}
 					disabled={loading}
+					className={styles.secondaryButton}
 				>
 					Cancelar
 				</button>
