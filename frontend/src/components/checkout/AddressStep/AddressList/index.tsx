@@ -1,5 +1,6 @@
 import type { Address } from "../../../../types/api/address";
 import CheckoutAddressCard from "../CheckoutAddressCard";
+import styles from "./AddressList.module.css";
 
 interface AddressListProps {
 	addresses: Address[];
@@ -19,9 +20,9 @@ export default function AddressList({
 	onNext,
 }: AddressListProps) {
 	return (
-		<section>
+		<section className={styles.container}>
 			{addresses.length > 0 ? (
-				<ul>
+				<ul className={styles.list}>
 					{addresses.map((address) => (
 						<li key={address.id}>
 							<CheckoutAddressCard
@@ -34,12 +35,24 @@ export default function AddressList({
 					))}
 				</ul>
 			) : (
-				<p>Não há endereços disponíveis</p>
+				<p className={styles.empty}>Não há endereços disponíveis</p>
 			)}
 
-			<button onClick={onCreate}>Adicionar um novo endereço</button>
+			<div className={styles.buttonsContainer}>
+				<button
+					onClick={onCreate}
+					className={styles.terciaryButton}
+				>
+					Adicionar um novo endereço
+				</button>
 
-			<button onClick={onNext}>Ir para pagamento</button>
+				<button
+					onClick={onNext}
+					className={styles.primaryButton}
+				>
+					Ir para pagamento
+				</button>
+			</div>
 		</section>
 	);
 }
