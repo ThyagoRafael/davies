@@ -1,5 +1,6 @@
 import type { UserCard } from "../../../../../types/api/userCard";
 import CardItem from "../CardItem";
+import styles from "./CardList.module.css";
 
 interface CardListProps {
 	cards: UserCard[];
@@ -10,9 +11,9 @@ interface CardListProps {
 
 export default function CardList({ cards, selectedCard, onAddCard, onSelect }: CardListProps) {
 	return (
-		<section>
+		<section className={styles.container}>
 			{cards.length > 0 ? (
-				<ul>
+				<ul className={styles.list}>
 					{cards.map((card) => (
 						<li key={card.id}>
 							<CardItem
@@ -24,9 +25,14 @@ export default function CardList({ cards, selectedCard, onAddCard, onSelect }: C
 					))}
 				</ul>
 			) : (
-				<p>Não há cartões disponíveis</p>
+				<p className={styles.empty}>Não há cartões disponíveis</p>
 			)}
-			<button onClick={onAddCard}>Adicionar um novo pagamento</button>
+			<button
+				onClick={onAddCard}
+				className={styles.terciaryButton}
+			>
+				Adicionar um novo pagamento
+			</button>
 		</section>
 	);
 }
