@@ -3,6 +3,7 @@ import type { UserCard } from "../../../types/api/userCard";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { formatPrice } from "../../../utils/formatPrice";
 import { formatZipCode } from "../../../utils/formatZipCode";
+import PriceCard from "./PriceCard";
 
 interface ConfirmationStepProps {
 	selectedAddress: Address | null;
@@ -19,24 +20,7 @@ export default function ConfirmationStep({
 }: ConfirmationStepProps) {
 	return (
 		<section>
-			<dl>
-				<div>
-					<dt>Itens</dt>
-					<dd>{formatPrice("150.00")}</dd>
-				</div>
-				<div>
-					<dt>Frete</dt>
-					<dd>{formatPrice("20.00")}</dd>
-				</div>
-				<div>
-					<dt>
-						<strong>Total</strong>
-					</dt>
-					<dd>
-						<strong>{formatPrice("170.00")}</strong>
-					</dd>
-				</div>
-			</dl>
+			<PriceCard />
 
 			<section>
 				<header>
