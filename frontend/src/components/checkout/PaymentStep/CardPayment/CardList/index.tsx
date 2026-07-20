@@ -11,7 +11,7 @@ interface CardListProps {
 
 export default function CardList({ cards, selectedCard, onAddCard, onSelect }: CardListProps) {
 	return (
-		<section className={styles.container}>
+		<section>
 			{cards.length > 0 ? (
 				<ul className={styles.list}>
 					{cards.map((card) => (
