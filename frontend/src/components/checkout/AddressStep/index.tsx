@@ -51,7 +51,7 @@ export default function AddressStep({
 						...data,
 					}
 				: {
-						id: addresses.length + 1,
+						id: Math.max(0, ...addresses.map((a) => a.id)) + 1,
 						...data,
 					};
 
