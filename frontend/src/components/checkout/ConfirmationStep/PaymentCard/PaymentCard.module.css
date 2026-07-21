@@ -1,0 +1,53 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.container h2 {
+	font-size: 1rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+.detailsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 0.5rem;
+
+	border: 1px solid var(--primary-color);
+	border-radius: 8px;
+}
+
+.detailsContainer h3 {
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+.pixDescription {
+	font-size: 0.875rem;
+}
+
+.cardDescription {
+	display: flex;
+	justify-content: space-between;
+	min-width: 0;
+}
+
+.cardDescription .holderName,
+.cardDescription .expiryDate {
+	font-size: 0.875rem;
+}
+
+.cardDescription .holderName {
+	min-width: 0;
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.cardDescription .expiryDate {
+	color: rgba(0, 0, 0, 0.5);
+}
