@@ -7,6 +7,7 @@ import type { Address } from "../../types/api/address";
 import type { UserCard } from "../../types/api/userCard";
 import { getUserAddresses } from "../../services/api/address";
 import { getUserCards } from "../../services/api/userCard";
+import styles from "./Checkout.module.css";
 
 export default function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -40,13 +41,13 @@ export default function Checkout() {
 	}, []);
 
 	return (
-		<section>
+		<section className={styles.container}>
 			<header>
 				<h1>Pedido</h1>
 				<StepIndicator actualStep={actualStep} />
 			</header>
 
-			<hr />
+			<hr className={styles.line} />
 
 			{actualStep === 1 && (
 				<AddressStep

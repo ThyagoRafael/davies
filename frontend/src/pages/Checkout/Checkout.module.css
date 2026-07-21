@@ -1,0 +1,9 @@
+.container header h1 {
+	font-size: 1.5rem;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.line {
+	margin-bottom: 1.5rem;
+}
