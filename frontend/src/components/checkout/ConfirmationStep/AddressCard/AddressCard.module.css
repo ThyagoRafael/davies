@@ -43,6 +43,7 @@
 
 .addressDescription {
 	font-size: 0.875rem;
+	font-style: normal;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 2;
