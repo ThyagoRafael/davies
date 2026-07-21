@@ -1,0 +1,53 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.container header h2 {
+	font-size: 1rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+.detailsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 0.5rem;
+
+	border: 1px solid var(--primary-color);
+	border-radius: 8px;
+}
+
+.detailsContainer h3 {
+	display: flex;
+	gap: 0.25rem;
+	min-width: 0;
+
+	font-size: 1rem;
+	font-weight: normal;
+}
+
+.detailsContainer h3 .receiverName {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.detailsContainer h3 .separator,
+.detailsContainer h3 .phone {
+	flex-shrink: 0;
+}
+
+.addressDescription {
+	font-size: 0.875rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
