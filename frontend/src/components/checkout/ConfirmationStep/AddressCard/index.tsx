@@ -14,10 +14,14 @@ export default function AddressCard({ selectedAddress }: AddressCardProps) {
 			</header>
 
 			{selectedAddress && (
-				<div>
-					<p>
-						<strong>{selectedAddress.receiverName}</strong> - {formatPhoneNumber(selectedAddress.receiverPhone)}
-					</p>
+				<article>
+					<h3>
+						<span>
+							<strong>{selectedAddress.receiverName}</strong>
+						</span>
+						<span>-</span>
+						<span>{formatPhoneNumber(selectedAddress.receiverPhone)}</span>
+					</h3>
 
 					<address>
 						{selectedAddress.street}
@@ -25,7 +29,7 @@ export default function AddressCard({ selectedAddress }: AddressCardProps) {
 						{selectedAddress.number}, {selectedAddress.city} - {selectedAddress.state},{" "}
 						{formatZipCode(selectedAddress.zipCode)}
 					</address>
-				</div>
+				</article>
 			)}
 		</section>
 	);
