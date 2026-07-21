@@ -4,6 +4,7 @@ import AddressCard from "./AddressCard";
 import OrderItemsContainer from "./OrderItemsContainer";
 import PaymentCard from "./PaymentCard";
 import PriceCard from "./PriceCard";
+import styles from "./ConfirmationStep.module.css";
 
 interface ConfirmationStepProps {
 	selectedAddress: Address | null;
@@ -19,7 +20,7 @@ export default function ConfirmationStep({
 	onBack,
 }: ConfirmationStepProps) {
 	return (
-		<section>
+		<section className={styles.container}>
 			<PriceCard />
 
 			<PaymentCard
@@ -31,9 +32,14 @@ export default function ConfirmationStep({
 
 			<OrderItemsContainer />
 
-			<footer>
-				<button>Confirmar pedido</button>
-				<button onClick={onBack}>Voltar para pagamento</button>
+			<footer className={styles.footerButtons}>
+				<button className={styles.primaryButton}>Confirmar pedido</button>
+				<button
+					onClick={onBack}
+					className={styles.secondaryButton}
+				>
+					Voltar para pagamento
+				</button>
 			</footer>
 		</section>
 	);
