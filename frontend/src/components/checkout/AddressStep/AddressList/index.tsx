@@ -20,7 +20,7 @@ export default function AddressList({
 	onNext,
 }: AddressListProps) {
 	return (
-		<section className={styles.container}>
+		<section>
 			{addresses.length > 0 ? (
 				<ul className={styles.list}>
 					{addresses.map((address) => (
