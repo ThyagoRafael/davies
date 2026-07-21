@@ -1,16 +1,20 @@
 import { formatPrice } from "../../../../../utils/formatPrice";
+import styles from "./OrderItemCard.module.css";
+import imagemTeste from "../../../../../assets/imagem-teste.png";
 
 export default function OrderItemCard() {
 	return (
-		<div>
-			<img
-				src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-gallery-vector-icon-png-image_1028015.jpg"
-				alt="Uma imagem"
-			/>
-			<div>
+		<div className={styles.container}>
+			<div className={styles.imageWrapper}>
+				<img
+					src={imagemTeste}
+					alt="Uma imagem"
+				/>
+			</div>
+			<div className={styles.descriptionContainer}>
 				<h3>Produto tal azul com manga longa marrom dourado amarelo preto roxo laranja</h3>
 
-				<footer>
+				<footer className={styles.descriptionFooter}>
 					<p>Quantidade: 1</p>
 					<strong>{formatPrice("150.00")}</strong>
 				</footer>
