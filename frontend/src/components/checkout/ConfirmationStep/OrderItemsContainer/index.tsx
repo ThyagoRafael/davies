@@ -1,13 +1,14 @@
 import OrderItemCard from "./OrderItemCard";
+import styles from "./OrderItemsContainer.module.css";
 
 export default function OrderItemsContainer() {
 	return (
-		<section>
+		<section className={styles.container}>
 			<header>
 				<h2>Itens do pedido</h2>
 			</header>
 
-			<ul>
+			<ul className={styles.list}>
 				<li>
 					<OrderItemCard />
 				</li>
