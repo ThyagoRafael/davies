@@ -28,26 +28,28 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 
 			<aside className={styles.drawer}>
 				<div className={styles.content}>
-					<header className={styles.header}>
-						<p>Olá, João</p>
-						<h2>
-							<button>Sua conta</button>
-						</h2>
-					</header>
+					<div className={styles.mainContent}>
+						<header className={styles.header}>
+							<p>Olá, João</p>
+							<h2>
+								<button>Sua conta</button>
+							</h2>
+						</header>
 
-					<nav className={styles.navigation}>
-						<ul>
-							<li>
-								<button>Seus pedidos</button>
-							</li>
-							<li>
-								<button>Suas formas de pagamento</button>
-							</li>
-							<li>
-								<button>Seus endereços</button>
-							</li>
-						</ul>
-					</nav>
+						<nav className={styles.navigation}>
+							<ul>
+								<li>
+									<button>Seus pedidos</button>
+								</li>
+								<li>
+									<button>Suas formas de pagamento</button>
+								</li>
+								<li>
+									<button>Seus endereços</button>
+								</li>
+							</ul>
+						</nav>
+					</div>
 
 					<footer className={styles.footer}>
 						<button type="button">Sair da conta</button>
