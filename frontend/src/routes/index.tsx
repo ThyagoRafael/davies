@@ -6,7 +6,8 @@ import AuthLayout from "../templates/AuthLayout";
 import MainLayout from "../templates/MainLayout";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
+import Checkout from "../pages/Order/Checkout";
+import OrderConfirmation from "../pages/Order/OrderConfirmation";
 
 export default function Router() {
 	return (
@@ -27,10 +28,16 @@ export default function Router() {
 					element={<Cart />}
 				/>
 
-				<Route
-					path="checkout"
-					element={<Checkout />}
-				/>
+				<Route path="checkout">
+					<Route
+						index
+						element={<Checkout />}
+					/>
+					<Route
+						path="success"
+						element={<OrderConfirmation />}
+					/>
+				</Route>
 			</Route>
 
 			<Route element={<AuthLayout />}>

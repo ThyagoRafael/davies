@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import StepIndicator from "../../components/checkout/StepIndicator";
-import AddressStep from "../../components/checkout/AddressStep";
-import PaymentStep from "../../components/checkout/PaymentStep";
-import ConfirmationStep from "../../components/checkout/ConfirmationStep";
-import type { Address } from "../../types/api/address";
-import type { UserCard } from "../../types/api/userCard";
-import { getUserAddresses } from "../../services/api/address";
-import { getUserCards } from "../../services/api/userCard";
+import StepIndicator from "../../../components/checkout/StepIndicator";
+import AddressStep from "../../../components/checkout/AddressStep";
+import PaymentStep from "../../../components/checkout/PaymentStep";
+import ConfirmationStep from "../../../components/checkout/ConfirmationStep";
+import type { Address } from "../../../types/api/address";
+import type { UserCard } from "../../../types/api/userCard";
+import { getUserAddresses } from "../../../services/api/address";
+import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 
 export default function Checkout() {
