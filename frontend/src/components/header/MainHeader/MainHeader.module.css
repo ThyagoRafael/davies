@@ -10,11 +10,22 @@
 }
 
 .homeLink,
-.cartLink {
+.cartLink,
+.profile {
 	padding: 0.5rem;
 }
 
 .homeLink img {
 	height: 18px;
 	width: auto;
+}
+
+.buttonsContainer {
+	display: flex;
+	gap: 1rem;
+}
+
+.profile {
+	all: unset;
+	padding: 0.5rem;
 }
