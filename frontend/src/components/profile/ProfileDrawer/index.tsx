@@ -1,4 +1,5 @@
 import { IoMdClose } from "react-icons/io";
+import styles from "./ProfileDrawer.module.css";
 
 interface ProfileDrawerProps {
 	isOpen: boolean;
@@ -9,30 +10,32 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 	if (!isOpen) return null;
 
 	return (
-		<div>
+		<div className={styles.overlay}>
 			<div
 				aria-hidden="true"
 				onClick={onClose}
-			/>
-
-			<aside>
+				className={styles.backdrop}
+			>
 				<button
 					type="button"
 					aria-label="Fechar menu"
 					onClick={onClose}
+					className={styles.closeButton}
 				>
 					<IoMdClose />
 				</button>
+			</div>
 
-				<div>
-					<header>
+			<aside className={styles.drawer}>
+				<div className={styles.content}>
+					<header className={styles.header}>
 						<p>Olá, João</p>
 						<h2>
 							<button>Sua conta</button>
 						</h2>
 					</header>
 
-					<nav>
+					<nav className={styles.navigation}>
 						<ul>
 							<li>
 								<button>Seus pedidos</button>
@@ -46,7 +49,7 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 						</ul>
 					</nav>
 
-					<footer>
+					<footer className={styles.footer}>
 						<button type="button">Sair da conta</button>
 					</footer>
 				</div>
