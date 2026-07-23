@@ -34,7 +34,7 @@ export default function Router() {
 						element={<Checkout />}
 					/>
 					<Route
-						path="success"
+						path="sucesso"
 						element={<OrderConfirmation />}
 					/>
 				</Route>
