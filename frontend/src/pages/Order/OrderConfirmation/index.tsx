@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom";
 import approved from "../../../assets/approved.png";
 import styles from "./OrderConfirmation.module.css";
 
 export default function OrderConfirmation() {
 	return (
-		<section>
+		<section className={styles.container}>
 			<header className={styles.header}>
 				<h1>Pedido confirmado</h1>
 
@@ -38,6 +39,10 @@ export default function OrderConfirmation() {
 					<p className={styles.cardHolder}>João R A Batista</p>
 				</article>
 			</section>
+
+			<div className={styles.linkContainer}>
+				<Link to={"/"}>Voltar para a vitrine</Link>
+			</div>
 		</section>
 	);
 }

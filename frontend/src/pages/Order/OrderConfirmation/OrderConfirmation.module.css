@@ -1,3 +1,9 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
 .header {
 	display: flex;
 	flex-direction: column;
@@ -37,10 +43,6 @@
 
 .confirmationContent p {
 	font-size: 0.875rem;
-}
-
-.divider {
-	margin: 1.5rem 0;
 }
 
 .paymentSection {
@@ -95,4 +97,14 @@
 
 .cardHolder {
 	font-size: 0.875rem;
+}
+
+.linkContainer {
+	display: flex;
+	justify-content: center;
+}
+
+.linkContainer a {
+	padding: 0.25rem 0.5rem;
+	color: #0f007d;
 }
