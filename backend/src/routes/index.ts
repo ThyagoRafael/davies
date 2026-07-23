@@ -15,7 +15,7 @@ routes.use("/products", productRoutes);
 routes.use("/products/:productId", productImageRoutes);
 routes.use("/cart", cartRoutes);
 routes.use("/cart/items", cartItemRoutes);
-routes.use("/address", addressRoutes);
+routes.use("/addresses", addressRoutes);
 routes.use("/orders", orderRoutes);
 
 export { routes };
