@@ -11,6 +11,7 @@ interface ConfirmationStepProps {
 	paymentMethod: "pix" | "card";
 	selectedCard: UserCard | null;
 	onBack: () => void;
+	onFinishCart: () => void;
 }
 
 export default function ConfirmationStep({
@@ -18,6 +19,7 @@ export default function ConfirmationStep({
 	paymentMethod,
 	selectedCard,
 	onBack,
+	onFinishCart,
 }: ConfirmationStepProps) {
 	return (
 		<section className={styles.container}>
@@ -33,7 +35,12 @@ export default function ConfirmationStep({
 			<OrderItemsContainer />
 
 			<footer className={styles.footerButtons}>
-				<button className={styles.primaryButton}>Confirmar pedido</button>
+				<button
+					className={styles.primaryButton}
+					onClick={onFinishCart}
+				>
+					Confirmar pedido
+				</button>
 				<button
 					onClick={onBack}
 					className={styles.secondaryButton}

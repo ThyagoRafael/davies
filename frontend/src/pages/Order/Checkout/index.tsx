@@ -8,6 +8,7 @@ import type { UserCard } from "../../../types/api/userCard";
 import { getUserAddresses } from "../../../services/api/address";
 import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -16,6 +17,7 @@ export default function Checkout() {
 	const [userCards, setUserCards] = useState<UserCard[]>([]);
 	const [paymentMethod, setPaymentMethod] = useState<"pix" | "card">("card");
 	const [selectedCard, setSelectedCard] = useState<UserCard | null>(null);
+	const navigation = useNavigate();
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -39,6 +41,10 @@ export default function Checkout() {
 
 		loadData();
 	}, []);
+
+	const handleFinishCart = () => {
+		navigation("/checkout/sucesso");
+	};
 
 	return (
 		<section className={styles.container}>
@@ -78,6 +84,7 @@ export default function Checkout() {
 					paymentMethod={paymentMethod}
 					selectedCard={selectedCard}
 					onBack={() => setActualStep(2)}
+					onFinishCart={handleFinishCart}
 				/>
 			)}
 		</section>
