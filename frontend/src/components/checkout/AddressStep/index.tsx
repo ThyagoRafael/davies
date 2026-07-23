@@ -23,7 +23,6 @@ export default function AddressStep({
 }: AddressStepProps) {
 	const [editingAddress, setEditingAddress] = useState<Address | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [error, setError] = useState<string | null>(null);
 	const [mode, setMode] = useState<AddressStepMode>("list");
 
 	const handleCreateAddress = () => {
@@ -32,7 +31,6 @@ export default function AddressStep({
 
 	const handleSelectAddress = (address: Address) => {
 		onSelectAddress(address);
-		setError(null);
 	};
 
 	const handleEditAddress = (address: Address) => {
@@ -43,7 +41,6 @@ export default function AddressStep({
 	const handleSaveAddress = async (data: AddressFormData) => {
 		try {
 			setLoading(true);
-			setError(null);
 
 			const address: Address = editingAddress
 				? {
@@ -57,7 +54,7 @@ export default function AddressStep({
 
 			handleAddressSaved(address);
 		} catch {
-			setError("Não foi possível salvar o endereço.");
+			alert("Não foi possível salvar o endereço.");
 		} finally {
 			setLoading(false);
 		}
@@ -97,7 +94,7 @@ export default function AddressStep({
 
 	const handleNext = () => {
 		if (!selectedAddress) {
-			setError("Selecione um endereço.");
+			alert("Selecione um endereço.");
 			return;
 		}
 
@@ -120,7 +117,6 @@ export default function AddressStep({
 				<AddressForm
 					address={editingAddress}
 					loading={loading}
-					error={error}
 					onSubmit={handleSaveAddress}
 					onCancel={handleCancelAddressForm}
 					onDelete={handleAddressDeleted}

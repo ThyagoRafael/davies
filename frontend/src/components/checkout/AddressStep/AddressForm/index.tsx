@@ -7,7 +7,6 @@ import styles from "./AddressForm.module.css";
 interface AddressFormProps {
 	address: Address | null;
 	loading: boolean;
-	error: string | null;
 	onSubmit: (address: AddressFormData) => void;
 	onCancel: () => void;
 	onDelete: (id: number) => void;
@@ -26,7 +25,7 @@ const emptyForm: AddressFormData = {
 	zipCode: "",
 };
 
-export default function AddressForm({ address, loading, error, onSubmit, onCancel, onDelete }: AddressFormProps) {
+export default function AddressForm({ address, loading, onSubmit, onCancel, onDelete }: AddressFormProps) {
 	const [formData, setFormData] = useState<AddressFormData>(address ? { ...address } : emptyForm);
 	const isEditing = !!address;
 
@@ -51,8 +50,6 @@ export default function AddressForm({ address, loading, error, onSubmit, onCance
 			onSubmit={handleSubmit}
 			className={styles.addressForm}
 		>
-			{error && <div role="alert">{error}</div>}
-
 			<Field
 				label="Nome completo do destinatário"
 				name="receiverName"
