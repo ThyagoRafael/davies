@@ -1,40 +1,41 @@
 import approved from "../../../assets/approved.png";
+import styles from "./OrderConfirmation.module.css";
 
 export default function OrderConfirmation() {
 	return (
 		<section>
-			<header>
+			<header className={styles.header}>
 				<h1>Pedido confirmado</h1>
 
-				<div>
+				<div className={styles.confirmation}>
 					<img
 						src={approved}
 						alt=""
 						aria-hidden="true"
 					/>
 
-					<div>
-						<p>Pedido #0000000</p>
+					<div className={styles.confirmationContent}>
+						<h2>Pedido #0000000</h2>
 						<p>O pedido foi efetuado com sucesso</p>
 					</div>
 				</div>
 			</header>
 
-			<hr />
+			<hr className={styles.divider} />
 
-			<section>
-				<header>
+			<section className={styles.paymentSection}>
+				<header className={styles.sectionHeader}>
 					<h2>Pagamento</h2>
 					<p>Você receberá um email após a confirmação do pagamento</p>
 				</header>
 
-				<article>
-					<header>
+				<article className={styles.paymentCard}>
+					<header className={styles.paymentHeader}>
 						<h3>Cartão - Visa ****0000</h3>
 						<span>Esperando aprovação</span>
 					</header>
 
-					<p>João R A Batista</p>
+					<p className={styles.cardHolder}>João R A Batista</p>
 				</article>
 			</section>
 		</section>
