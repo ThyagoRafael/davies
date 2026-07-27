@@ -25,7 +25,20 @@ const emptyForm: AddressFormData = {
 };
 
 export default function AddressForm({ address, loading, onSubmit, onCancel }: AddressFormProps) {
-	const [formData, setFormData] = useState<AddressFormData>(address ? { ...address } : emptyForm);
+	const [formData, setFormData] = useState<AddressFormData>(
+		address
+			? {
+					number: address.number,
+					street: address.street,
+					city: address.city,
+					state: address.state,
+					receiverName: address.receiverName,
+					receiverPhone: address.receiverPhone,
+					addressComplement: address.addressComplement,
+					zipCode: address.zipCode,
+				}
+			: emptyForm,
+	);
 	const isEditing = !!address;
 
 	const handleChange = (name: string, value: string) => {
