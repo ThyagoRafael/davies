@@ -9,6 +9,7 @@ import { getUserAddresses } from "../../../services/api/address";
 import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 export default function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -35,6 +36,7 @@ export default function Checkout() {
 					setSelectedCard(cards[0]);
 				}
 			} catch (error) {
+				alert(getErrorMessage(error));
 				console.error(error);
 			}
 		};
@@ -42,7 +44,7 @@ export default function Checkout() {
 		loadData();
 	}, []);
 
-	const handleFinishCart = () => {
+	const handleFinishOrder = () => {
 		navigation("/checkout/sucesso");
 	};
 
@@ -84,7 +86,7 @@ export default function Checkout() {
 					paymentMethod={paymentMethod}
 					selectedCard={selectedCard}
 					onBack={() => setActualStep(2)}
-					onFinishCart={handleFinishCart}
+					onFinishOrder={handleFinishOrder}
 				/>
 			)}
 		</section>
