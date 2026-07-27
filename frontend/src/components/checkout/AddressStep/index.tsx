@@ -29,10 +29,6 @@ export default function AddressStep({
 		setMode("form");
 	};
 
-	const handleSelectAddress = (address: Address) => {
-		onSelectAddress(address);
-	};
-
 	const handleEditAddress = (address: Address) => {
 		setEditingAddress(address);
 		setMode("form");
@@ -108,7 +104,7 @@ export default function AddressStep({
 					addresses={addresses}
 					selectedAddress={selectedAddress}
 					onCreate={handleCreateAddress}
-					onSelect={handleSelectAddress}
+					onSelect={onSelectAddress}
 					onEdit={handleEditAddress}
 					onNext={handleNext}
 				/>
