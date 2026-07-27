@@ -5,7 +5,7 @@ import PaymentStep from "../../../components/checkout/PaymentStep";
 import ConfirmationStep from "../../../components/checkout/ConfirmationStep";
 import type { Address } from "../../../types/api/address";
 import type { UserCard } from "../../../types/api/userCard";
-import { createAddress, getUserAddresses } from "../../../services/api/address";
+import { createAddress, getUserAddresses, updateAddress } from "../../../services/api/address";
 import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
@@ -47,7 +47,7 @@ export default function Checkout() {
 
 	const handleSaveAddress = async (data: AddressFormData, editingAddress: Address | null) => {
 		try {
-			const savedAddress = await createAddress(data);
+			const savedAddress = editingAddress ? await updateAddress(editingAddress.id, data) : await createAddress(data);
 
 			setUserAddresses((current) => {
 				const exists = current.some((a) => a.id === savedAddress.id);

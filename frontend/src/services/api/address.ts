@@ -12,3 +12,9 @@ export async function createAddress(addressData: AddressFormData) {
 
 	return response.data;
 }
+
+export async function updateAddress(addressId: number, addressData: AddressFormData) {
+	const response = await api.patch(`/addresses/${addressId}`, addressData);
+
+	return response.data;
+}
