@@ -2,17 +2,10 @@ import axios from "axios";
 import { api } from ".";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import { AppError } from "../../errors/AppError";
-import { getUserStorage } from "../../helpers/getUserStorage";
 
 export async function getCartData() {
 	try {
-		const user = getUserStorage();
-
-		const response = await api.get("/cart", {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
-			},
-		});
+		const response = await api.get("/cart");
 
 		return response.data;
 	} catch (error) {

@@ -1,3 +1,7 @@
+import { api } from ".";
+
 export async function getUserAddresses() {
-	return [];
+	const response = await api.get("/addresses");
+
+	return response.data;
 }
