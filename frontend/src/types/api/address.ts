@@ -9,3 +9,5 @@ export interface Address {
 	addressComplement: string;
 	zipCode: string;
 }
+
+export type AddressFormData = Omit<Address, "id">;

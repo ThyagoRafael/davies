@@ -5,11 +5,12 @@ import PaymentStep from "../../../components/checkout/PaymentStep";
 import ConfirmationStep from "../../../components/checkout/ConfirmationStep";
 import type { Address } from "../../../types/api/address";
 import type { UserCard } from "../../../types/api/userCard";
-import { getUserAddresses } from "../../../services/api/address";
+import { createAddress, getUserAddresses } from "../../../services/api/address";
 import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
+import type { AddressFormData } from "../../../types/api/address";
 
 export default function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -44,6 +45,24 @@ export default function Checkout() {
 		loadData();
 	}, []);
 
+	const handleSaveAddress = async (data: AddressFormData, editingAddress: Address | null) => {
+		try {
+			const savedAddress = await createAddress(data);
+
+			setUserAddresses((current) => {
+				const exists = current.some((a) => a.id === savedAddress.id);
+
+				return exists
+					? current.map((a) => (a.id === savedAddress.id ? savedAddress : a))
+					: [...current, savedAddress];
+			});
+
+			setSelectedAddress(savedAddress);
+		} catch (error) {
+			alert(getErrorMessage(error));
+		}
+	};
+
 	const handleFinishOrder = () => {
 		navigation("/checkout/sucesso");
 	};
@@ -62,7 +81,7 @@ export default function Checkout() {
 					addresses={userAddresses}
 					selectedAddress={selectedAddress}
 					onSelectAddress={setSelectedAddress}
-					onChangeAddresses={setUserAddresses}
+					onSaveAddress={handleSaveAddress}
 					onNext={() => setActualStep(2)}
 				/>
 			)}

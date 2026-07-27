@@ -7,9 +7,8 @@ import styles from "./AddressForm.module.css";
 interface AddressFormProps {
 	address: Address | null;
 	loading: boolean;
-	onSubmit: (address: AddressFormData) => void;
+	onSubmit: (address: AddressFormData) => Promise<void>;
 	onCancel: () => void;
-	onDelete: (id: number) => void;
 }
 
 type AddressFormData = Omit<Address, "id">;
@@ -25,7 +24,7 @@ const emptyForm: AddressFormData = {
 	zipCode: "",
 };
 
-export default function AddressForm({ address, loading, onSubmit, onCancel, onDelete }: AddressFormProps) {
+export default function AddressForm({ address, loading, onSubmit, onCancel }: AddressFormProps) {
 	const [formData, setFormData] = useState<AddressFormData>(address ? { ...address } : emptyForm);
 	const isEditing = !!address;
 
@@ -37,12 +36,6 @@ export default function AddressForm({ address, loading, onSubmit, onCancel, onDe
 		e.preventDefault();
 
 		onSubmit(formData);
-	};
-
-	const handleDeleteAddress = () => {
-		if (address) {
-			onDelete(address.id);
-		}
 	};
 
 	return (
@@ -156,7 +149,6 @@ export default function AddressForm({ address, loading, onSubmit, onCancel, onDe
 				{isEditing && (
 					<button
 						type="button"
-						onClick={handleDeleteAddress}
 						className={styles.removeButton}
 					>
 						Remover endereço

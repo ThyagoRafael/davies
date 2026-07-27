@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Address } from "../../../types/api/address";
+import type { Address, AddressFormData } from "../../../types/api/address";
 import AddressList from "./AddressList";
 import AddressForm from "./AddressForm";
 
@@ -7,18 +7,17 @@ interface AddressStepProps {
 	addresses: Address[];
 	selectedAddress: Address | null;
 	onSelectAddress: (address: Address | null) => void;
-	onChangeAddresses: (addresses: Address[]) => void;
+	onSaveAddress: (data: AddressFormData, editingAddress: Address | null) => Promise<void>;
 	onNext: () => void;
 }
 
 type AddressStepMode = "list" | "form";
-type AddressFormData = Omit<Address, "id">;
 
 export default function AddressStep({
 	addresses,
 	selectedAddress,
 	onSelectAddress,
-	onChangeAddresses,
+	onSaveAddress,
 	onNext,
 }: AddressStepProps) {
 	const [editingAddress, setEditingAddress] = useState<Address | null>(null);
@@ -29,62 +28,26 @@ export default function AddressStep({
 		setMode("form");
 	};
 
-	const handleEditAddress = (address: Address) => {
-		setEditingAddress(address);
-		setMode("form");
-	};
-
 	const handleSaveAddress = async (data: AddressFormData) => {
+		setLoading(true);
+
 		try {
-			setLoading(true);
+			await onSaveAddress(data, editingAddress);
 
-			const address: Address = editingAddress
-				? {
-						...editingAddress,
-						...data,
-					}
-				: {
-						id: Math.max(0, ...addresses.map((a) => a.id)) + 1,
-						...data,
-					};
-
-			handleAddressSaved(address);
-		} catch {
-			alert("Não foi possível salvar o endereço.");
+			setEditingAddress(null);
+			setMode("list");
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const handleAddressSaved = (address: Address) => {
-		const index = addresses.findIndex((item) => item.id === address.id);
-
-		const updated =
-			index === -1 ? [...addresses, address] : addresses.map((item) => (item.id === address.id ? address : item));
-
-		onChangeAddresses(updated);
-		setEditingAddress(null);
-		onSelectAddress(address);
-		setMode("list");
+	const handleEditAddress = (address: Address) => {
+		setEditingAddress(address);
+		setMode("form");
 	};
 
 	const handleCancelAddressForm = () => {
 		setEditingAddress(null);
-		setMode("list");
-	};
-
-	const handleAddressDeleted = (id: number) => {
-		const updated = addresses.filter((address) => address.id !== id);
-
-		onChangeAddresses(updated);
-		setEditingAddress(null);
-
-		if (updated.length === 0) {
-			onSelectAddress(null);
-		} else {
-			onSelectAddress(updated[0]);
-		}
-
 		setMode("list");
 	};
 
@@ -115,7 +78,6 @@ export default function AddressStep({
 					loading={loading}
 					onSubmit={handleSaveAddress}
 					onCancel={handleCancelAddressForm}
-					onDelete={handleAddressDeleted}
 				/>
 			)}
 		</section>
