@@ -66,10 +66,10 @@ export class ShippingAddressController {
 		const allowedFields = [
 			"street",
 			"number",
-			"address_complement",
+			"addressComplement",
 			"city",
 			"state",
-			"zip_code",
+			"zipCode",
 			"receiverName",
 			"receiverPhone",
 		] as const;
