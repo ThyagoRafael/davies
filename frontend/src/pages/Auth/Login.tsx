@@ -4,6 +4,7 @@ import Field from "../../components/form/Field";
 import styles from "./Auth.module.css";
 import { useEffect, useState, type FormEvent } from "react";
 import axios from "axios";
+import { redirectAfterLogin } from "../../helpers/logout";
 
 export default function Login() {
 	const [formData, setFormData] = useState({
@@ -52,11 +53,7 @@ export default function Login() {
 			setIsLoading(false);
 		}
 
-		navigateToHome();
-	};
-
-	const navigateToHome = () => {
-		navigate("/", { replace: true });
+		redirectAfterLogin(navigate);
 	};
 
 	return (
