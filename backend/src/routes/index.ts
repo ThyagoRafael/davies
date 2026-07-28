@@ -7,6 +7,7 @@ import { cartRoutes } from "./cart.routes.js";
 import { cartItemRoutes } from "./cartItems.routes.js";
 import { addressRoutes } from "./shippingAddress.routes.js";
 import { orderRoutes } from "./order.routes.js";
+import { paymentCardRoutes } from "./paymentCard.routes.js";
 
 const routes = Router();
 
@@ -17,5 +18,6 @@ routes.use("/cart", cartRoutes);
 routes.use("/cart/items", cartItemRoutes);
 routes.use("/addresses", addressRoutes);
 routes.use("/orders", orderRoutes);
+routes.use("/paymentCards", paymentCardRoutes);
 
 export { routes };
