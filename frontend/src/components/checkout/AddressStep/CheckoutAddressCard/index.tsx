@@ -41,7 +41,10 @@ export default function CheckoutAddressCard({ address, checked, onSelect, onEdit
 			</label>
 
 			<button
-				onClick={() => onEdit(address)}
+				onClick={(event) => {
+					event.stopPropagation();
+					onEdit(address);
+				}}
 				aria-label="Editar endereço"
 			>
 				<FaPencilAlt />
