@@ -20,6 +20,7 @@ model User {
   cpf               String            @unique @db.VarChar(11)
   phone             String?           @unique @db.VarChar(11)
   role              UserRole          @default(client)
+  stripeCustomerId  String?           @unique
   carts             Cart[]
   shippingAddresses ShippingAddress[]
   userPaymentCards  UserPaymentCard[]
@@ -132,7 +133,7 @@ model UserPaymentCard {
   id            Int    @id @default(autoincrement())
   userId        Int    @map("user_id")
   holderName    String @map("holder_name") @db.VarChar(50)
-  cardToken     String @map("card_token") @db.Text
+  cardToken     String @unique @map("card_token") @db.Text
   lastDigits    String @map("last_digits") @db.VarChar(4)
   cardBrand     String @map("card_brand") @db.VarChar(50)
   validateMonth String @map("validate_month") @db.VarChar(2)
