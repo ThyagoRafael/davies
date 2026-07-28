@@ -3,9 +3,12 @@ import type { Request, Response } from "express";
 import { stripe } from "../lib/stripe.js";
 import { getOrCreateStripeCustomer } from "../services/stripeCustomer.service.js";
 import { AppError } from "../errors/AppError.js";
+import { PaymentCardService } from "../services/paymentCard.service.js";
 
-export class PaymentCard {
-	async register(req: Request, res: Response) {
+export class PaymentCardController {
+	private paymentCardService = new PaymentCardService();
+
+	register = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
 		const { holderName, paymentMethodId } = req.body;
 
@@ -36,7 +39,13 @@ export class PaymentCard {
 		});
 
 		return res.status(201).json(newPaymentCard);
-	}
+	};
 
-	async list() {}
+	list = async (req: Request, res: Response) => {
+		const userId = req.user!.id;
+
+		const paymentCards = await this.paymentCardService.list(userId);
+
+		res.status(200).json(paymentCards);
+	};
 }
