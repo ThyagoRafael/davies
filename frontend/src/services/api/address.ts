@@ -18,3 +18,9 @@ export async function updateAddress(addressId: number, addressData: AddressFormD
 
 	return response.data;
 }
+
+export async function deleteAddress(addressId: number) {
+	const response = await api.delete(`/addresses/${addressId}`);
+
+	return response.data;
+}

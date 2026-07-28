@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import type { Address } from "../../../../types/api/address";
+import type { Address, AddressFormData } from "../../../../types/api/address";
 import Field from "../../../form/Field";
 import SelectField from "../../../form/SelectField";
 import styles from "./AddressForm.module.css";
@@ -9,9 +9,8 @@ interface AddressFormProps {
 	loading: boolean;
 	onSubmit: (address: AddressFormData) => Promise<void>;
 	onCancel: () => void;
+	onDelete: (address: Address) => void;
 }
-
-type AddressFormData = Omit<Address, "id">;
 
 const emptyForm: AddressFormData = {
 	number: "",
@@ -24,7 +23,7 @@ const emptyForm: AddressFormData = {
 	zipCode: "",
 };
 
-export default function AddressForm({ address, loading, onSubmit, onCancel }: AddressFormProps) {
+export default function AddressForm({ address, loading, onSubmit, onCancel, onDelete }: AddressFormProps) {
 	const [formData, setFormData] = useState<AddressFormData>(
 		address
 			? {
@@ -162,6 +161,7 @@ export default function AddressForm({ address, loading, onSubmit, onCancel }: Ad
 				{isEditing && (
 					<button
 						type="button"
+						onClick={() => onDelete(address)}
 						className={styles.removeButton}
 					>
 						Remover endereço

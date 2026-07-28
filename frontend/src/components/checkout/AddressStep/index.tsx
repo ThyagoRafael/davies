@@ -8,6 +8,7 @@ interface AddressStepProps {
 	selectedAddress: Address | null;
 	onSelectAddress: (address: Address | null) => void;
 	onSaveAddress: (data: AddressFormData, editingAddress: Address | null) => Promise<void>;
+	onDeleteAddress: (addressId: number) => Promise<void>;
 	onNext: () => void;
 }
 
@@ -18,6 +19,7 @@ export default function AddressStep({
 	selectedAddress,
 	onSelectAddress,
 	onSaveAddress,
+	onDeleteAddress,
 	onNext,
 }: AddressStepProps) {
 	const [editingAddress, setEditingAddress] = useState<Address | null>(null);
@@ -44,6 +46,19 @@ export default function AddressStep({
 	const handleEditAddress = (address: Address) => {
 		setEditingAddress(address);
 		setMode("form");
+	};
+
+	const handleDeleteAddress = async (address: Address) => {
+		setLoading(true);
+
+		try {
+			await onDeleteAddress(address.id);
+
+			setEditingAddress(null);
+			setMode("list");
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const handleCancelAddressForm = () => {
@@ -78,6 +93,7 @@ export default function AddressStep({
 					loading={loading}
 					onSubmit={handleSaveAddress}
 					onCancel={handleCancelAddressForm}
+					onDelete={handleDeleteAddress}
 				/>
 			)}
 		</section>

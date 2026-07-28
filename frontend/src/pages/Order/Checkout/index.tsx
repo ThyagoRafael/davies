@@ -5,7 +5,7 @@ import PaymentStep from "../../../components/checkout/PaymentStep";
 import ConfirmationStep from "../../../components/checkout/ConfirmationStep";
 import type { Address } from "../../../types/api/address";
 import type { UserCard } from "../../../types/api/userCard";
-import { createAddress, getUserAddresses, updateAddress } from "../../../services/api/address";
+import { createAddress, deleteAddress, getUserAddresses, updateAddress } from "../../../services/api/address";
 import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
@@ -63,6 +63,24 @@ export default function Checkout() {
 		}
 	};
 
+	const handleDeleteAddress = async (addressId: number) => {
+		try {
+			const response = await deleteAddress(addressId);
+
+			const updatedAddresses = userAddresses.filter((address) => address.id !== addressId);
+
+			setUserAddresses(updatedAddresses);
+
+			if (selectedAddress?.id === addressId) {
+				setSelectedAddress(updatedAddresses[0] ?? null);
+			}
+
+			alert(response.message);
+		} catch (error) {
+			alert(getErrorMessage(error));
+		}
+	};
+
 	const handleFinishOrder = () => {
 		navigation("/checkout/sucesso");
 	};
@@ -82,6 +100,7 @@ export default function Checkout() {
 					selectedAddress={selectedAddress}
 					onSelectAddress={setSelectedAddress}
 					onSaveAddress={handleSaveAddress}
+					onDeleteAddress={handleDeleteAddress}
 					onNext={() => setActualStep(2)}
 				/>
 			)}
