@@ -3,16 +3,17 @@ import StepIndicator from "../../../components/checkout/StepIndicator";
 import AddressStep from "../../../components/checkout/AddressStep";
 import PaymentStep from "../../../components/checkout/PaymentStep";
 import ConfirmationStep from "../../../components/checkout/ConfirmationStep";
-import type { Address } from "../../../types/api/address";
+import type { Address, AddressFormData } from "../../../types/api/address";
 import type { UserCard } from "../../../types/api/userCard";
 import { createAddress, deleteAddress, getUserAddresses, updateAddress } from "../../../services/api/address";
 import { getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import type { AddressFormData } from "../../../types/api/address";
+import { Elements } from "@stripe/react-stripe-js";
+import { stripePromise } from "../../../lib/stripe";
 
-export default function Checkout() {
+function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
 	const [userAddresses, setUserAddresses] = useState<Address[]>([]);
 	const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
@@ -38,7 +39,6 @@ export default function Checkout() {
 				}
 			} catch (error) {
 				alert(getErrorMessage(error));
-				console.error(error);
 			}
 		};
 
@@ -128,5 +128,13 @@ export default function Checkout() {
 				/>
 			)}
 		</section>
+	);
+}
+
+export default function CheckoutPage() {
+	return (
+		<Elements stripe={stripePromise}>
+			<Checkout />
+		</Elements>
 	);
 }
