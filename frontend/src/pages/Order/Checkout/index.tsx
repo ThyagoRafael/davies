@@ -47,21 +47,23 @@ function Checkout() {
 		loadData();
 	}, []);
 
-	const handleSaveAddress = async (data: AddressFormData, editingAddress: Address | null) => {
+	const handleSaveAddress = async (data: AddressFormData, editingAddress: Address | null): Promise<Address | null> => {
 		try {
 			const savedAddress = editingAddress ? await updateAddress(editingAddress.id, data) : await createAddress(data);
 
 			setUserAddresses((current) => {
-				const exists = current.some((a) => a.id === savedAddress.id);
+				const exists = current.some((address) => address.id === savedAddress.id);
 
 				return exists
-					? current.map((a) => (a.id === savedAddress.id ? savedAddress : a))
+					? current.map((address) => (address.id === savedAddress.id ? savedAddress : address))
 					: [...current, savedAddress];
 			});
 
 			setSelectedAddress(savedAddress);
+			return savedAddress;
 		} catch (error) {
 			alert(getErrorMessage(error));
+			return null;
 		}
 	};
 

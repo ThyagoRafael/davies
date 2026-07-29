@@ -7,7 +7,7 @@ interface AddressStepProps {
 	addresses: Address[];
 	selectedAddress: Address | null;
 	onSelectAddress: (address: Address | null) => void;
-	onSaveAddress: (data: AddressFormData, editingAddress: Address | null) => Promise<void>;
+	onSaveAddress: (data: AddressFormData, editingAddress: Address | null) => Promise<Address | null>;
 	onDeleteAddress: (addressId: number) => Promise<void>;
 	onNext: () => void;
 }
@@ -35,10 +35,12 @@ export default function AddressStep({
 		setLoading(true);
 
 		try {
-			await onSaveAddress(data, editingAddress);
+			const savedAddress = await onSaveAddress(data, editingAddress);
 
-			setEditingAddress(null);
-			setMode("list");
+			if (savedAddress) {
+				setEditingAddress(null);
+				setMode("list");
+			}
 		} finally {
 			setLoading(false);
 		}
