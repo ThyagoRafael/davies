@@ -99,7 +99,12 @@ function Checkout() {
 		const { paymentMethod, error } = await stripe.createPaymentMethod({
 			type: "card",
 			card: cardElement,
-			billing_details: { name: data.holderName },
+			billing_details: {
+				name: data.holderName,
+				address: {
+					postal_code: selectedAddress?.zipCode,
+				},
+			},
 		});
 
 		if (error) {
