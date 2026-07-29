@@ -4,13 +4,13 @@ import AddressStep from "../../../components/checkout/AddressStep";
 import PaymentStep from "../../../components/checkout/PaymentStep";
 import ConfirmationStep from "../../../components/checkout/ConfirmationStep";
 import type { Address, AddressFormData } from "../../../types/api/address";
-import type { UserCard } from "../../../types/api/userCard";
+import type { UserCard, UserCardFormData } from "../../../types/api/userCard";
 import { createAddress, deleteAddress, getUserAddresses, updateAddress } from "../../../services/api/address";
-import { getUserCards } from "../../../services/api/userCard";
+import { createUserCard, getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { Elements } from "@stripe/react-stripe-js";
+import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { stripePromise } from "../../../lib/stripe";
 
 function Checkout() {
@@ -21,6 +21,8 @@ function Checkout() {
 	const [paymentMethod, setPaymentMethod] = useState<"pix" | "card">("card");
 	const [selectedCard, setSelectedCard] = useState<UserCard | null>(null);
 	const navigation = useNavigate();
+	const stripe = useStripe();
+	const elements = useElements();
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -81,6 +83,46 @@ function Checkout() {
 		}
 	};
 
+	const handleSaveUserCard = async (data: UserCardFormData): Promise<UserCard | null> => {
+		if (!stripe || !elements) {
+			alert("Stripe ainda não carregou, tenta novamente em instantes.");
+			return null;
+		}
+
+		const cardElement = elements.getElement(CardElement);
+
+		if (!cardElement) {
+			alert("Preencha os dados do cartão.");
+			return null;
+		}
+
+		const { paymentMethod, error } = await stripe.createPaymentMethod({
+			type: "card",
+			card: cardElement,
+			billing_details: { name: data.holderName },
+		});
+
+		if (error) {
+			alert(error.message);
+			return null;
+		}
+
+		try {
+			const newCard = await createUserCard({
+				holderName: data.holderName,
+				paymentMethodId: paymentMethod.id,
+			});
+
+			setUserCards((prev) => [...prev, newCard]);
+			setSelectedCard(newCard);
+
+			return newCard;
+		} catch (error) {
+			alert(getErrorMessage(error));
+			return null;
+		}
+	};
+
 	const handleFinishOrder = () => {
 		navigation("/checkout/sucesso");
 	};
@@ -110,7 +152,7 @@ function Checkout() {
 					userCards={userCards}
 					paymentMethod={paymentMethod}
 					selectedCard={selectedCard}
-					onChangeUserCards={setUserCards}
+					onSaveUserCard={handleSaveUserCard}
 					onChangePaymentMethod={setPaymentMethod}
 					onSelectCard={setSelectedCard}
 					onBack={() => setActualStep(1)}

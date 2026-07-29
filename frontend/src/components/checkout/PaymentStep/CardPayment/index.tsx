@@ -1,13 +1,6 @@
-import type { UserCard } from "../../../../types/api/userCard";
+import type { UserCard, UserCardFormData } from "../../../../types/api/userCard";
 import CardForm from "./CardForm";
 import CardList from "./CardList";
-
-interface CardFormData {
-	holderName: string;
-	cardNumber: string;
-	expiryDate: string;
-	cvv: string;
-}
 
 interface CardPayment {
 	cards: UserCard[];
@@ -15,7 +8,7 @@ interface CardPayment {
 	selectedCard: UserCard | null;
 	loading: boolean;
 	onAddCard: () => void;
-	onSaveCard: (cardData: CardFormData) => void;
+	onSaveCard: (cardData: UserCardFormData) => void;
 	onSelect: (card: UserCard) => void;
 	onCancel: () => void;
 }

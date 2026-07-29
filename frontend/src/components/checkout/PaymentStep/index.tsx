@@ -1,21 +1,14 @@
 import { useState } from "react";
 import PixPayment from "./PixPayment";
 import CardPayment from "./CardPayment";
-import type { UserCard } from "../../../types/api/userCard";
+import type { UserCard, UserCardFormData } from "../../../types/api/userCard";
 import styles from "./PaymentStep.module.css";
-
-interface CardFormData {
-	holderName: string;
-	cardNumber: string;
-	expiryDate: string;
-	cvv: string;
-}
 
 interface PaymentStepProps {
 	userCards: UserCard[];
 	paymentMethod: "pix" | "card";
 	selectedCard: UserCard | null;
-	onChangeUserCards: (userCard: UserCard[]) => void;
+	onSaveUserCard: (data: UserCardFormData) => Promise<UserCard | null>;
 	onChangePaymentMethod: (paymentMethod: "pix" | "card") => void;
 	onSelectCard: (selectedCard: UserCard | null) => void;
 	onBack: () => void;
@@ -26,7 +19,7 @@ export default function PaymentStep({
 	userCards,
 	paymentMethod,
 	selectedCard,
-	onChangeUserCards,
+	onSaveUserCard,
 	onChangePaymentMethod,
 	onSelectCard,
 	onBack,
@@ -39,33 +32,20 @@ export default function PaymentStep({
 		setIsCardFormOpen(true);
 	};
 
-	const handleSaveCard = (data: CardFormData) => {
+	const handleSaveCard = async (data: UserCardFormData) => {
 		try {
 			setLoading(true);
 
-			const card: UserCard = {
-				cardBrand: "Visa",
-				cardToken: "asjniaucis",
-				expiryDate: data.expiryDate,
-				holderName: data.holderName,
-				lastDigits: data.cardNumber.slice(-4),
-				id: userCards.length + 1,
-			};
+			const savedCard = await onSaveUserCard(data);
 
-			handleCardSaved(card);
+			if (savedCard) {
+				setIsCardFormOpen(false);
+			}
 		} catch {
 			alert("Não foi possível salvar o endereço.");
 		} finally {
 			setLoading(false);
 		}
-	};
-
-	const handleCardSaved = (card: UserCard) => {
-		const updated = [...userCards, card];
-
-		onChangeUserCards(updated);
-		onSelectCard(card);
-		setIsCardFormOpen(false);
 	};
 
 	const handleSelectCard = (card: UserCard) => {

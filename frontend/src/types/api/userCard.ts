@@ -6,3 +6,5 @@ export interface UserCard {
 	cardBrand: string;
 	expiryDate: string;
 }
+
+export type UserCardFormData = Pick<UserCard, "holderName">;
