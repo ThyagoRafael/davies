@@ -26,7 +26,8 @@ export default function AddressStep({
 	const [loading, setLoading] = useState<boolean>(false);
 	const [mode, setMode] = useState<AddressStepMode>("list");
 
-	const handleCreateAddress = () => {
+	const openAddressForm = (address?: Address) => {
+		setEditingAddress(address ?? null);
 		setMode("form");
 	};
 
@@ -41,11 +42,6 @@ export default function AddressStep({
 		} finally {
 			setLoading(false);
 		}
-	};
-
-	const handleEditAddress = (address: Address) => {
-		setEditingAddress(address);
-		setMode("form");
 	};
 
 	const handleDeleteAddress = async (address: Address) => {
@@ -81,9 +77,9 @@ export default function AddressStep({
 				<AddressList
 					addresses={addresses}
 					selectedAddress={selectedAddress}
-					onCreate={handleCreateAddress}
+					onCreate={() => openAddressForm()}
 					onSelect={onSelectAddress}
-					onEdit={handleEditAddress}
+					onEdit={openAddressForm}
 					onNext={handleNext}
 				/>
 			)}
