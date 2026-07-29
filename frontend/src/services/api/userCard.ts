@@ -2,7 +2,9 @@ import { api } from ".";
 import type { UserCard } from "../../types/api/userCard";
 
 export async function getUserCards() {
-	return [];
+	const response = await api.get("/paymentCards");
+
+	return response.data;
 }
 
 export async function createUserCard(data: { holderName: string; paymentMethodId: string }): Promise<UserCard> {
