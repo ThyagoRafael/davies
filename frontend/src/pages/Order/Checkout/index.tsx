@@ -187,7 +187,10 @@ function Checkout() {
 
 export default function CheckoutPage() {
 	return (
-		<Elements stripe={stripePromise}>
+		<Elements
+			stripe={stripePromise}
+			options={{ locale: "pt-BR" }}
+		>
 			<Checkout />
 		</Elements>
 	);
