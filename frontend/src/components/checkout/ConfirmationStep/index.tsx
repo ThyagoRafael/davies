@@ -26,7 +26,7 @@ export default function ConfirmationStep({
 }: ConfirmationStepProps) {
 	return (
 		<section className={styles.container}>
-			<PriceCard />
+			{cartData && <PriceCard cartPrice={cartData.total} />}
 
 			<PaymentCard
 				paymentMethod={paymentMethod}
