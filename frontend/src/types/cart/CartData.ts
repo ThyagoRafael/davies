@@ -1,4 +1,4 @@
-interface CartProducts {
+export interface CartProduct {
 	id: number;
 	name: string;
 	price: string;
@@ -9,6 +9,6 @@ interface CartProducts {
 }
 
 export interface CartData {
-	items: CartProducts[];
+	items: CartProduct[];
 	total: string;
 }

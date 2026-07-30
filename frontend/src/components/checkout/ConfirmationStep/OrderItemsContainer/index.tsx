@@ -1,7 +1,12 @@
+import type { CartProduct } from "../../../../types/cart/CartData";
 import OrderItemCard from "./OrderItemCard";
 import styles from "./OrderItemsContainer.module.css";
 
-export default function OrderItemsContainer() {
+interface OrderItemsContainerProps {
+	cartItems: CartProduct[];
+}
+
+export default function OrderItemsContainer({ cartItems }: OrderItemsContainerProps) {
 	return (
 		<section className={styles.container}>
 			<header>
@@ -9,12 +14,11 @@ export default function OrderItemsContainer() {
 			</header>
 
 			<ul className={styles.list}>
-				<li>
-					<OrderItemCard />
-				</li>
-				<li>
-					<OrderItemCard />
-				</li>
+				{cartItems.map((item) => (
+					<li key={item.id}>
+						<OrderItemCard cartItem={item} />
+					</li>
+				))}
 			</ul>
 		</section>
 	);

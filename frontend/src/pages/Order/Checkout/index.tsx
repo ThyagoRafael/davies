@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { stripePromise } from "../../../lib/stripe";
+import { getCartData } from "../../../services/api/cart";
+import type { CartData } from "../../../types/cart/CartData";
 
 function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -20,6 +22,7 @@ function Checkout() {
 	const [userCards, setUserCards] = useState<UserCard[]>([]);
 	const [paymentMethod, setPaymentMethod] = useState<"pix" | "card">("card");
 	const [selectedCard, setSelectedCard] = useState<UserCard | null>(null);
+	const [cartData, setCartData] = useState<CartData | null>(null);
 	const navigation = useNavigate();
 	const stripe = useStripe();
 	const elements = useElements();
@@ -27,10 +30,11 @@ function Checkout() {
 	useEffect(() => {
 		const loadData = async () => {
 			try {
-				const [addresses, cards] = await Promise.all([getUserAddresses(), getUserCards()]);
+				const [addresses, cards, cartData] = await Promise.all([getUserAddresses(), getUserCards(), getCartData()]);
 
 				setUserAddresses(addresses);
 				setUserCards(cards);
+				setCartData(cartData);
 
 				if (addresses.length > 0) {
 					setSelectedAddress(addresses[0]);
@@ -172,6 +176,7 @@ function Checkout() {
 					selectedAddress={selectedAddress}
 					paymentMethod={paymentMethod}
 					selectedCard={selectedCard}
+					cartData={cartData}
 					onBack={() => setActualStep(2)}
 					onFinishOrder={handleFinishOrder}
 				/>

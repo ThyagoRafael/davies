@@ -5,11 +5,13 @@ import OrderItemsContainer from "./OrderItemsContainer";
 import PaymentCard from "./PaymentCard";
 import PriceCard from "./PriceCard";
 import styles from "./ConfirmationStep.module.css";
+import type { CartData } from "../../../types/cart/CartData";
 
 interface ConfirmationStepProps {
 	selectedAddress: Address | null;
 	paymentMethod: "pix" | "card";
 	selectedCard: UserCard | null;
+	cartData: CartData | null;
 	onBack: () => void;
 	onFinishOrder: () => void;
 }
@@ -18,6 +20,7 @@ export default function ConfirmationStep({
 	selectedAddress,
 	paymentMethod,
 	selectedCard,
+	cartData,
 	onBack,
 	onFinishOrder,
 }: ConfirmationStepProps) {
@@ -32,7 +35,7 @@ export default function ConfirmationStep({
 
 			<AddressCard selectedAddress={selectedAddress} />
 
-			<OrderItemsContainer />
+			{cartData && <OrderItemsContainer cartItems={cartData.items} />}
 
 			<footer className={styles.footerButtons}>
 				<button

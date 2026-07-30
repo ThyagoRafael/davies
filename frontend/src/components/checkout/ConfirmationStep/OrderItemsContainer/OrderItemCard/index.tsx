@@ -1,22 +1,26 @@
 import { formatPrice } from "../../../../../utils/formatPrice";
 import styles from "./OrderItemCard.module.css";
-import imagemTeste from "../../../../../assets/imagem-teste.png";
+import type { CartProduct } from "../../../../../types/cart/CartData";
 
-export default function OrderItemCard() {
+interface OrderItemCardProps {
+	cartItem: CartProduct;
+}
+
+export default function OrderItemCard({ cartItem }: OrderItemCardProps) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.imageWrapper}>
 				<img
-					src={imagemTeste}
-					alt="Uma imagem"
+					src={cartItem.imageUrl}
+					alt={cartItem.name}
 				/>
 			</div>
 			<div className={styles.descriptionContainer}>
-				<h3>Produto tal azul com manga longa marrom dourado amarelo preto roxo laranja</h3>
+				<h3>{cartItem.name}</h3>
 
 				<footer className={styles.descriptionFooter}>
-					<p>Quantidade: 1</p>
-					<strong>{formatPrice("150.00")}</strong>
+					<p>Quantidade: {cartItem.quantity}</p>
+					<strong>{formatPrice(cartItem.price)}</strong>
 				</footer>
 			</div>
 		</div>
