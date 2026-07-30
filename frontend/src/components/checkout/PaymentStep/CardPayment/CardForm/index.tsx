@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import Field from "../../../../form/Field";
 import styles from "./CardForm.module.css";
-import { CardElement } from "@stripe/react-stripe-js";
+import { CardElement, useElements } from "@stripe/react-stripe-js";
 import type { UserCardFormData } from "../../../../../types/api/userCard";
 
 interface CardFormProps {
@@ -15,8 +15,8 @@ const cardElementOptions = {
 	style: {
 		base: {
 			fontSize: "16px",
-			color: "#424770",
-			"::placeholder": { color: "#aab7c4" },
+			color: "#000000",
+			"::placeholder": { color: "#b6b6b6" },
 		},
 		invalid: { color: "#9e2146" },
 	},
@@ -24,6 +24,12 @@ const cardElementOptions = {
 
 export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps) {
 	const [holderName, setHolderName] = useState("");
+	const elements = useElements();
+
+	const handleLabelClick = () => {
+		const cardElement = elements?.getElement(CardElement);
+		cardElement?.focus();
+	};
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
@@ -45,9 +51,19 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 				required
 			/>
 
-			<div className={styles.cardElementWrapper}>
-				<label>Dados do cartão</label>
-				<CardElement options={cardElementOptions} />
+			<div>
+				<label
+					htmlFor="card"
+					onClick={handleLabelClick}
+				>
+					Dados do cartão
+				</label>
+				<div className={styles.cardElementWrapper}>
+					<CardElement
+						id="card"
+						options={cardElementOptions}
+					/>
+				</div>
 			</div>
 
 			<div className={styles.buttonsContainer}>

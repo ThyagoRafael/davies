@@ -4,17 +4,15 @@
 	gap: 1rem;
 }
 
-.inputRow {
-	display: flex;
-	gap: 0.5rem;
+.cardElementWrapper {
+	width: 100%;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	border: 1px #b6b6b6 solid;
 }
 
-.inputRow > :first-child {
-	flex: 1;
-}
-
-.inputRow > :last-child {
-	flex: 0 0 110px;
+.cardElementWrapper:focus-within {
+	border-color: #000;
 }
 
 .buttonsContainer {
