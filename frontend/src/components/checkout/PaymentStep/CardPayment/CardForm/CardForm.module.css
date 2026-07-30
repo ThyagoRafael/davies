@@ -11,7 +11,7 @@
 	border: 1px #b6b6b6 solid;
 }
 
-.cardElementWrapper:focus-within {
+.cardElementWrapper.focused {
 	border-color: #000;
 }
 

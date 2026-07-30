@@ -24,9 +24,12 @@ const cardElementOptions = {
 
 export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps) {
 	const [holderName, setHolderName] = useState("");
+	const [isFocused, setIsFocused] = useState(false);
 	const elements = useElements();
 
-	const handleLabelClick = () => {
+	const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+		e.preventDefault();
+
 		const cardElement = elements?.getElement(CardElement);
 		cardElement?.focus();
 	};
@@ -58,10 +61,12 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 				>
 					Dados do cartão
 				</label>
-				<div className={styles.cardElementWrapper}>
+				<div className={`${styles.cardElementWrapper} ${isFocused ? styles.focused : ""}`}>
 					<CardElement
 						id="card"
 						options={cardElementOptions}
+						onFocus={() => setIsFocused(true)}
+						onBlur={() => setIsFocused(false)}
 					/>
 				</div>
 			</div>
