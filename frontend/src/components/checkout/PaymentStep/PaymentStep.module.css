@@ -10,10 +10,16 @@
 }
 
 .navBar button {
+	flex: 1;
+	padding: 0.5rem 0;
+
+	border-radius: 0.5rem;
 	background: none;
 	font-size: 0.875rem;
 	color: var(--dark-color);
 	border: 1px solid var(--dark-color);
+
+	cursor: pointer;
 }
 
 .navBar button.selected {
