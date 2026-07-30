@@ -29,7 +29,9 @@ export default function PaymentCard({ paymentMethod, selectedCard }: PaymentCard
 							</h3>
 							<p className={styles.cardDescription}>
 								<span className={styles.holderName}>{selectedCard.holderName}</span>
-								<span className={styles.expiryDate}>Expira em {selectedCard.expiryDate}</span>
+								<span className={styles.expiryDate}>
+									Expira em {`${selectedCard.validateMonth}/${selectedCard.validateYear}`}
+								</span>
 							</p>
 						</>
 					)

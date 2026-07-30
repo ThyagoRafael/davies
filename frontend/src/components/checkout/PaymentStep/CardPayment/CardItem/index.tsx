@@ -24,7 +24,7 @@ export default function CardItem({ card, checked, onSelect }: CardItemProps) {
 				<div className={styles.detailsDescription}>
 					<span className={styles.holderName}>{card.holderName}</span>
 					<span className={styles.separator}>-</span>
-					<span className={styles.expiryDate}>Expira em {card.expiryDate}</span>
+					<span className={styles.expiryDate}>Expira em {`${card.validateMonth}/${card.validateYear}`}</span>
 				</div>
 			</div>
 		</label>

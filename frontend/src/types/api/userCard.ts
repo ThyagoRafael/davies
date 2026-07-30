@@ -4,7 +4,8 @@ export interface UserCard {
 	cardToken: string;
 	lastDigits: string;
 	cardBrand: string;
-	expiryDate: string;
+	validateMonth: string;
+	validateYear: string;
 }
 
 export type UserCardFormData = Pick<UserCard, "holderName">;
