@@ -3,6 +3,7 @@ import type { Address, AddressFormData } from "../../../../types/api/address";
 import Field from "../../../form/Field";
 import SelectField from "../../../form/SelectField";
 import styles from "./AddressForm.module.css";
+import { useCepLookup } from "../../../../hooks/useCepLookup";
 
 interface AddressFormProps {
 	address: Address | null;
@@ -38,16 +39,43 @@ export default function AddressForm({ address, loading, onSubmit, onCancel, onDe
 				}
 			: emptyForm,
 	);
+	const { lookupCep, loading: loadingCep, error: cepError } = useCepLookup();
 	const isEditing = !!address;
 
 	const handleChange = (name: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const handleSubmit = (e: FormEvent) => {
+	const resolveAddressFromCep = async (data: AddressFormData): Promise<AddressFormData | null> => {
+		const result = await lookupCep(data.zipCode);
+
+		if (!result) return null;
+
+		return {
+			...data,
+			street: result.logradouro || data.street,
+			city: result.localidade,
+			state: result.uf,
+		};
+	};
+
+	const handleZipCodeBlur = async () => {
+		if (!formData.zipCode) return;
+
+		const updated = await resolveAddressFromCep(formData);
+
+		if (updated) setFormData(updated);
+	};
+
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 
-		onSubmit(formData);
+		const updated = await resolveAddressFromCep(formData);
+
+		if (!updated) return; // cepError já mostra a mensagem de erro pro usuário
+
+		setFormData(updated);
+		onSubmit(updated);
 	};
 
 	return (
@@ -82,8 +110,12 @@ export default function AddressForm({ address, loading, onSubmit, onCancel, onDe
 				placeholder="Ex: 12345678"
 				value={formData.zipCode}
 				handleChange={handleChange}
+				onBlur={handleZipCodeBlur}
 				required
 			/>
+
+			{loadingCep && <span className={styles.cepStatus}>Buscando CEP...</span>}
+			{cepError && <span className={styles.cepError}>{cepError}</span>}
 
 			<Field
 				label="Rua"
