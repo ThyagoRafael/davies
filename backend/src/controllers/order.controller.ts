@@ -4,6 +4,8 @@ import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { generateOrderCode } from "../utils/orderCode.js";
 
+const FIXED_SHIPPING_PRICE = 5;
+
 export class OrderController {
 	checkout = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
@@ -53,7 +55,7 @@ export class OrderController {
 				return acc.plus(item.product.price.mul(item.quantity));
 			}, new Prisma.Decimal(0));
 
-			const shippingPrice = new Prisma.Decimal(0);
+			const shippingPrice = new Prisma.Decimal(FIXED_SHIPPING_PRICE);
 
 			const createdOrder = await tx.order.create({
 				data: {
