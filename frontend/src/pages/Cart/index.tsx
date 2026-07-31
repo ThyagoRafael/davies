@@ -46,6 +46,9 @@ export default function Cart() {
 	});
 	const [loading, setLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
+	const cartItemsQuantity = cartData.items.reduce((total, item) => {
+		return (total += item.quantity);
+	}, 0);
 
 	useEffect(() => {
 		const loadCartData = async () => {
@@ -196,13 +199,7 @@ export default function Cart() {
 					</ul>
 
 					<div className={styles.checkoutButtonContainer}>
-						<button>
-							Finalizar pedido (
-							{cartData.items.reduce((total, item) => {
-								return (total += item.quantity);
-							}, 0)}{" "}
-							itens)
-						</button>
+						<button>Finalizar pedido ({cartItemsQuantity} itens)</button>
 					</div>
 				</>
 			) : (
