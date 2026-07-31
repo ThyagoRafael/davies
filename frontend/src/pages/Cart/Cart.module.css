@@ -67,19 +67,20 @@
 	bottom: 0;
 }
 
-.checkoutButtonContainer button {
+.checkoutButtonContainer a {
 	padding: 0.5rem 0;
 	width: 100%;
 	border: none;
 	background-color: var(--primary-color);
 	cursor: pointer;
+	text-align: center;
 
 	font-size: 1rem;
 
 	transition: background-color 0.3s ease;
 }
 
-.checkoutButtonContainer button:hover {
+.checkoutButtonContainer a:hover {
 	background-color: var(--dark-primary-color);
 }
 

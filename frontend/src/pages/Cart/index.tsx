@@ -199,7 +199,7 @@ export default function Cart() {
 					</ul>
 
 					<div className={styles.checkoutButtonContainer}>
-						<button>Finalizar pedido ({cartItemsQuantity} itens)</button>
+						<Link to="/checkout">Finalizar pedido ({cartItemsQuantity} itens)</Link>
 					</div>
 				</>
 			) : (
