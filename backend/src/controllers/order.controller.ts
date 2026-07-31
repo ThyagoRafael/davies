@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
+import { generateOrderCode } from "../utils/orderCode.js";
 
 export class OrderController {
 	checkout = async (req: Request, res: Response) => {
@@ -54,9 +55,9 @@ export class OrderController {
 
 			const shippingPrice = new Prisma.Decimal(0);
 
-			const order = await tx.order.create({
+			const createdOrder = await tx.order.create({
 				data: {
-					orderCode: "HWI-12345",
+					orderCode: "pending",
 					status: "pending",
 					shippingAddressId: shippingAddress.id,
 					userId,
@@ -64,6 +65,11 @@ export class OrderController {
 					shippingPrice,
 					totalPrice: itemsPrice.plus(shippingPrice),
 				},
+			});
+
+			const order = await tx.order.update({
+				where: { id: createdOrder.id },
+				data: { orderCode: generateOrderCode(createdOrder.id) },
 			});
 
 			await tx.orderItem.createMany({
