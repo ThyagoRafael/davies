@@ -106,6 +106,7 @@ enum StatusOrder {
 
 model Order {
   id                Int         @id @default(autoincrement())
+  orderCode         String      @unique @map("order_code") @db.Text
   status            StatusOrder @default(pending)
   shippingAddressId Int         @map("shipping_address_id")
   userId            Int         @map("user_id")
@@ -122,7 +123,7 @@ model OrderItem {
   quantity  Int
   unitPrice Decimal @map("unit_price") @db.Decimal(10, 2)
   subtotal  Decimal @db.Decimal(10, 2)
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id])
 
   @@id([orderId, productId])
