@@ -60,7 +60,7 @@ export class ShippingAddressController {
 		});
 
 		if (!address) {
-			return res.status(404).json({ message: "Endereço não encontrado" });
+			throw new AppError("Endereço não encontrado", 404);
 		}
 
 		res.status(200).json(address);
@@ -86,10 +86,7 @@ export class ShippingAddressController {
 		const invalidFields = bodyFields.filter((field) => !allowedFields.includes(field as AllowedField));
 
 		if (invalidFields.length > 0) {
-			return res.status(400).json({
-				message: "Campos inválidos",
-				invalidFields,
-			});
+			throw new AppError(`Campos inválidos: ${invalidFields.join(", ")}`, 400);
 		}
 
 		const address = await prisma.shippingAddress.findFirst({
@@ -100,7 +97,7 @@ export class ShippingAddressController {
 		});
 
 		if (!address) {
-			return res.status(404).json({ message: "Endereço não encontrado" });
+			throw new AppError("Endereço não encontrado", 404);
 		}
 
 		if (req.body.zipCode) {
@@ -133,7 +130,7 @@ export class ShippingAddressController {
 		});
 
 		if (!address) {
-			return res.status(404).json({ message: "Endereço não encontrado" });
+			throw new AppError("Endereço não encontrado", 404);
 		}
 
 		await prisma.shippingAddress.delete({
