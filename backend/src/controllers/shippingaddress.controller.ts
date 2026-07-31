@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 import { isEmptyField } from "../helpers/isEmptyField.js";
+import { validateZipCode } from "../utils/validateZipCode.js";
 
 export class ShippingAddressController {
 	create = async (req: Request, res: Response) => {
@@ -22,6 +23,12 @@ export class ShippingAddressController {
 
 		if (hasEmptyFields) {
 			throw new AppError("Preencha todos os campos obrigatórios", 400);
+		}
+
+		const isValidZipCode = await validateZipCode(newAddressData.zipCode);
+
+		if (!isValidZipCode) {
+			throw new AppError("CEP inválido", 400);
 		}
 
 		const newAddress = await prisma.shippingAddress.create({ data: newAddressData });
@@ -94,6 +101,14 @@ export class ShippingAddressController {
 
 		if (!address) {
 			return res.status(404).json({ message: "Endereço não encontrado" });
+		}
+
+		if (req.body.zipCode) {
+			const isValidZipCode = await validateZipCode(req.body.zipCode);
+
+			if (!isValidZipCode) {
+				throw new AppError("CEP inválido", 400);
+			}
 		}
 
 		const updatedAddress = await prisma.shippingAddress.update({
