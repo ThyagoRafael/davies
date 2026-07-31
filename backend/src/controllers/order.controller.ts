@@ -48,16 +48,21 @@ export class OrderController {
 				throw new AppError("Endereço não encontrado", 404);
 			}
 
-			const total = cart.cartItems.reduce((acc, item) => {
+			const itemsPrice = cart.cartItems.reduce((acc, item) => {
 				return acc.plus(item.product.price.mul(item.quantity));
 			}, new Prisma.Decimal(0));
 
+			const shippingPrice = new Prisma.Decimal(0);
+
 			const order = await tx.order.create({
 				data: {
+					orderCode: "HWI-12345",
 					status: "pending",
 					shippingAddressId: shippingAddress.id,
 					userId,
-					total,
+					itemsPrice,
+					shippingPrice,
+					totalPrice: itemsPrice.plus(shippingPrice),
 				},
 			});
 
