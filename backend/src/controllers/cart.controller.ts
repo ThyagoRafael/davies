@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { Prisma } from "../generated/prisma/client.js";
+import { FIXED_SHIPPING_PRICE } from "../constants/fixedShippingPrice.js";
 
 export class CartController {
 	getProducts = async (req: Request, res: Response) => {
@@ -50,10 +51,12 @@ export class CartController {
 			};
 		});
 
-		const total = cart.cartItems.reduce((acc, item) => {
+		const itemsPrice = cart.cartItems.reduce((acc, item) => {
 			return acc.plus(item.product.price.mul(item.quantity));
 		}, new Prisma.Decimal(0));
 
-		res.status(200).json({ items, total });
+		const totalPrice = itemsPrice.plus(FIXED_SHIPPING_PRICE);
+
+		res.status(200).json({ items, shippingPrice: FIXED_SHIPPING_PRICE, itemsPrice, totalPrice });
 	};
 }
