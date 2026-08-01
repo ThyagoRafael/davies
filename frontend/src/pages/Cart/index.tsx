@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import CartItem from "../../components/cart/CartItem";
-import { formatPrice } from "../../utils/formatPrice";
 import styles from "./Cart.module.css";
 import { getCartData } from "../../services/api/cart";
 import type { CartData } from "../../types/cart/CartData";
@@ -8,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppError } from "../../errors/AppError";
 import type { UpdateAction } from "../../types/cartItem/updateAction";
 import { deleteAllItems, deleteItem, updateQuantityItem } from "../../services/api/cartItem";
+import PriceCard from "../../components/PriceCard";
 
 // 	items: [
 // 		{
@@ -42,7 +42,9 @@ import { deleteAllItems, deleteItem, updateQuantityItem } from "../../services/a
 export default function Cart() {
 	const [cartData, setCartData] = useState<CartData>({
 		items: [],
-		total: "0",
+		shippingPrice: "0",
+		itemsPrice: "0",
+		totalPrice: "0",
 	});
 	const [loading, setLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
@@ -85,7 +87,12 @@ export default function Cart() {
 				item.id === productId ? { ...item, quantity: data.quantity, subtotal: data.subtotal } : item,
 			);
 
-			setCartData({ items: updatedCartItems, total: data.total });
+			setCartData((prev) => ({
+				...prev,
+				items: updatedCartItems,
+				itemsPrice: data.itemsPrice,
+				totalPrice: data.totalPrice,
+			}));
 		} catch (error) {
 			if (error instanceof AppError) {
 				if (error.statusCode === 401) {
@@ -112,7 +119,12 @@ export default function Cart() {
 
 			const updatedCartItems = cartData.items.filter((item) => item.id !== productId);
 
-			setCartData({ items: updatedCartItems, total: data.total });
+			setCartData((prev) => ({
+				...prev,
+				items: updatedCartItems,
+				itemsPrice: data.itemsPrice,
+				totalPrice: data.totalPrice,
+			}));
 			alert(data.message);
 		} catch (error) {
 			if (error instanceof AppError) {
@@ -138,7 +150,7 @@ export default function Cart() {
 
 			const data = await deleteAllItems();
 
-			setCartData({ items: [], total: "0" });
+			setCartData((prev) => ({ ...prev, items: [], itemsPrice: "0", totalPrice: "0" }));
 			alert(data.message);
 		} catch (error) {
 			if (error instanceof AppError) {
@@ -166,10 +178,7 @@ export default function Cart() {
 
 			{cartData.items.length > 0 ? (
 				<>
-					<div className={styles.totalContainer}>
-						<span>Total</span>
-						<strong>{formatPrice(cartData.total)}</strong>
-					</div>
+					<PriceCard cartData={cartData} />
 
 					<div className={styles.clearButtonContainer}>
 						<button
