@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
+import { FIXED_SHIPPING_PRICE } from "../constants/fixedShippingPrice.js";
 
 type Action = "increment" | "decrement";
 
@@ -151,11 +152,16 @@ export class CartItemController {
 			},
 		});
 
-		const total = updatedCart!.cartItems.reduce((acc, item) => {
+		const itemsPrice = updatedCart!.cartItems.reduce((acc, item) => {
 			return acc.plus(item.product.price.mul(item.quantity));
 		}, new Prisma.Decimal(0));
 
-		res.status(200).json({ quantity: newQuantity, subtotal: newSubtotal, total });
+		res.status(200).json({
+			quantity: newQuantity,
+			subtotal: newSubtotal,
+			itemsPrice,
+			totalPrice: itemsPrice.plus(FIXED_SHIPPING_PRICE),
+		});
 	};
 
 	deleteCartItem = async (req: Request, res: Response) => {
@@ -208,11 +214,15 @@ export class CartItemController {
 			},
 		});
 
-		const total = updatedCart!.cartItems.reduce((acc, item) => {
+		const itemsPrice = updatedCart!.cartItems.reduce((acc, item) => {
 			return acc.plus(item.product.price.mul(item.quantity));
 		}, new Prisma.Decimal(0));
 
-		res.status(200).json({ message: "Produto deletado do carrinho", total });
+		res.status(200).json({
+			message: "Produto deletado do carrinho",
+			itemsPrice,
+			totalPrice: itemsPrice.plus(FIXED_SHIPPING_PRICE),
+		});
 	};
 
 	deleteAllCartItems = async (req: Request, res: Response) => {
