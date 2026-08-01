@@ -3,8 +3,7 @@ import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { generateOrderCode } from "../utils/orderCode.js";
-
-const FIXED_SHIPPING_PRICE = 5;
+import { FIXED_SHIPPING_PRICE } from "../constants/fixedShippingPrice.js";
 
 export class OrderController {
 	checkout = async (req: Request, res: Response) => {
