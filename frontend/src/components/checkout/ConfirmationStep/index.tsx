@@ -3,7 +3,7 @@ import type { UserCard } from "../../../types/api/userCard";
 import AddressCard from "./AddressCard";
 import OrderItemsContainer from "./OrderItemsContainer";
 import PaymentCard from "./PaymentCard";
-import PriceCard from "./PriceCard";
+import PriceCard from "../../PriceCard";
 import styles from "./ConfirmationStep.module.css";
 import type { CartData } from "../../../types/cart/CartData";
 

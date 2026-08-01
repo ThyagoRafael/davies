@@ -1,5 +1,5 @@
-import type { CartData } from "../../../../types/cart/CartData";
-import { formatPrice } from "../../../../utils/formatPrice";
+import type { CartData } from "../../types/cart/CartData";
+import { formatPrice } from "../../utils/formatPrice";
 import styles from "./PriceCard.module.css";
 
 interface PriceCardProps {
