@@ -10,5 +10,7 @@ export interface CartProduct {
 
 export interface CartData {
 	items: CartProduct[];
-	total: string;
+	shippingPrice: string;
+	itemsPrice: string;
+	totalPrice: string;
 }
