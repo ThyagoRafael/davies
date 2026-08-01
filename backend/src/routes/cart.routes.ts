@@ -6,6 +6,5 @@ const cartRoutes = Router();
 const cartController = new CartController();
 
 cartRoutes.get("/", authenticationMiddleware, cartController.getProducts);
-cartRoutes.put("/", authenticationMiddleware, cartController.finishCart);
 
 export { cartRoutes };
