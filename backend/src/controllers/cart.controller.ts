@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
-import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
 
 export class CartController {
@@ -56,31 +55,5 @@ export class CartController {
 		}, new Prisma.Decimal(0));
 
 		res.status(200).json({ items, total });
-	};
-
-	finishCart = async (req: Request, res: Response) => {
-		const userId = req.user!.id;
-
-		const cart = await prisma.cart.findFirst({
-			where: {
-				userId,
-				status: "active",
-			},
-		});
-
-		if (!cart) {
-			throw new AppError("Erro ao tentar finalizar o carrinho");
-		}
-
-		await prisma.cart.update({
-			where: {
-				id: cart.id,
-			},
-			data: {
-				status: "finished",
-			},
-		});
-
-		res.status(200).json({ message: "Carrinho finalizado com sucesso" });
 	};
 }
