@@ -62,3 +62,7 @@
 .buttonsContainer .removeButton:hover {
 	text-decoration: underline;
 }
+
+.cepError {
+	color: var(--danger-color);
+}
