@@ -8,3 +8,9 @@ export async function finishOrder(addressId: number): Promise<Order> {
 
 	return response.data;
 }
+
+export async function getOrderById(orderId: number) {
+	const response = await api.get(`/order/${orderId}`);
+
+	return response.data;
+}
