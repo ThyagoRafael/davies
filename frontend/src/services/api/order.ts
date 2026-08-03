@@ -2,7 +2,7 @@ import { api } from ".";
 import type { Order } from "../../types/api/order";
 
 export async function finishOrder(addressId: number): Promise<Order> {
-	const response = await api.post("/order/checkout", {
+	const response = await api.post("/orders/checkout", {
 		addressId,
 	});
 
@@ -10,7 +10,7 @@ export async function finishOrder(addressId: number): Promise<Order> {
 }
 
 export async function getOrderById(orderId: number) {
-	const response = await api.get(`/order/${orderId}`);
+	const response = await api.get(`/orders/${orderId}`);
 
 	return response.data;
 }
