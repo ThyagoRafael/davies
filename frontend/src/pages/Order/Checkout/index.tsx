@@ -14,6 +14,7 @@ import { CardElement, Elements, useElements, useStripe } from "@stripe/react-str
 import { stripePromise } from "../../../lib/stripe";
 import { getCartData } from "../../../services/api/cart";
 import type { CartData } from "../../../types/cart/CartData";
+import { finishOrder } from "../../../services/api/order";
 
 function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -134,8 +135,21 @@ function Checkout() {
 		}
 	};
 
-	const handleFinishOrder = () => {
-		navigation("/checkout/sucesso");
+	const handleFinishOrder = async () => {
+		if (!selectedAddress || (paymentMethod === "card" && !selectedCard)) {
+			return alert("Informações de pedido incompletas");
+		}
+
+		try {
+			const orderData = await finishOrder(selectedAddress.id);
+
+			navigation(`/checkout/sucesso/${orderData.id}`, {
+				replace: true,
+				state: { orderData },
+			});
+		} catch (error) {
+			alert(getErrorMessage(error));
+		}
 	};
 
 	return (

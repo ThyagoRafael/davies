@@ -3,7 +3,7 @@ import type { Order } from "../../types/api/order";
 
 export async function finishOrder(addressId: number): Promise<Order> {
 	const response = await api.post("/orders/checkout", {
-		addressId,
+		shippingAddressId: addressId,
 	});
 
 	return response.data;
