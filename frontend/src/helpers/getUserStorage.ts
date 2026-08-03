@@ -1,26 +1,19 @@
-import { UnauthorizedError } from "../errors/UnauthorizedError";
-import { logoutAndRedirectToLogin } from "./logout";
-
 interface UserStorage {
 	username: string;
 	token: string;
 }
 
-function unauthorized(message: string): never {
-	logoutAndRedirectToLogin();
-	throw new UnauthorizedError(message);
-}
-
-export function getUserStorage(): UserStorage {
+export function getUserStorage(): UserStorage | null {
 	const userStorage = localStorage.getItem("user");
 
 	if (!userStorage) {
-		unauthorized("Usuário não autenticado");
+		return null;
 	}
 
 	try {
 		return JSON.parse(userStorage) as UserStorage;
 	} catch {
-		unauthorized("Sessão inválida");
+		localStorage.removeItem("user");
+		return null;
 	}
 }
