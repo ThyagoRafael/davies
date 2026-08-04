@@ -115,6 +115,7 @@ model Order {
   totalPrice        Decimal     @db.Decimal(10, 2)
   createdAt         DateTime    @default(now()) @map("created_at")
   orderItems        OrderItem[]
+  payments          Payment[]
 
   @@map("orders")
 }
@@ -133,15 +134,62 @@ model OrderItem {
 }
 
 model UserPaymentCard {
-  id            Int    @id @default(autoincrement())
-  userId        Int    @map("user_id")
-  holderName    String @map("holder_name") @db.VarChar(50)
-  cardToken     String @unique @map("card_token") @db.Text
-  lastDigits    String @map("last_digits") @db.VarChar(4)
-  cardBrand     String @map("card_brand") @db.VarChar(50)
-  validateMonth String @map("validate_month") @db.VarChar(2)
-  validateYear  String @map("validate_year") @db.VarChar(4)
-  user          User   @relation(fields: [userId], references: [id])
+  id            Int       @id @default(autoincrement())
+  userId        Int       @map("user_id")
+  holderName    String    @map("holder_name") @db.VarChar(50)
+  cardToken     String    @unique @map("card_token") @db.Text
+  lastDigits    String    @map("last_digits") @db.VarChar(4)
+  cardBrand     String    @map("card_brand") @db.VarChar(50)
+  validateMonth String    @map("validate_month") @db.VarChar(2)
+  validateYear  String    @map("validate_year") @db.VarChar(4)
+  user          User      @relation(fields: [userId], references: [id])
+  payments      Payment[]
 
   @@map("user_payment_card")
+}
+
+enum PaymentMethod {
+  card
+  pix
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  expired
+  canceled
+}
+
+enum PaymentGateway {
+  stripe
+  pagarme
+}
+
+model Payment {
+  id      Int            @id @default(autoincrement())
+  orderId Int            @map("order_id")
+  method  PaymentMethod
+  gateway PaymentGateway
+  status  PaymentStatus  @default(pending)
+  amount  Decimal        @db.Decimal(10, 2)
+
+  externalId    String? @unique @map("external_id") @db.Text
+  gatewaySecret String? @map("gateway_secret") @db.Text
+
+  userPaymentCardId Int?             @map("user_payment_card_id")
+  userPaymentCard   UserPaymentCard? @relation(fields: [userPaymentCardId], references: [id])
+
+  pixQrCode    String?   @map("pix_qr_code") @db.Text
+  pixCopyPaste String?   @map("pix_copy_paste") @db.Text
+  pixExpiresAt DateTime? @map("pix_expires_at")
+
+  paidAt    DateTime? @map("paid_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("payments")
 }
