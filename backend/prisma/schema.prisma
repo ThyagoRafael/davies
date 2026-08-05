@@ -162,8 +162,7 @@ enum PaymentStatus {
 }
 
 enum PaymentGateway {
-  stripe
-  pagarme
+  mercadopago
 }
 
 model Payment {
