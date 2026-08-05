@@ -173,8 +173,7 @@ model Payment {
   status  PaymentStatus  @default(pending)
   amount  Decimal        @db.Decimal(10, 2)
 
-  externalId    String? @unique @map("external_id") @db.Text
-  gatewaySecret String? @map("gateway_secret") @db.Text
+  externalId String? @unique @map("external_id") @db.Text
 
   userPaymentCardId Int?             @map("user_payment_card_id")
   userPaymentCard   UserPaymentCard? @relation(fields: [userPaymentCardId], references: [id])
