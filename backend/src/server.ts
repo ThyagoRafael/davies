@@ -1,5 +1,5 @@
-import server from "./app.js";
 import { env } from "./config/env.js";
+import server from "./app.js";
 import { prisma } from "./config/prisma.js";
 
 const port = env.PORT || 3000;
