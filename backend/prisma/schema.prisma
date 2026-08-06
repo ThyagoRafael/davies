@@ -20,7 +20,7 @@ model User {
   cpf               String            @unique @db.VarChar(11)
   phone             String?           @unique @db.VarChar(11)
   role              UserRole          @default(client)
-  mpCustomerId      String?           @unique
+  mpCustomerId      String?           @unique @map("mp_customer_id")
   carts             Cart[]
   shippingAddresses ShippingAddress[]
   userPaymentCards  UserPaymentCard[]
