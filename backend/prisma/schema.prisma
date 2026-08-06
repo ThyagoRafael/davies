@@ -20,7 +20,7 @@ model User {
   cpf               String            @unique @db.VarChar(11)
   phone             String?           @unique @db.VarChar(11)
   role              UserRole          @default(client)
-  stripeCustomerId  String?           @unique
+  mpCustomerId      String?           @unique
   carts             Cart[]
   shippingAddresses ShippingAddress[]
   userPaymentCards  UserPaymentCard[]
