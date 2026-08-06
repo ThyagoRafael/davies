@@ -4,11 +4,19 @@ import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { generateOrderCode } from "../utils/orderCode.js";
 import { FIXED_SHIPPING_PRICE } from "../constants/fixedShippingPrice.js";
-
 export class OrderController {
 	checkout = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
 		const shippingAddressId = Number(req.body.shippingAddressId);
+		const paymentMethod = req.body.paymentMethod as "card" | "pix";
+		let cardId: number | null = null;
+
+		if (paymentMethod === "card") {
+			if (!req.body.userPaymentCardId) {
+				throw new AppError("Cartão não informado", 400);
+			}
+			cardId = Number(req.body.userPaymentCardId);
+		}
 
 		const order = await prisma.$transaction(async (tx) => {
 			const cart = await tx.cart.findFirst({
@@ -48,6 +56,18 @@ export class OrderController {
 
 			if (!shippingAddress) {
 				throw new AppError("Endereço não encontrado", 404);
+			}
+
+			let card = null;
+
+			if (paymentMethod === "card") {
+				card = await tx.userPaymentCard.findFirst({
+					where: { id: cardId!, userId },
+				});
+
+				if (!card) {
+					throw new AppError("Cartão não encontrado", 404);
+				}
 			}
 
 			const itemsPrice = cart.cartItems.reduce((acc, item) => {
@@ -105,10 +125,20 @@ export class OrderController {
 				},
 			});
 
-			return order;
+			return { order, card };
 		});
 
-		res.status(201).json(order);
+		const payment = await prisma.payment.create({
+			data: {
+				orderId: order.order.id,
+				method: paymentMethod,
+				gateway: "mercadopago",
+				status: "pending",
+				amount: order.order.totalPrice,
+			},
+		});
+
+		res.status(201).json({ order: order.order, payment });
 	};
 
 	list = async (req: Request, res: Response) => {

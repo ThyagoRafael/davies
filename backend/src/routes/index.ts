@@ -18,6 +18,6 @@ routes.use("/cart", cartRoutes);
 routes.use("/cart/items", cartItemRoutes);
 routes.use("/addresses", addressRoutes);
 routes.use("/orders", orderRoutes);
-routes.use("/paymentCards", paymentCardRoutes);
+routes.use("/payment-cards", paymentCardRoutes);
 
 export { routes };

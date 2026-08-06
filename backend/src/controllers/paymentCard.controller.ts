@@ -7,13 +7,13 @@ export class PaymentCardController {
 
 	register = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
-		const { holderName, paymentMethodId } = req.body;
+		const { holderName, cardToken } = req.body;
 
-		if (!holderName || !paymentMethodId) {
+		if (!holderName || !cardToken) {
 			throw new AppError("holderName e paymentMethodId são obrigatórios", 400);
 		}
 
-		const newPaymentCard = await this.paymentCardService.register(userId, holderName, paymentMethodId);
+		const newPaymentCard = await this.paymentCardService.register(userId, holderName, cardToken);
 
 		return res.status(201).json(newPaymentCard);
 	};
