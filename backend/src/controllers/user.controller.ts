@@ -29,7 +29,7 @@ export class UserController {
 			throw new AppError("Esse CPF já está cadastrado", 400);
 		}
 
-		const phoneExists = await prisma.user.findUnique({ where: { cpf: bodyData.phone } });
+		const phoneExists = await prisma.user.findUnique({ where: { phone: bodyData.phone } });
 
 		if (phoneExists) {
 			throw new AppError("Esse telefone já está cadastrado", 400);
