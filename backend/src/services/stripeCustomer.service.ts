@@ -1,4 +1,3 @@
-// src/services/stripeCustomer.service.ts
 import { stripe } from "../lib/stripe.js";
 import { prisma } from "../config/prisma.js";
 
@@ -14,7 +13,7 @@ export class StripeCustomerService {
 
 		const customer = await stripe.customers.create({
 			email: user.email,
-			name: user.name, // ajuste conforme os campos do seu User
+			name: user.name,
 			metadata: { userId: user.id },
 		});
 
