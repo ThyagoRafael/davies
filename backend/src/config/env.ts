@@ -8,7 +8,6 @@ const envSchema = z.object({
 	CLOUDINARY_NAME: z.string(),
 	CLOUDINARY_KEY: z.string(),
 	CLOUDINARY_SECRET: z.string(),
-	MP_ACCESS_TOKEN: z.string(),
 	STRIPE_SECRET_KEY: z.string(),
 });
 
