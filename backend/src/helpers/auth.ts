@@ -17,8 +17,7 @@ export function generateToken(userId: number, role: Role) {
 		const token = jwt.sign({ userId, role }, authConfig.secret, options);
 
 		return token;
-	} catch (error) {
-		console.log(error);
+	} catch {
 		throw new Error("Erro na geração de token");
 	}
 }
@@ -28,8 +27,7 @@ export async function validateToken(token: string) {
 		const decoded = await jwt.verify(token, authConfig.secret);
 
 		return decoded as TokenPayload;
-	} catch (error) {
-		console.error(error);
+	} catch {
 		throw new AppError("Usuário não autorizado", 401);
 	}
 }
