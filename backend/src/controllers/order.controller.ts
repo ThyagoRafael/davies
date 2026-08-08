@@ -11,6 +11,10 @@ export class OrderController {
 		const paymentMethod = req.body.paymentMethod as "card" | "pix";
 		let cardId: number | null = null;
 
+		if (paymentMethod === "pix") {
+			throw new AppError("PIX indisponível no momento", 400);
+		}
+
 		if (paymentMethod === "card") {
 			if (!req.body.userPaymentCardId) {
 				throw new AppError("Cartão não informado", 400);
@@ -132,7 +136,7 @@ export class OrderController {
 			data: {
 				orderId: order.order.id,
 				method: paymentMethod,
-				gateway: "mercadopago",
+				gateway: "stripe",
 				status: "pending",
 				amount: order.order.totalPrice,
 			},

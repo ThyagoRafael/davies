@@ -1,24 +1,19 @@
-import { Customer } from "mercadopago";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
-import { mercadoPagoClient } from "../lib/mercadoPago.js";
-import { MercadoPagoCustomerService } from "./mercadoPagoCustomer.service.js";
+import { stripe } from "../lib/stripe.js";
+import { StripeCustomerService } from "./stripeCustomer.service.js";
 
 export class PaymentCardService {
-	private customerClient = new Customer(mercadoPagoClient);
-	private mercadoPagoCustomerService = new MercadoPagoCustomerService();
+	private stripeCustomerService = new StripeCustomerService();
 
-	async register(userId: number, holderName: string, cardToken: string) {
-		const mpCustomerId = await this.mercadoPagoCustomerService.getOrCreate(userId);
+	async register(userId: number, holderName: string, paymentMethodId: string) {
+		const stripeCustomerId = await this.stripeCustomerService.getOrCreate(userId);
 
-		const card = await this.customerClient.createCard({
-			customerId: mpCustomerId,
-			body: {
-				token: cardToken,
-			},
+		const paymentMethod = await stripe.paymentMethods.attach(paymentMethodId, {
+			customer: stripeCustomerId,
 		});
 
-		if (!card.id || !card.last_four_digits) {
+		if (!paymentMethod.card) {
 			throw new AppError("Método de pagamento inválido", 400);
 		}
 
@@ -26,11 +21,11 @@ export class PaymentCardService {
 			data: {
 				userId,
 				holderName,
-				cardToken: card.id,
-				lastDigits: card.last_four_digits,
-				cardBrand: card.payment_method?.id ?? "unknown",
-				validateMonth: String(card.expiration_month),
-				validateYear: String(card.expiration_year),
+				cardToken: paymentMethod.id,
+				lastDigits: paymentMethod.card.last4,
+				cardBrand: paymentMethod.card.brand,
+				validateMonth: paymentMethod.card.exp_month.toString(),
+				validateYear: paymentMethod.card.exp_year.toString(),
 			},
 		});
 	}
