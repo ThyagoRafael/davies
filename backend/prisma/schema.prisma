@@ -110,9 +110,9 @@ model Order {
   status            StatusOrder @default(pending)
   shippingAddressId Int         @map("shipping_address_id")
   userId            Int         @map("user_id")
-  itemsPrice        Decimal     @db.Decimal(10, 2)
-  shippingPrice     Decimal     @db.Decimal(10, 2)
-  totalPrice        Decimal     @db.Decimal(10, 2)
+  itemsPrice        Decimal     @map("items_price") @db.Decimal(10, 2)
+  shippingPrice     Decimal     @map("shipping_price") @db.Decimal(10, 2)
+  totalPrice        Decimal     @map("total_price") @db.Decimal(10, 2)
   createdAt         DateTime    @default(now()) @map("created_at")
   orderItems        OrderItem[]
   payments          Payment[]
