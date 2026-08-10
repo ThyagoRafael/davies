@@ -97,7 +97,7 @@ model ShippingAddress {
   @@map("shipping_addresses")
 }
 
-enum StatusOrder {
+enum OrderStatus {
   pending
   shipped
   delivered
@@ -107,7 +107,7 @@ enum StatusOrder {
 model Order {
   id                Int         @id @default(autoincrement())
   orderCode         String      @unique @map("order_code") @db.Text
-  status            StatusOrder @default(pending)
+  status            OrderStatus @default(pending)
   shippingAddressId Int         @map("shipping_address_id")
   userId            Int         @map("user_id")
   itemsPrice        Decimal     @map("items_price") @db.Decimal(10, 2)
