@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import Field from "../../../../form/Field";
 import styles from "./CardForm.module.css";
-import { CardElement, useElements } from "@stripe/react-stripe-js";
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import type { UserCardFormData } from "../../../../../types/api/userCard";
 
 interface CardFormProps {
@@ -10,32 +10,23 @@ interface CardFormProps {
 	onCancel: () => void;
 }
 
-const cardElementOptions = {
-	hidePostalCode: true,
-	style: {
-		base: {
-			fontSize: "16px",
-			color: "#000000",
-			"::placeholder": { color: "#b6b6b6" },
-		},
-		invalid: { color: "#9e2146" },
-	},
-};
-
 export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps) {
 	const [holderName, setHolderName] = useState("");
-	const [isFocused, setIsFocused] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const stripe = useStripe();
 	const elements = useElements();
 
-	const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 
-		const cardElement = elements?.getElement(CardElement);
-		cardElement?.focus();
-	};
+		if (!stripe || !elements) return;
 
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
+		const { error: submitError } = await elements.submit();
+		if (submitError) {
+			setErrorMessage(submitError.message ?? "Erro ao validar o cartão");
+			return;
+		}
+
 		onSubmit({ holderName });
 	};
 
@@ -55,21 +46,13 @@ export default function CardForm({ loading, onSubmit, onCancel }: CardFormProps)
 			/>
 
 			<div>
-				<label
-					htmlFor="card"
-					onClick={handleLabelClick}
-				>
-					Dados do cartão
-				</label>
-				<div className={`${styles.cardElementWrapper} ${isFocused ? styles.focused : ""}`}>
-					<CardElement
-						id="card"
-						options={cardElementOptions}
-						onFocus={() => setIsFocused(true)}
-						onBlur={() => setIsFocused(false)}
-					/>
+				<label htmlFor="payment-element">Dados do seu cartão</label>
+				<div className={styles.cardElementWrapper}>
+					<PaymentElement id="payment-element" />
 				</div>
 			</div>
+
+			{errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
 
 			<div className={styles.buttonsContainer}>
 				<button

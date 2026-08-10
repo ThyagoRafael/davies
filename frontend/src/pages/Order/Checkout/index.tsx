@@ -10,11 +10,12 @@ import { createUserCard, getUserCards } from "../../../services/api/userCard";
 import styles from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { stripePromise } from "../../../lib/stripe";
 import { getCartData } from "../../../services/api/cart";
 import type { CartData } from "../../../types/cart/CartData";
 import { finishOrder } from "../../../services/api/order";
+import type { StripeElementsOptions } from "@stripe/stripe-js";
 
 function Checkout() {
 	const [actualStep, setActualStep] = useState<1 | 2 | 3>(1);
@@ -96,20 +97,14 @@ function Checkout() {
 			return null;
 		}
 
-		const cardElement = elements.getElement(CardElement);
-
-		if (!cardElement) {
-			alert("Preencha os dados do cartão.");
-			return null;
-		}
-
 		const { paymentMethod, error } = await stripe.createPaymentMethod({
-			type: "card",
-			card: cardElement,
-			billing_details: {
-				name: data.holderName,
-				address: {
-					postal_code: selectedAddress?.zipCode,
+			elements,
+			params: {
+				billing_details: {
+					name: data.holderName,
+					address: {
+						postal_code: selectedAddress?.zipCode,
+					},
 				},
 			},
 		});
@@ -200,10 +195,17 @@ function Checkout() {
 }
 
 export default function CheckoutPage() {
+	const options = {
+		mode: "setup",
+		currency: "brl",
+		paymentMethodCreation: "manual",
+		locale: "pt-BR",
+	} satisfies StripeElementsOptions;
+
 	return (
 		<Elements
 			stripe={stripePromise}
-			options={{ locale: "pt-BR" }}
+			options={options}
 		>
 			<Checkout />
 		</Elements>
