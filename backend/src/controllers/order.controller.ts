@@ -4,6 +4,9 @@ import { AppError } from "../errors/AppError.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { generateOrderCode } from "../utils/orderCode.js";
 import { FIXED_SHIPPING_PRICE } from "../constants/fixedShippingPrice.js";
+import Stripe from "stripe";
+import { stripe } from "../lib/stripe.js";
+import { mapStripeStatus } from "../services/stripe/mapStatus.js";
 export class OrderController {
 	checkout = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
@@ -26,7 +29,7 @@ export class OrderController {
 			cardId = Number(req.body.userPaymentCardId);
 		}
 
-		const { order, card } = await prisma.$transaction(async (tx) => {
+		const { order, card, payment } = await prisma.$transaction(async (tx) => {
 			const cart = await tx.cart.findFirst({
 				where: {
 					userId,
@@ -75,6 +78,7 @@ export class OrderController {
 						cardBrand: true,
 						holderName: true,
 						lastDigits: true,
+						cardToken: true,
 					},
 				});
 
@@ -143,25 +147,97 @@ export class OrderController {
 				},
 			});
 
-			return { order, card };
+			const payment = await tx.payment.create({
+				data: {
+					orderId: order.id,
+					method: paymentMethod,
+					gateway: "stripe",
+					status: "pending",
+					amount: order.totalPrice,
+					userPaymentCardId: cardId,
+				},
+			});
+
+			return { order, card, payment };
 		});
 
-		const payment = await prisma.payment.create({
-			data: {
-				orderId: order.id,
-				method: paymentMethod,
-				gateway: "stripe",
-				status: "pending",
-				amount: order.totalPrice,
-				userPaymentCardId: cardId,
-			},
+		if (!card) {
+			throw new AppError("Cartão não encontrado", 404);
+		}
+
+		let paymentIntent: Stripe.PaymentIntent;
+
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
 			select: {
-				method: true,
-				status: true,
+				stripeCustomerId: true,
 			},
 		});
 
-		res.status(201).json({ order, card, payment });
+		if (!user?.stripeCustomerId) {
+			throw new AppError("Cliente Stripe não encontrado", 400);
+		}
+
+		try {
+			paymentIntent = await stripe.paymentIntents.create({
+				amount: Math.round(order.totalPrice.toNumber() * 100),
+				currency: "brl",
+				payment_method: card.cardToken,
+				customer: user.stripeCustomerId,
+				confirm: true,
+				off_session: true,
+				metadata: {
+					orderId: String(order.id),
+					orderCode: order.orderCode,
+					userId: String(userId),
+				},
+			});
+		} catch (error) {
+			if (error instanceof Stripe.errors.StripeCardError) {
+				await prisma.payment.update({
+					where: { id: payment.id },
+					data: { status: "failed" },
+				});
+				throw new AppError(`Pagamento recusado: ${error.message}`, 402);
+			}
+			throw error;
+		}
+
+		let updatedPayment;
+
+		try {
+			updatedPayment = await prisma.payment.update({
+				where: { id: payment.id },
+				data: {
+					status: mapStripeStatus(paymentIntent),
+					externalId: paymentIntent.id,
+				},
+				select: {
+					method: true,
+					status: true,
+				},
+			});
+		} catch (error) {
+			console.error("Erro ao atualizar pagamento após criação do PaymentIntent", {
+				paymentId: payment.id,
+				paymentIntentId: paymentIntent.id,
+				error,
+			});
+
+			throw new AppError(
+				"Pagamento processado, mas houve um erro ao atualizar o pedido. Entre em contato com o suporte.",
+				500,
+			);
+		}
+
+		const { cardToken, ...cardData } = card;
+
+		res.status(201).json({
+			order,
+			card: cardData,
+			payment: updatedPayment,
+			clientSecret: paymentIntent.status === "requires_action" ? paymentIntent.client_secret : undefined,
+		});
 	};
 
 	list = async (req: Request, res: Response) => {

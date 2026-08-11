@@ -13,6 +13,16 @@ export class PaymentCardService {
 			customer: stripeCustomerId,
 		});
 
+		if (paymentMethod.customer && paymentMethod.customer !== stripeCustomerId) {
+			throw new AppError("Cartão já está associado a outro cliente", 400);
+		}
+
+		if (!paymentMethod.customer) {
+			await stripe.paymentMethods.attach(paymentMethodId, {
+				customer: stripeCustomerId,
+			});
+		}
+
 		if (!paymentMethod.card) {
 			throw new AppError("Método de pagamento inválido", 400);
 		}
