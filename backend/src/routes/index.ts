@@ -8,6 +8,7 @@ import { cartItemRoutes } from "./cartItems.routes.js";
 import { addressRoutes } from "./shippingAddress.routes.js";
 import { orderRoutes } from "./order.routes.js";
 import { paymentCardRoutes } from "./paymentCard.routes.js";
+import { paymentsRoutes } from "./payment.routes.js";
 
 const routes = Router();
 
@@ -19,5 +20,6 @@ routes.use("/cart/items", cartItemRoutes);
 routes.use("/addresses", addressRoutes);
 routes.use("/orders", orderRoutes);
 routes.use("/payment-cards", paymentCardRoutes);
+routes.use("/payments", paymentsRoutes);
 
 export { routes };
