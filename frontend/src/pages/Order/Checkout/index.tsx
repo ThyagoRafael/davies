@@ -136,11 +136,11 @@ function Checkout() {
 		}
 
 		try {
-			const orderData = await finishOrder(selectedAddress.id);
+			const orderData = await finishOrder(selectedAddress.id, paymentMethod, selectedCard?.id);
 
-			navigation(`/checkout/sucesso/${orderData.id}`, {
+			navigation(`/checkout/sucesso/${orderData.order.id}`, {
 				replace: true,
-				state: { orderData },
+				state: orderData,
 			});
 		} catch (error) {
 			alert(getErrorMessage(error));

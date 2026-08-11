@@ -3,13 +3,29 @@ import approved from "../../../assets/approved.png";
 import styles from "./OrderConfirmation.module.css";
 import { useEffect, useState } from "react";
 import type { Order } from "../../../types/api/order";
-import { getOrderById } from "../../../services/api/order";
+import { getOrderDataById } from "../../../services/api/order";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
+import type { UserCard } from "../../../types/api/userCard";
+import type { Payment, PaymentStatus } from "../../../types/api/payment";
+
+interface OrderData {
+	order: Order;
+	card: UserCard;
+	payment: Payment;
+}
 
 export default function OrderConfirmation() {
-	const location = useLocation() as { state?: { orderData?: Order } };
+	const location = useLocation() as { state?: OrderData };
 	const { orderId } = useParams<{ orderId: string }>();
-	const [orderData, setOrderData] = useState<Order | null>(location.state?.orderData ?? null);
+	const [orderData, setOrderData] = useState<OrderData | null>(location.state ?? null);
+
+	const paymentStatusText: Record<PaymentStatus, string> = {
+		pending: "Aguardando pagamento",
+		paid: "Pagamento aprovado",
+		failed: "Pagamento falhou",
+		expired: "Pagamento expirado",
+		canceled: "Pagamento cancelado",
+	};
 
 	useEffect(() => {
 		if (orderData) return;
@@ -18,7 +34,7 @@ export default function OrderConfirmation() {
 
 		const fetchOrder = async () => {
 			try {
-				const data = await getOrderById(Number(orderId));
+				const data = await getOrderDataById(Number(orderId));
 
 				setOrderData(data);
 			} catch (error) {
@@ -44,7 +60,7 @@ export default function OrderConfirmation() {
 							/>
 
 							<div className={styles.confirmationContent}>
-								<h2>Pedido #{orderData.orderCode}</h2>
+								<h2>Pedido #{orderData.order.orderCode}</h2>
 								<p>O pedido foi efetuado com sucesso</p>
 							</div>
 						</div>
@@ -60,11 +76,13 @@ export default function OrderConfirmation() {
 
 						<article className={styles.paymentCard}>
 							<header className={styles.paymentHeader}>
-								<h3>Cartão - Visa ****0000</h3>
-								<span>Esperando aprovação</span>
+								<h3>
+									Cartão - {orderData.card.cardBrand} ****{orderData.card.lastDigits}
+								</h3>
+								<span>{paymentStatusText[orderData.payment.status]}</span>
 							</header>
 
-							<p className={styles.cardHolder}>João R A Batista</p>
+							<p className={styles.cardHolder}>{orderData.card.holderName}</p>
 						</article>
 					</section>
 
