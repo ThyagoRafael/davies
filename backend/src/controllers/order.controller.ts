@@ -11,6 +11,10 @@ export class OrderController {
 		const paymentMethod = req.body.paymentMethod as "card" | "pix";
 		let cardId: number | null = null;
 
+		if (!shippingAddressId || !paymentMethod) {
+			throw new AppError("Erro no body da requisição", 400);
+		}
+
 		if (paymentMethod === "pix") {
 			throw new AppError("PIX indisponível no momento", 400);
 		}
@@ -22,7 +26,7 @@ export class OrderController {
 			cardId = Number(req.body.userPaymentCardId);
 		}
 
-		const order = await prisma.$transaction(async (tx) => {
+		const { order, card } = await prisma.$transaction(async (tx) => {
 			const cart = await tx.cart.findFirst({
 				where: {
 					userId,
@@ -67,6 +71,11 @@ export class OrderController {
 			if (paymentMethod === "card") {
 				card = await tx.userPaymentCard.findFirst({
 					where: { id: cardId!, userId },
+					select: {
+						cardBrand: true,
+						holderName: true,
+						lastDigits: true,
+					},
 				});
 
 				if (!card) {
@@ -95,6 +104,11 @@ export class OrderController {
 			const order = await tx.order.update({
 				where: { id: createdOrder.id },
 				data: { orderCode: generateOrderCode(createdOrder.id) },
+				select: {
+					id: true,
+					orderCode: true,
+					totalPrice: true,
+				},
 			});
 
 			await tx.orderItem.createMany({
@@ -134,15 +148,20 @@ export class OrderController {
 
 		const payment = await prisma.payment.create({
 			data: {
-				orderId: order.order.id,
+				orderId: order.id,
 				method: paymentMethod,
 				gateway: "stripe",
 				status: "pending",
-				amount: order.order.totalPrice,
+				amount: order.totalPrice,
+				userPaymentCardId: cardId,
+			},
+			select: {
+				method: true,
+				status: true,
 			},
 		});
 
-		res.status(201).json({ order: order.order, payment });
+		res.status(201).json({ order, card, payment });
 	};
 
 	list = async (req: Request, res: Response) => {
@@ -166,13 +185,40 @@ export class OrderController {
 				id: orderId,
 				userId,
 			},
+			select: {
+				id: true,
+				orderCode: true,
+			},
 		});
 
 		if (!order) {
 			throw new AppError("Pedido não encontrado", 404);
 		}
 
-		res.status(200).json(order);
+		const payment = await prisma.payment.findFirst({
+			where: {
+				orderId: order.id,
+			},
+			select: {
+				method: true,
+				status: true,
+				userPaymentCard: {
+					select: {
+						cardBrand: true,
+						holderName: true,
+						lastDigits: true,
+					},
+				},
+			},
+		});
+
+		if (!payment) {
+			throw new AppError("Pagamento não encontrado", 404);
+		}
+
+		const { userPaymentCard, ...paymentData } = payment;
+
+		res.status(200).json({ order, card: userPaymentCard, payment: paymentData });
 	};
 
 	shipOrder = async (req: Request, res: Response) => {
