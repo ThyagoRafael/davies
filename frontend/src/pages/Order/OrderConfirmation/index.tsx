@@ -2,17 +2,10 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import approved from "../../../assets/approved.png";
 import styles from "./OrderConfirmation.module.css";
 import { useEffect, useState } from "react";
-import type { Order } from "../../../types/api/order";
+import type { OrderData } from "../../../types/api/order";
 import { getOrderDataById } from "../../../services/api/order";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import type { UserCard } from "../../../types/api/userCard";
-import type { Payment, PaymentStatus } from "../../../types/api/payment";
-
-interface OrderData {
-	order: Order;
-	card: UserCard;
-	payment: Payment;
-}
+import type { PaymentStatus } from "../../../types/api/payment";
 
 export default function OrderConfirmation() {
 	const location = useLocation() as { state?: OrderData };

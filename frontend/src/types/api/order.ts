@@ -1,3 +1,6 @@
+import type { Payment } from "./payment";
+import type { UserCard } from "./userCard";
+
 type StatusOrder = "pending" | "shipped" | "delivered" | "canceled";
 
 export interface Order {
@@ -8,4 +11,11 @@ export interface Order {
 	itemsPrice: string;
 	shippingPrice: string;
 	totalPrice: string;
+}
+
+export interface OrderData {
+	order: Order;
+	card: UserCard;
+	payment: Payment;
+	clientSecret?: string;
 }

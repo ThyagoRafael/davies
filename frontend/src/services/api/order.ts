@@ -1,13 +1,11 @@
 import { api } from ".";
-import type { Order } from "../../types/api/order";
-import type { Payment } from "../../types/api/payment";
-import type { UserCard } from "../../types/api/userCard";
+import type { OrderData } from "../../types/api/order";
 
 export async function finishOrder(
 	addressId: number,
 	paymentMethod: "card" | "pix",
 	cardId?: number,
-): Promise<{ order: Order; card: UserCard; payment: Payment }> {
+): Promise<OrderData> {
 	const response = await api.post("/orders/checkout", {
 		shippingAddressId: addressId,
 		paymentMethod,
@@ -17,9 +15,8 @@ export async function finishOrder(
 	return response.data;
 }
 
-export async function getOrderDataById(orderId: number) {
+export async function getOrderDataById(orderId: number): Promise<OrderData> {
 	const response = await api.get(`/orders/${orderId}`);
-	console.log(response.data);
 
 	return response.data;
 }
