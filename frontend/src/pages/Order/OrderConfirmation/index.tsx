@@ -6,6 +6,7 @@ import type { OrderData } from "../../../types/api/order";
 import { getOrderDataById } from "../../../services/api/order";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import type { PaymentStatus } from "../../../types/api/payment";
+import { getPaymentStatus } from "../../../services/api/payment";
 
 export default function OrderConfirmation() {
 	const location = useLocation() as { state?: OrderData };
@@ -37,6 +38,32 @@ export default function OrderConfirmation() {
 
 		fetchOrder();
 	}, [orderId, orderData]);
+
+	useEffect(() => {
+		if (!orderData) return;
+		if (orderData.payment.status !== "pending") return;
+
+		let tries = 0;
+		const maxTries = 10;
+
+		const interval = setInterval(async () => {
+			tries++;
+			try {
+				const { status } = await getPaymentStatus(orderData.order.id);
+
+				if (status !== "pending") {
+					setOrderData((prev) => (prev ? { ...prev, payment: { ...prev.payment, status } } : prev));
+					clearInterval(interval);
+				}
+			} catch {
+				// Try again
+			}
+
+			if (tries >= maxTries) clearInterval(interval);
+		}, 2000);
+
+		return () => clearInterval(interval);
+	}, [orderData]);
 
 	return (
 		<section className={styles.container}>
