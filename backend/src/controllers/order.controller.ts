@@ -183,9 +183,9 @@ export class OrderController {
 				amount: Math.round(order.totalPrice.toNumber() * 100),
 				currency: "brl",
 				payment_method: card.cardToken,
+				payment_method_types: ["card"],
 				customer: user.stripeCustomerId,
 				confirm: true,
-				off_session: true,
 				metadata: {
 					orderId: String(order.id),
 					orderCode: order.orderCode,
