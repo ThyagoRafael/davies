@@ -138,6 +138,22 @@ function Checkout() {
 		try {
 			const orderData = await finishOrder(selectedAddress.id, paymentMethod, selectedCard?.id);
 
+			if (orderData.payment.status === "pending" && orderData.clientSecret) {
+				if (!stripe) {
+					alert("Stripe ainda não carregou, tenta novamente.");
+					return;
+				}
+
+				const { error } = await stripe.handleNextAction({
+					clientSecret: orderData.clientSecret,
+				});
+
+				if (error) {
+					alert(error.message ?? "Não foi possível confirmar o pagamento.");
+					return;
+				}
+			}
+
 			navigation(`/checkout/sucesso/${orderData.order.id}`, {
 				replace: true,
 				state: orderData,
