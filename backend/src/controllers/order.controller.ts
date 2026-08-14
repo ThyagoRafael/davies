@@ -248,6 +248,7 @@ export class OrderController {
 				userId,
 			},
 			select: {
+				id: true,
 				orderCode: true,
 				status: true,
 				totalPrice: true,
