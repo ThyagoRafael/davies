@@ -8,7 +8,7 @@ interface AuthConfig {
 
 const authConfig: AuthConfig = {
 	secret: env.JWT_SECRET,
-	expiresIn: "15m",
+	expiresIn: "3h",
 };
 
 export { authConfig };
