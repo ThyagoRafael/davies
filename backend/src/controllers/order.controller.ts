@@ -247,6 +247,11 @@ export class OrderController {
 			where: {
 				userId,
 			},
+			select: {
+				orderCode: true,
+				status: true,
+				totalPrice: true,
+			},
 			orderBy: {
 				createdAt: "desc",
 			},
