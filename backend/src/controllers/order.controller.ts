@@ -272,6 +272,32 @@ export class OrderController {
 			select: {
 				id: true,
 				orderCode: true,
+				status: true,
+				itemsPrice: true,
+				shippingPrice: true,
+				totalPrice: true,
+
+				payments: {
+					select: {
+						method: true,
+						status: true,
+
+						userPaymentCard: {
+							select: {
+								holderName: true,
+								cardBrand: true,
+								lastDigits: true,
+							},
+						},
+					},
+				},
+
+				shippingAddress: {
+					omit: {
+						id: true,
+						userId: true,
+					},
+				},
 			},
 		});
 
@@ -279,30 +305,16 @@ export class OrderController {
 			throw new AppError("Pedido não encontrado", 404);
 		}
 
-		const payment = await prisma.payment.findFirst({
-			where: {
-				orderId: order.id,
-			},
-			select: {
-				method: true,
-				status: true,
-				userPaymentCard: {
-					select: {
-						cardBrand: true,
-						holderName: true,
-						lastDigits: true,
-					},
-				},
-			},
-		});
+		const { payments, shippingAddress, ...orderData } = order;
+		const payment = payments[0];
 
 		if (!payment) {
-			throw new AppError("Pagamento não encontrado", 404);
+			throw new AppError("Pagamento do pedido não encontrado", 404);
 		}
 
 		const { userPaymentCard, ...paymentData } = payment;
 
-		res.status(200).json({ order, card: userPaymentCard, payment: paymentData });
+		res.status(200).json({ order: orderData, card: userPaymentCard, payment: paymentData, address: shippingAddress });
 	};
 
 	shipOrder = async (req: Request, res: Response) => {
