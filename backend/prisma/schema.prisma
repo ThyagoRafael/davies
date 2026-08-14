@@ -24,6 +24,7 @@ model User {
   carts             Cart[]
   shippingAddresses ShippingAddress[]
   userPaymentCards  UserPaymentCard[]
+  orders            Order[]
 
   @@map("users")
 }
@@ -93,6 +94,7 @@ model ShippingAddress {
   state             String  @db.Char(2)
   zipCode           String  @map("zip_code") @db.VarChar(9)
   user              User    @relation(fields: [userId], references: [id])
+  orders            Order[]
 
   @@map("shipping_addresses")
 }
@@ -105,15 +107,17 @@ enum OrderStatus {
 }
 
 model Order {
-  id                Int         @id @default(autoincrement())
-  orderCode         String      @unique @map("order_code") @db.Text
-  status            OrderStatus @default(pending)
-  shippingAddressId Int         @map("shipping_address_id")
-  userId            Int         @map("user_id")
-  itemsPrice        Decimal     @map("items_price") @db.Decimal(10, 2)
-  shippingPrice     Decimal     @map("shipping_price") @db.Decimal(10, 2)
-  totalPrice        Decimal     @map("total_price") @db.Decimal(10, 2)
-  createdAt         DateTime    @default(now()) @map("created_at")
+  id                Int             @id @default(autoincrement())
+  orderCode         String          @unique @map("order_code") @db.Text
+  status            OrderStatus     @default(pending)
+  shippingAddressId Int             @map("shipping_address_id")
+  userId            Int             @map("user_id")
+  itemsPrice        Decimal         @map("items_price") @db.Decimal(10, 2)
+  shippingPrice     Decimal         @map("shipping_price") @db.Decimal(10, 2)
+  totalPrice        Decimal         @map("total_price") @db.Decimal(10, 2)
+  createdAt         DateTime        @default(now()) @map("created_at")
+  user              User            @relation(fields: [userId], references: [id], onDelete: Restrict)
+  shippingAddress   ShippingAddress @relation(fields: [shippingAddressId], references: [id], onDelete: Restrict)
   orderItems        OrderItem[]
   payments          Payment[]
 
