@@ -299,6 +299,27 @@ export class OrderController {
 						userId: true,
 					},
 				},
+
+				orderItems: {
+					select: {
+						subtotal: true,
+						quantity: true,
+						product: {
+							select: {
+								id: true,
+								name: true,
+								productImages: {
+									where: {
+										position: 0,
+									},
+									select: {
+										url: true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		});
 
@@ -306,7 +327,7 @@ export class OrderController {
 			throw new AppError("Pedido não encontrado", 404);
 		}
 
-		const { payments, shippingAddress, ...orderData } = order;
+		const { payments, shippingAddress, orderItems, ...orderData } = order;
 		const payment = payments[0];
 
 		if (!payment) {
@@ -315,7 +336,21 @@ export class OrderController {
 
 		const { userPaymentCard, ...paymentData } = payment;
 
-		res.status(200).json({ order: orderData, card: userPaymentCard, payment: paymentData, address: shippingAddress });
+		const orderItemsFormatted = orderItems.map((item) => ({
+			id: item.product.id,
+			name: item.product.name,
+			subtotal: item.subtotal,
+			quantity: item.quantity,
+			imageUrl: item.product.productImages[0]?.url,
+		}));
+
+		res.status(200).json({
+			order: orderData,
+			card: userPaymentCard,
+			payment: paymentData,
+			address: shippingAddress,
+			orderItems: orderItemsFormatted,
+		});
 	};
 
 	shipOrder = async (req: Request, res: Response) => {
