@@ -9,6 +9,7 @@ import Cart from "../pages/Cart";
 import Checkout from "../pages/Order/Checkout";
 import OrderConfirmation from "../pages/Order/OrderConfirmation";
 import Orders from "../pages/User/Orders";
+import OrderDetails from "../pages/User/Orders/Details";
 
 export default function Router() {
 	return (
@@ -41,10 +42,17 @@ export default function Router() {
 				</Route>
 
 				<Route path="usuario">
-					<Route
-						path="pedidos"
-						element={<Orders />}
-					/>
+					<Route path="pedidos">
+						<Route
+							index
+							element={<Orders />}
+						/>
+
+						<Route
+							path=":orderId"
+							element={<OrderDetails />}
+						/>
+					</Route>
 				</Route>
 			</Route>
 

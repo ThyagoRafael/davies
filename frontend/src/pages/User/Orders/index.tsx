@@ -4,6 +4,7 @@ import styles from "./Orders.module.css";
 import type { OrdersList } from "../../../types/api/order";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getOrdersList } from "../../../services/api/order";
+import { Link } from "react-router-dom";
 
 export default function Orders() {
 	const [orders, setOrders] = useState<OrdersList>([]);
@@ -34,7 +35,14 @@ export default function Orders() {
 						<li key={order.id}>
 							<article className={styles.orderCard}>
 								<div className={styles.orderHeader}>
-									<h2>Pedido #{order.orderCode}</h2>
+									<h2>
+										<Link
+											to={`/usuario/pedidos/${order.id}`}
+											className={styles.stretchedLink}
+										>
+											Pedido #{order.orderCode}
+										</Link>
+									</h2>
 									<p role="status">{order.status}</p>
 								</div>
 
