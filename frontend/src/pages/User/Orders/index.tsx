@@ -16,12 +16,8 @@ export default function Orders() {
 						</div>
 
 						<div>
-							<p>Entregue em 18 de agosto</p>
-
-							<div>
-								<p>3 itens</p>
-								<p>{formatPrice("554.98")}</p>
-							</div>
+							<p>3 itens</p>
+							<p>{formatPrice("554.98")}</p>
 						</div>
 					</li>
 				))}
