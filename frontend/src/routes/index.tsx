@@ -8,6 +8,7 @@ import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Order/Checkout";
 import OrderConfirmation from "../pages/Order/OrderConfirmation";
+import Orders from "../pages/User/Orders";
 
 export default function Router() {
 	return (
@@ -36,6 +37,13 @@ export default function Router() {
 					<Route
 						path="sucesso/:orderId"
 						element={<OrderConfirmation />}
+					/>
+				</Route>
+
+				<Route path="usuario">
+					<Route
+						path="pedidos"
+						element={<Orders />}
 					/>
 				</Route>
 			</Route>
