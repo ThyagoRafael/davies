@@ -252,13 +252,26 @@ export class OrderController {
 				orderCode: true,
 				status: true,
 				totalPrice: true,
+				orderItems: {
+					select: {
+						quantity: true,
+					},
+				},
 			},
 			orderBy: {
 				createdAt: "desc",
 			},
 		});
 
-		res.status(200).json(orders);
+		const ordersFormatted = orders.map((order) => ({
+			id: order.id,
+			orderCode: order.orderCode,
+			status: order.status,
+			totalPrice: order.totalPrice,
+			quantityItems: order.orderItems.reduce((total, item) => total + item.quantity, 0),
+		}));
+
+		res.status(200).json({ orders: ordersFormatted });
 	};
 
 	detail = async (req: Request, res: Response) => {
