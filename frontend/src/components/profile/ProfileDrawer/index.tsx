@@ -1,6 +1,7 @@
 import { IoMdClose } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./ProfileDrawer.module.css";
+import { Link } from "react-router-dom";
 
 interface ProfileDrawerProps {
 	isOpen: boolean;
@@ -56,13 +57,19 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 								<nav className={styles.navigation}>
 									<ul>
 										<li>
-											<button>Seus pedidos</button>
+											<Link
+												to="/usuario/pedidos"
+												className={styles.link}
+												onClick={onClose}
+											>
+												Seus pedidos
+											</Link>
 										</li>
 										<li>
-											<button>Suas formas de pagamento</button>
+											<button className={styles.link}>Suas formas de pagamento</button>
 										</li>
 										<li>
-											<button>Seus endereços</button>
+											<button className={styles.link}>Seus endereços</button>
 										</li>
 									</ul>
 								</nav>

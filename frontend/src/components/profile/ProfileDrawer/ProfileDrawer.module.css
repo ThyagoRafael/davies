@@ -75,7 +75,7 @@
 	list-style: none;
 }
 
-.navigation button,
+.navigation .link,
 .footer button {
 	width: 100%;
 	padding: 0.5rem 0;
@@ -92,12 +92,14 @@
 	padding: 1rem;
 }
 
-.navigation button {
+.navigation .link {
+	display: block;
+	text-align: center;
 	border: none;
 	background-color: var(--primary-color);
 }
 
-.navigation button:hover {
+.navigation .link:hover {
 	background-color: var(--dark-primary-color);
 }
 
