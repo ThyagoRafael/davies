@@ -10,15 +10,17 @@ export default function Orders() {
 			<ul>
 				{[1, 2, 3].map((item) => (
 					<li key={item}>
-						<div>
-							<p>Pedido #PED-00000</p>
-							<p>Entregue</p>
-						</div>
+						<article>
+							<div>
+								<h2>Pedido #PED-00000</h2>
+								<p role="status">Entregue</p>
+							</div>
 
-						<div>
-							<p>3 itens</p>
-							<p>{formatPrice("554.98")}</p>
-						</div>
+							<div>
+								<p>3 itens</p>
+								<strong>{formatPrice("554.98")}</strong>
+							</div>
+						</article>
 					</li>
 				))}
 			</ul>
