@@ -58,3 +58,7 @@
 	text-overflow: ellipsis;
 	max-width: 200px;
 }
+
+.empty {
+	text-align: center;
+}
