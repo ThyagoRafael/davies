@@ -6,6 +6,7 @@ import imageTeste from "../../../../assets/imagem-teste.png";
 import { formatPrice } from "../../../../utils/formatPrice";
 import styles from "./Details.module.css";
 import PriceCard from "../../../../components/order/PriceCard";
+import PaymentCard from "../../../../components/order/PaymentCard";
 
 export default function OrderDetails() {
 	// const { orderId } = useParams();
@@ -41,19 +42,10 @@ export default function OrderDetails() {
 					}}
 				/>
 
-				<section className={styles.detailsSection}>
-					<h2>Pagamento</h2>
-
-					<article className={styles.paymentContent}>
-						<div>
-							<h3>Cartão - Visa ****0000</h3>
-
-							<p>Pagamento aprovado</p>
-						</div>
-
-						<p>João R A Batista</p>
-					</article>
-				</section>
+				<PaymentCard
+					paymentMethod="card"
+					selectedCard={{}}
+				/>
 
 				<section className={styles.detailsSection}>
 					<h2>Endereço de entrega</h2>
