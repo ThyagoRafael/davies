@@ -1,4 +1,4 @@
-import type { UserCard } from "../../../../types/api/userCard";
+import type { UserCard } from "../../../types/api/userCard";
 import styles from "./PaymentCard.module.css";
 
 interface PaymentCardProps {
