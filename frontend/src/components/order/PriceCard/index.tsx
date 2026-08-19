@@ -1,22 +1,27 @@
-import type { CartData } from "../../types/cart/CartData";
-import { formatPrice } from "../../utils/formatPrice";
+import { formatPrice } from "../../../utils/formatPrice";
 import styles from "./PriceCard.module.css";
 
-interface PriceCardProps {
-	cartData: CartData;
+interface PriceData {
+	itemsPrice: string;
+	shippingPrice: string;
+	totalPrice: string;
 }
 
-export default function PriceCard({ cartData }: PriceCardProps) {
+interface PriceCardProps {
+	priceData: PriceData;
+}
+
+export default function PriceCard({ priceData }: PriceCardProps) {
 	return (
 		<dl className={styles.container}>
 			<div className={styles.dataContainer}>
 				<div className={styles.dataGroup}>
 					<dt>Itens</dt>
-					<dd>{formatPrice(cartData.itemsPrice)}</dd>
+					<dd>{formatPrice(priceData.itemsPrice)}</dd>
 				</div>
 				<div className={styles.dataGroup}>
 					<dt>Frete</dt>
-					<dd>{formatPrice(cartData.shippingPrice)}</dd>
+					<dd>{formatPrice(priceData.shippingPrice)}</dd>
 				</div>
 			</div>
 			<div className={styles.totalGroup}>
@@ -24,7 +29,7 @@ export default function PriceCard({ cartData }: PriceCardProps) {
 					<strong>Total</strong>
 				</dt>
 				<dd>
-					<strong>{formatPrice(cartData.totalPrice)}</strong>
+					<strong>{formatPrice(priceData.totalPrice)}</strong>
 				</dd>
 			</div>
 		</dl>

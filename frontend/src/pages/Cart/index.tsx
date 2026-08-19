@@ -7,37 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppError } from "../../errors/AppError";
 import type { UpdateAction } from "../../types/cartItem/updateAction";
 import { deleteAllItems, deleteItem, updateQuantityItem } from "../../services/api/cartItem";
-import PriceCard from "../../components/PriceCard";
-
-// 	items: [
-// 		{
-// 			id: 1,
-// 			name: "Blusa manga longa asjndd oansdasld ojandslkac aosnjdlaknc as nadl",
-// 			price: 123.99,
-// 			stock: 20,
-// 			imageUrl: "https://img.lojasrenner.com.br/item/624639321/original/14.jpg",
-// 			quantity: 2,
-// 		},
-// 		{
-// 			id: 2,
-// 			name: "Saia longa asdcjnasjd  kajsdkan s naaadkansdj sakjdnbacs aksjnadkc",
-// 			price: 123.99,
-// 			stock: 0,
-// 			imageUrl:
-// 				"https://www.lojastyleme.com.br/cdn/shop/files/Saia-Longa-Rodada-Camadas-Fenda-lisa-marinho_2.jpg?v=1693952689&width=1445",
-// 			quantity: 2,
-// 		},
-// 		{
-// 			id: 3,
-// 			name: "Blusa manga curta aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-// 			price: 123.99,
-// 			stock: 15,
-// 			imageUrl: "https://danielatombini.vteximg.com.br/arquivos/ids/315138/3390E_Z005.jpg?v=638532900633800000",
-// 			quantity: 2,
-// 		},
-// 	],
-// 	total: 460.97,
-// };
+import PriceCard from "../../components/order/PriceCard";
 
 export default function Cart() {
 	const [cartData, setCartData] = useState<CartData>({
@@ -178,7 +148,13 @@ export default function Cart() {
 
 			{cartData.items.length > 0 ? (
 				<>
-					<PriceCard cartData={cartData} />
+					<PriceCard
+						priceData={{
+							itemsPrice: cartData.itemsPrice,
+							shippingPrice: cartData.shippingPrice,
+							totalPrice: cartData.totalPrice,
+						}}
+					/>
 
 					<div className={styles.clearButtonContainer}>
 						<button
