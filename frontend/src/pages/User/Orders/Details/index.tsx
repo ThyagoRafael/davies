@@ -1,28 +1,30 @@
 import { FaArrowLeft } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
 import { formatZipCode } from "../../../../utils/formatZipCode";
 import imageTeste from "../../../../assets/imagem-teste.png";
 import { formatPrice } from "../../../../utils/formatPrice";
+import styles from "./Details.module.css";
+import PriceCard from "../../../../components/order/PriceCard";
 
 export default function OrderDetails() {
-	const { orderId } = useParams();
+	// const { orderId } = useParams();
 
 	return (
-		<section>
-			<div>
+		<section className={styles.container}>
+			<div className={styles.linkContainer}>
 				<Link to="/usuario/pedidos">
 					<FaArrowLeft />
-					Seus pedidos
+					<span>Seus pedidos</span>
 				</Link>
 			</div>
 
-			<header>
+			<header className={styles.header}>
 				<h1>Detalhes do pedido</h1>
 			</header>
 
-			<section>
-				<header>
+			<section className={styles.detailsContainer}>
+				<header className={styles.detailsHeader}>
 					<h2>Pedido entregue em 19/08/2026</h2>
 
 					<div>
@@ -31,27 +33,18 @@ export default function OrderDetails() {
 					</div>
 				</header>
 
-				<section>
-					<div>
-						<dt>Itens</dt>
-						<dd>R$ 150,00</dd>
-					</div>
+				<PriceCard
+					priceData={{
+						itemsPrice: "150.00",
+						shippingPrice: "5.00",
+						totalPrice: "155.00",
+					}}
+				/>
 
-					<div>
-						<dt>Frete</dt>
-						<dd>R$ 20,00</dd>
-					</div>
-
-					<div>
-						<dt>Total</dt>
-						<dd>R$ 170,00</dd>
-					</div>
-				</section>
-
-				<section>
+				<section className={styles.detailsSection}>
 					<h2>Pagamento</h2>
 
-					<article>
+					<article className={styles.paymentContent}>
 						<div>
 							<h3>Cartão - Visa ****0000</h3>
 
@@ -62,10 +55,10 @@ export default function OrderDetails() {
 					</article>
 				</section>
 
-				<section>
+				<section className={styles.detailsSection}>
 					<h2>Endereço de entrega</h2>
 
-					<article>
+					<article className={styles.addressContent}>
 						<h3>
 							<span>João Batista</span>
 							<span>-</span>
@@ -76,14 +69,14 @@ export default function OrderDetails() {
 					</article>
 				</section>
 
-				<section>
+				<section className={styles.detailsSection}>
 					<h2>Itens do pedido</h2>
 
-					<ul>
+					<ul className={styles.itemsList}>
 						{[1, 2, 3].map((item) => (
 							<li key={item}>
-								<div>
-									<div>
+								<div className={styles.itemContent}>
+									<div className={styles.imageWrapper}>
 										<img
 											src={imageTeste}
 											alt=""
