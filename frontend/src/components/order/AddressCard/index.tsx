@@ -1,6 +1,6 @@
-import type { Address } from "../../../../types/api/address";
-import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { formatZipCode } from "../../../../utils/formatZipCode";
+import type { Address } from "../../../types/api/address";
+import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
+import { formatZipCode } from "../../../utils/formatZipCode";
 import styles from "./AddressCard.module.css";
 
 interface AddressCardProps {
