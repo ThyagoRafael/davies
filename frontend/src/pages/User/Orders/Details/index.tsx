@@ -1,12 +1,11 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { formatZipCode } from "../../../../utils/formatZipCode";
 import imageTeste from "../../../../assets/imagem-teste.png";
 import { formatPrice } from "../../../../utils/formatPrice";
 import styles from "./Details.module.css";
 import PriceCard from "../../../../components/order/PriceCard";
 import type { PaymentStatus } from "../../../../types/api/payment";
+import AddressCard from "../../../../components/order/AddressCard";
 
 export default function OrderDetails() {
 	// const { orderId } = useParams();
@@ -64,19 +63,19 @@ export default function OrderDetails() {
 					</article>
 				</section>
 
-				<section className={styles.detailsSection}>
-					<h2>Endereço de entrega</h2>
-
-					<article className={styles.addressContent}>
-						<h3>
-							<span>João Batista</span>
-							<span>-</span>
-							<span>{formatPhoneNumber("61912345678")}</span>
-						</h3>
-
-						<address>Quadra 10 Rua 12 Bloco B 04, Ceilândia - DF, {formatZipCode("12345678")}</address>
-					</article>
-				</section>
+				<AddressCard
+					selectedAddress={{
+						id: 1,
+						addressComplement: "",
+						city: "Ceilândia",
+						number: "04",
+						receiverName: "José",
+						receiverPhone: "61912345678",
+						state: "DF",
+						street: "Rua tal",
+						zipCode: "12345678",
+					}}
+				/>
 
 				<section className={styles.detailsSection}>
 					<h2>Itens do pedido</h2>
