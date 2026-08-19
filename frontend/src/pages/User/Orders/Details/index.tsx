@@ -10,10 +10,12 @@ export default function OrderDetails() {
 
 	return (
 		<section>
-			<Link to="/usuario/pedidos">
-				<FaArrowLeft />
-				Seus pedidos
-			</Link>
+			<div>
+				<Link to="/usuario/pedidos">
+					<FaArrowLeft />
+					Seus pedidos
+				</Link>
+			</div>
 
 			<header>
 				<h1>Detalhes do pedido</h1>
