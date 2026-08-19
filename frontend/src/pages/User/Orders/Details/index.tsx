@@ -6,10 +6,17 @@ import imageTeste from "../../../../assets/imagem-teste.png";
 import { formatPrice } from "../../../../utils/formatPrice";
 import styles from "./Details.module.css";
 import PriceCard from "../../../../components/order/PriceCard";
-import PaymentCard from "../../../../components/order/PaymentCard";
+import type { PaymentStatus } from "../../../../types/api/payment";
 
 export default function OrderDetails() {
 	// const { orderId } = useParams();
+	const paymentStatusText: Record<PaymentStatus, string> = {
+		pending: "Aguardando pagamento",
+		paid: "Pagamento aprovado",
+		failed: "Pagamento falhou",
+		expired: "Pagamento expirado",
+		canceled: "Pagamento cancelado",
+	};
 
 	return (
 		<section className={styles.container}>
@@ -42,10 +49,20 @@ export default function OrderDetails() {
 					}}
 				/>
 
-				<PaymentCard
-					paymentMethod="card"
-					selectedCard={{}}
-				/>
+				<section className={styles.detailsSection}>
+					<h2>Pagamento</h2>
+
+					<article className={styles.paymentCard}>
+						<header className={styles.paymentHeader}>
+							<h3>
+								Cartão - {"visa"} ****{"1234"}
+							</h3>
+							<span>{paymentStatusText["pending"]}</span>
+						</header>
+
+						<p className={styles.cardHolder}>{"José de Alcântara"}</p>
+					</article>
+				</section>
 
 				<section className={styles.detailsSection}>
 					<h2>Endereço de entrega</h2>

@@ -1,0 +1,43 @@
+.detailsSection {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.detailsSection h2 {
+	font-size: 1.125rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+.paymentCard {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	border: 1px solid var(--primary-color);
+	border-radius: 8px;
+	padding: 0.5rem;
+}
+
+.paymentHeader {
+	display: flex;
+	justify-content: space-between;
+}
+
+.paymentHeader h3 {
+	font-size: 1rem;
+}
+
+.paymentHeader span {
+	font-size: 0.875rem;
+	color: var(--danger-color);
+}
+
+.paymentHeader span.success {
+	color: var(--success-color);
+}
+
+.cardHolder {
+	font-size: 0.875rem;
+}
