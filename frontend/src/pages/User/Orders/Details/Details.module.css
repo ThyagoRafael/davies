@@ -1,3 +1,58 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.linkContainer {
+	display: flex;
+}
+
+.linkContainer a {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+
+	font-size: 0.875rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.header h1 {
+	font-size: 1.5rem;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.detailsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.detailsHeader .orderInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	padding: 0.75rem 0.5rem;
+
+	border-top: 1px solid rgba(18, 18, 18, 0.2);
+}
+
+.detailsHeader .orderInfo h2 {
+	font-size: 1.25rem;
+}
+
+.detailsHeader .orderInfo div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.detailsHeader .orderInfo p {
+	font-size: 0.875rem;
+}
+
 .detailsSection {
 	display: flex;
 	flex-direction: column;
