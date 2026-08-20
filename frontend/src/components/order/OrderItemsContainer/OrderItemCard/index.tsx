@@ -1,6 +1,6 @@
-import { formatPrice } from "../../../../../utils/formatPrice";
+import { formatPrice } from "../../../../utils/formatPrice";
 import styles from "./OrderItemCard.module.css";
-import type { CartProduct } from "../../../../../types/cart/CartData";
+import type { CartProduct } from "../../../../types/cart/CartData";
 
 interface OrderItemCardProps {
 	cartItem: CartProduct;

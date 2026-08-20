@@ -1,7 +1,7 @@
 import type { Address } from "../../../types/api/address";
 import type { UserCard } from "../../../types/api/userCard";
 import AddressCard from "../../order/AddressCard";
-import OrderItemsContainer from "./OrderItemsContainer";
+import OrderItemsContainer from "../../order/OrderItemsContainer";
 import PaymentCard from "../../order/PaymentCard";
 import PriceCard from "../../order/PriceCard";
 import styles from "./ConfirmationStep.module.css";

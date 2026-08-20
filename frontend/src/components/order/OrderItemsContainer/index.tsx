@@ -1,4 +1,4 @@
-import type { CartProduct } from "../../../../types/cart/CartData";
+import type { CartProduct } from "../../../types/cart/CartData";
 import OrderItemCard from "./OrderItemCard";
 import styles from "./OrderItemsContainer.module.css";
 
