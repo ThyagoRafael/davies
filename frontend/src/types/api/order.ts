@@ -30,3 +30,11 @@ interface OrdersListData {
 }
 
 export type OrdersList = OrdersListData[];
+
+export interface OrderItem {
+	id: number;
+	name: string;
+	price: string;
+	quantity: number;
+	imageUrl: string | undefined;
+}

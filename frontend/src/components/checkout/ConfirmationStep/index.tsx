@@ -43,7 +43,17 @@ export default function ConfirmationStep({
 
 			<AddressCard selectedAddress={selectedAddress} />
 
-			{cartData && <OrderItemsContainer cartItems={cartData.items} />}
+			{cartData && (
+				<OrderItemsContainer
+					items={cartData.items.map((item) => ({
+						id: item.id,
+						name: item.name,
+						imageUrl: item.imageUrl,
+						quantity: item.quantity,
+						price: item.price,
+					}))}
+				/>
+			)}
 
 			<footer className={styles.footerButtons}>
 				<button
