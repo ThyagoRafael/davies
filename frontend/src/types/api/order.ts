@@ -1,5 +1,6 @@
+import type { Address } from "./address";
 import type { Payment } from "./payment";
-import type { UserCard } from "./userCard";
+import type { UserCard, UserCardData } from "./userCard";
 
 type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
 
@@ -34,7 +35,25 @@ export type OrdersList = OrdersListData[];
 export interface OrderItem {
 	id: number;
 	name: string;
-	price: string;
+	unitPrice: string;
 	quantity: number;
 	imageUrl: string | undefined;
+}
+
+interface OrderDataDetails {
+	id: number;
+	orderCode: string;
+	status: OrderStatus;
+	itemsPrice: string;
+	shippingPrice: string;
+	totalPrice: string;
+	createdAt: string;
+}
+
+export interface OrderDetails {
+	order: OrderDataDetails;
+	card: UserCardData;
+	payment: Payment;
+	address: Address;
+	orderItems: OrderItem[];
 }

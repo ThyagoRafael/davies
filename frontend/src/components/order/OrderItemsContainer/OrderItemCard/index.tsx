@@ -20,7 +20,7 @@ export default function OrderItemCard({ item }: OrderItemCardProps) {
 
 				<footer className={styles.descriptionFooter}>
 					<p>Quantidade: {item.quantity}</p>
-					<strong>{formatPrice(item.price)}</strong>
+					<strong>{formatPrice(item.unitPrice)}</strong>
 				</footer>
 			</div>
 		</div>

@@ -1,13 +1,34 @@
 import { FaArrowLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import imageTeste from "../../../../assets/imagem-teste.png";
 import styles from "./Details.module.css";
 import PriceCard from "../../../../components/order/PriceCard";
 import AddressCard from "../../../../components/order/AddressCard";
 import OrderItemsContainer from "../../../../components/order/OrderItemsContainer";
+import { useEffect, useState } from "react";
+import type { OrderDetails } from "../../../../types/api/order";
+import { getOrderDetails } from "../../../../services/api/order";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
 
 export default function OrderDetails() {
-	// const { orderId } = useParams();
+	const { orderId } = useParams();
+	const [orderDetails, setOrderDetails] = useState<OrderDetails>();
+
+	useEffect(() => {
+		async function loadOrderData() {
+			try {
+				const data = await getOrderDetails(Number(orderId));
+
+				setOrderDetails(data);
+
+				console.log(data);
+			} catch (error) {
+				alert(getErrorMessage(error));
+			}
+		}
+
+		loadOrderData();
+	}, [orderId]);
 
 	return (
 		<section className={styles.container}>
@@ -22,58 +43,49 @@ export default function OrderDetails() {
 				<h1>Detalhes do pedido</h1>
 			</header>
 
-			<section className={styles.detailsContainer}>
-				<header className={styles.detailsHeader}>
-					<div className={styles.orderInfo}>
-						<h2>Pedido entregue em 19/08/2026</h2>
+			{orderDetails ? (
+				<section className={styles.detailsContainer}>
+					<header className={styles.detailsHeader}>
+						<div className={styles.orderInfo}>
+							{/* <h2>Pedido entregue em 19/08/2026</h2> */}
+							<h2>{orderDetails.order.status}</h2>
 
-						<div>
-							<p>Pedido realizado em 15/08/2026</p>
-							<p>Código do pedido #PED-00000</p>
+							<div>
+								<p>Pedido realizado em {new Date(orderDetails.order.createdAt).toLocaleDateString("pt-BR")}</p>
+								<p>Código do pedido #{orderDetails.order.orderCode}</p>
+							</div>
 						</div>
-					</div>
 
-					<PriceCard
-						priceData={{
-							itemsPrice: "150.00",
-							shippingPrice: "5.00",
-							totalPrice: "155.00",
-						}}
-					/>
-				</header>
+						<PriceCard
+							priceData={{
+								itemsPrice: orderDetails.order.itemsPrice,
+								shippingPrice: orderDetails.order.shippingPrice,
+								totalPrice: orderDetails.order.totalPrice,
+							}}
+						/>
+					</header>
 
-				<section className={styles.detailsSection}>
-					<h2>Pagamento</h2>
+					<section className={styles.detailsSection}>
+						<h2>Pagamento</h2>
 
-					<article className={styles.paymentCard}>
-						<header className={styles.paymentHeader}>
-							<h3>
-								Cartão - {"mastercard"} ****{"1234"}
-							</h3>
-						</header>
+						<article className={styles.paymentCard}>
+							<header className={styles.paymentHeader}>
+								<h3>
+									Cartão - {orderDetails.card.cardBrand} ****{orderDetails.card.lastDigits}
+								</h3>
+							</header>
 
-						<p className={styles.cardHolder}>{"José de Alcântara"}</p>
-					</article>
+							<p className={styles.cardHolder}>{orderDetails.card.holderName}</p>
+						</article>
+					</section>
+
+					<AddressCard selectedAddress={orderDetails.address} />
+
+					<OrderItemsContainer items={orderDetails.orderItems} />
 				</section>
-
-				<AddressCard
-					selectedAddress={{
-						id: 1,
-						addressComplement: "",
-						city: "Ceilândia",
-						number: "04",
-						receiverName: "José",
-						receiverPhone: "61912345678",
-						state: "DF",
-						street: "Rua tal",
-						zipCode: "12345678",
-					}}
-				/>
-
-				<OrderItemsContainer
-					items={[{ id: 1, name: "Produto teste", imageUrl: imageTeste, price: "105.00", quantity: 8 }]}
-				/>
-			</section>
+			) : (
+				<p>Erro no carregamento do pedido</p>
+			)}
 		</section>
 	);
 }

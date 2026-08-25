@@ -1,5 +1,5 @@
 import { api } from ".";
-import type { OrderData, OrdersList } from "../../types/api/order";
+import type { OrderData, OrderDetails, OrdersList } from "../../types/api/order";
 
 export async function finishOrder(
 	addressId: number,
@@ -22,6 +22,12 @@ export async function getOrdersList(): Promise<OrdersList> {
 }
 
 export async function getOrderDataById(orderId: number): Promise<OrderData> {
+	const response = await api.get(`/orders/${orderId}`);
+
+	return response.data;
+}
+
+export async function getOrderDetails(orderId: number): Promise<OrderDetails> {
 	const response = await api.get(`/orders/${orderId}`);
 
 	return response.data;
