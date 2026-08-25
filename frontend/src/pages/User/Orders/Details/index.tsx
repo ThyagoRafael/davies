@@ -3,19 +3,11 @@ import { Link } from "react-router-dom";
 import imageTeste from "../../../../assets/imagem-teste.png";
 import styles from "./Details.module.css";
 import PriceCard from "../../../../components/order/PriceCard";
-import type { PaymentStatus } from "../../../../types/api/payment";
 import AddressCard from "../../../../components/order/AddressCard";
 import OrderItemsContainer from "../../../../components/order/OrderItemsContainer";
 
 export default function OrderDetails() {
 	// const { orderId } = useParams();
-	const paymentStatusText: Record<PaymentStatus, string> = {
-		pending: "Aguardando pagamento",
-		paid: "Pagamento aprovado",
-		failed: "Pagamento falhou",
-		expired: "Pagamento expirado",
-		canceled: "Pagamento cancelado",
-	};
 
 	return (
 		<section className={styles.container}>
@@ -56,9 +48,8 @@ export default function OrderDetails() {
 					<article className={styles.paymentCard}>
 						<header className={styles.paymentHeader}>
 							<h3>
-								Cartão - {"visa"} ****{"1234"}
+								Cartão - {"mastercard"} ****{"1234"}
 							</h3>
-							<span>{paymentStatusText["pending"]}</span>
 						</header>
 
 						<p className={styles.cardHolder}>{"José de Alcântara"}</p>
