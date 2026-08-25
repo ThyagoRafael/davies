@@ -1,6 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import imageTeste from "../../../../assets/imagem-teste.png";
 import styles from "./Details.module.css";
 import PriceCard from "../../../../components/order/PriceCard";
 import AddressCard from "../../../../components/order/AddressCard";
