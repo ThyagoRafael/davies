@@ -323,7 +323,7 @@ export class OrderController {
 
 				orderItems: {
 					select: {
-						subtotal: true,
+						unitPrice: true,
 						quantity: true,
 						product: {
 							select: {
@@ -360,7 +360,7 @@ export class OrderController {
 		const orderItemsFormatted = orderItems.map((item) => ({
 			id: item.product.id,
 			name: item.product.name,
-			subtotal: item.subtotal,
+			unitPrice: item.unitPrice,
 			quantity: item.quantity,
 			imageUrl: item.product.productImages[0]?.url,
 		}));
