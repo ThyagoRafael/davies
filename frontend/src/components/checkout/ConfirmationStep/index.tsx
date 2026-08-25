@@ -50,7 +50,7 @@ export default function ConfirmationStep({
 						name: item.name,
 						imageUrl: item.imageUrl,
 						quantity: item.quantity,
-						price: item.price,
+						unitPrice: item.price,
 					}))}
 				/>
 			)}
