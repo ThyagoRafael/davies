@@ -53,6 +53,11 @@ export default function PaymentStep({
 	};
 
 	const handleNext = () => {
+		if (paymentMethod === "pix") {
+			alert("Pagamento com PIX em breve");
+			return;
+		}
+
 		if (paymentMethod === "card" && !selectedCard) {
 			alert("Selecione uma forma de pagamento");
 			return;
