@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import type { OrderDetails } from "../../../../types/api/order";
 import { getOrderDetails } from "../../../../services/api/order";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getOrderDisplayStatus } from "../../../../utils/orderDisplayStatus";
 
 export default function OrderDetails() {
 	const { orderId } = useParams();
@@ -19,8 +20,6 @@ export default function OrderDetails() {
 				const data = await getOrderDetails(Number(orderId));
 
 				setOrderDetails(data);
-
-				console.log(data);
 			} catch (error) {
 				alert(getErrorMessage(error));
 			}
@@ -46,8 +45,7 @@ export default function OrderDetails() {
 				<section className={styles.detailsContainer}>
 					<header className={styles.detailsHeader}>
 						<div className={styles.orderInfo}>
-							{/* <h2>Pedido entregue em 19/08/2026</h2> */}
-							<h2>{orderDetails.order.status}</h2>
+							<h2>{getOrderDisplayStatus(orderDetails.order.status, orderDetails.payment.status)}</h2>
 
 							<div>
 								<p>Pedido realizado em {new Date(orderDetails.order.createdAt).toLocaleDateString("pt-BR")}</p>
