@@ -5,6 +5,7 @@ import type { OrdersList } from "../../../types/api/order";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getOrdersList } from "../../../services/api/order";
 import { Link } from "react-router-dom";
+import { getOrderStatusLabel } from "../../../utils/orderStatus";
 
 export default function Orders() {
 	const [orders, setOrders] = useState<OrdersList>([]);
@@ -43,7 +44,7 @@ export default function Orders() {
 											Pedido #{order.orderCode}
 										</Link>
 									</h2>
-									<p role="status">{order.status}</p>
+									<p role="status">{getOrderStatusLabel(order.status)}</p>
 								</div>
 
 								<div className={styles.orderContent}>

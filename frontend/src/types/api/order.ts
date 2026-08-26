@@ -2,7 +2,7 @@ import type { Address } from "./address";
 import type { Payment } from "./payment";
 import type { UserCard, UserCardData } from "./userCard";
 
-type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
+export type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
 
 export interface Order {
 	id: number;
