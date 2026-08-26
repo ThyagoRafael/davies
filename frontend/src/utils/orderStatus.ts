@@ -1,10 +1,10 @@
 import type { OrderStatus } from "../types/api/order";
 
 const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
-	pending: "Pendente",
-	shipped: "Enviado",
-	delivered: "Entregue",
-	canceled: "Cancelado",
+	pending: "Pedido em processamento",
+	shipped: "Pedido enviado",
+	delivered: "Pedido entregue",
+	canceled: "Pedido cancelado",
 };
 
 export function getOrderStatusLabel(status: OrderStatus): string {
