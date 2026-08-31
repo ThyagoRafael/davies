@@ -378,6 +378,22 @@ export class OrderController {
 	shipOrder = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
 		const orderId = Number(req.params.orderId);
+		const now = new Date();
+
+		const order = await prisma.order.findFirst({
+			where: {
+				id: orderId,
+				userId,
+			},
+		});
+
+		if (!order) {
+			throw new AppError("Pedido não encontrado", 404);
+		}
+
+		if (order.status === "delivered") {
+			throw new AppError("Pedido já foi entregue", 400);
+		}
 
 		await prisma.order.update({
 			where: {
@@ -386,10 +402,11 @@ export class OrderController {
 			},
 			data: {
 				status: "shipped",
+				shippedAt: now,
 			},
 		});
 
-		res.status(200).json({ message: "Pedido foi enviado" });
+		res.status(200).json({ message: "Status do pedido alterado para 'Enviado'" });
 	};
 
 	deliverOrder = async (req: Request, res: Response) => {
