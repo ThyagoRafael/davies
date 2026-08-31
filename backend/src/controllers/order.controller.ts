@@ -298,6 +298,7 @@ export class OrderController {
 				shippingPrice: true,
 				totalPrice: true,
 				createdAt: true,
+				deliveredAt: true,
 
 				payments: {
 					select: {
