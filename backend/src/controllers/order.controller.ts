@@ -415,6 +415,17 @@ export class OrderController {
 		const orderId = Number(req.params.orderId);
 		const now = new Date();
 
+		const order = await prisma.order.findFirst({
+			where: {
+				id: orderId,
+				userId,
+			},
+		});
+
+		if (!order) {
+			throw new AppError("Pedido não encontrado", 404);
+		}
+
 		await prisma.order.update({
 			where: {
 				id: orderId,
