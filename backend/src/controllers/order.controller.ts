@@ -394,6 +394,7 @@ export class OrderController {
 	deliverOrder = async (req: Request, res: Response) => {
 		const userId = req.user!.id;
 		const orderId = Number(req.params.orderId);
+		const now = new Date();
 
 		await prisma.order.update({
 			where: {
@@ -402,10 +403,11 @@ export class OrderController {
 			},
 			data: {
 				status: "delivered",
+				deliveredAt: now,
 			},
 		});
 
-		res.status(200).json({ message: "Pedido foi entregue" });
+		res.status(200).json({ message: "Status do pedido alterado para 'Entregue'" });
 	};
 
 	cancelOrder = async (req: Request, res: Response) => {
