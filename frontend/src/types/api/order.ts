@@ -48,6 +48,8 @@ interface OrderDataDetails {
 	shippingPrice: string;
 	totalPrice: string;
 	createdAt: string;
+	deliveredAt: string;
+	shippedAt: string;
 }
 
 export interface OrderDetails {
