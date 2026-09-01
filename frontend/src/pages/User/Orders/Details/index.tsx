@@ -66,11 +66,9 @@ export default function OrderDetails() {
 						<h2>Pagamento</h2>
 
 						<article className={styles.paymentCard}>
-							<header className={styles.paymentHeader}>
-								<h3>
-									Cartão - {orderDetails.card.cardBrand} ****{orderDetails.card.lastDigits}
-								</h3>
-							</header>
+							<h3 className={styles.paymentHeader}>
+								Cartão - {orderDetails.card.cardBrand} ****{orderDetails.card.lastDigits}
+							</h3>
 
 							<p className={styles.cardHolder}>{orderDetails.card.holderName}</p>
 						</article>
