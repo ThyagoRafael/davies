@@ -45,7 +45,13 @@ export default function OrderDetails() {
 				<section className={styles.detailsContainer}>
 					<header className={styles.detailsHeader}>
 						<div className={styles.orderInfo}>
-							<h2>{getOrderDisplayStatus(orderDetails.order.status, orderDetails.payment.status)}</h2>
+							<h2>
+								{getOrderDisplayStatus(
+									orderDetails.order.status,
+									orderDetails.payment.status,
+									orderDetails.order.deliveredAt,
+								)}
+							</h2>
 
 							<div>
 								<p>Pedido realizado em {new Date(orderDetails.order.createdAt).toLocaleDateString("pt-BR")}</p>
