@@ -48,8 +48,8 @@ interface OrderDataDetails {
 	shippingPrice: string;
 	totalPrice: string;
 	createdAt: string;
-	deliveredAt: string;
-	shippedAt: string;
+	deliveredAt: string | null;
+	shippedAt: string | null;
 }
 
 export interface OrderDetails {
