@@ -61,16 +61,6 @@ export default function ProductDetails() {
 		}
 	};
 
-	const handleScroll = () => {
-		if (carouselRef.current) {
-			const { scrollLeft, clientWidth } = carouselRef.current;
-
-			const newIndex = Math.round(scrollLeft / clientWidth);
-
-			setCurrentIndex(newIndex);
-		}
-	};
-
 	const scrollToIndex = (index: number) => {
 		if (!carouselRef.current) return;
 
@@ -98,7 +88,6 @@ export default function ProductDetails() {
 							<figure
 								className={styles.productImage}
 								ref={carouselRef}
-								onScroll={handleScroll}
 							>
 								{product.productImages.map((image) => (
 									<img

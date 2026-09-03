@@ -50,7 +50,7 @@
 	width: 100%;
 	height: 100%;
 
-	overflow-x: auto;
+	overflow-x: hidden;
 	gap: 0;
 
 	scroll-snap-type: x mandatory;
@@ -66,12 +66,13 @@
 
 .productImage img {
 	width: 100%;
+	max-width: 100%;
 	height: 100%;
 	object-fit: cover;
 
 	flex-shrink: 0;
 
-	scroll-snap-align: center;
+	scroll-snap-align: start;
 }
 
 .indicator {
