@@ -12,9 +12,35 @@
 
 .carouselWrapper {
 	position: relative;
-	width: 100%;
-	/* A aspect-ratio pode ficar aqui ou no .productImage, tanto faz */
-	aspect-ratio: 1 / 1.2;
+}
+
+.carouselButton {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(0, 0, 0, 0.4);
+	color: #fff;
+	border: none;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	font-size: 1.5rem;
+	line-height: 1;
+	cursor: pointer;
+	z-index: 2;
+}
+
+.carouselButton:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
+
+.prevButton {
+	left: 8px;
+}
+
+.nextButton {
+	right: 8px;
 }
 
 .productImage {

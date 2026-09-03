@@ -17,7 +17,7 @@ export default function ProductDetails() {
 	const navigate = useNavigate();
 
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const carouselRef = useRef(null);
+	const carouselRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -71,6 +71,24 @@ export default function ProductDetails() {
 		}
 	};
 
+	const scrollToIndex = (index: number) => {
+		if (!carouselRef.current) return;
+
+		const { clientWidth } = carouselRef.current;
+		const maxIndex = product!.productImages.length - 1;
+		const newIndex = Math.max(0, Math.min(index, maxIndex));
+
+		carouselRef.current.scrollTo({
+			left: newIndex * clientWidth,
+			behavior: "smooth",
+		});
+
+		setCurrentIndex(newIndex);
+	};
+
+	const handlePrev = () => scrollToIndex(currentIndex - 1);
+	const handleNext = () => scrollToIndex(currentIndex + 1);
+
 	return (
 		<section className={styles.container}>
 			{product && (
@@ -90,6 +108,24 @@ export default function ProductDetails() {
 									/>
 								))}
 							</figure>
+
+							<button
+								className={`${styles.carouselButton} ${styles.prevButton}`}
+								onClick={handlePrev}
+								disabled={currentIndex === 0}
+								aria-label="Imagem anterior"
+							>
+								‹
+							</button>
+
+							<button
+								className={`${styles.carouselButton} ${styles.nextButton}`}
+								onClick={handleNext}
+								disabled={currentIndex === product.productImages.length - 1}
+								aria-label="Próxima imagem"
+							>
+								›
+							</button>
 
 							<div className={styles.indicator}>
 								{currentIndex + 1} / {product.productImages.length}
