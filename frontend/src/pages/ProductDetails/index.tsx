@@ -5,10 +5,9 @@ import { useEffect, useState, useRef } from "react";
 import type { Product } from "../../types/Product";
 import axios from "axios";
 import { formatPrice } from "../../utils/formatPrice";
-import { FaCartPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { AppError } from "../../errors/AppError";
 import { addToCart } from "../../services/api/cartItem";
-import { BsCartCheck } from "react-icons/bs";
 
 export default function ProductDetails() {
 	const [product, setProduct] = useState<Product | null>(null);
@@ -131,19 +130,11 @@ export default function ProductDetails() {
 
 								<div className={styles.actionsContainer}>
 									<Button
-										handleClick={() => console.log("clicou")}
-										disabled={false}
-									>
-										Comprar agora
-									</Button>
-
-									<button
-										className={styles.addToCartButton}
-										onClick={() => handleAddToCart(product.id)}
+										handleClick={() => handleAddToCart(product.id)}
 										disabled={addedToCart}
 									>
-										{addedToCart ? <BsCartCheck size={20} /> : <FaCartPlus size={20} />}
-									</button>
+										{addedToCart ? "Adicionado" : "Adicionar ao carrinho"}
+									</Button>
 								</div>
 							</div>
 						</section>
