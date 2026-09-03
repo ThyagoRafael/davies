@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import type { Product } from "../../types/Product";
 import axios from "axios";
 import { formatPrice } from "../../utils/formatPrice";
-import { FaCartPlus } from "react-icons/fa";
+import { FaCartPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { AppError } from "../../errors/AppError";
 import { addToCart } from "../../services/api/cartItem";
 import { BsCartCheck } from "react-icons/bs";
@@ -115,7 +115,7 @@ export default function ProductDetails() {
 								disabled={currentIndex === 0}
 								aria-label="Imagem anterior"
 							>
-								‹
+								<FaChevronLeft size={16} />
 							</button>
 
 							<button
@@ -124,7 +124,7 @@ export default function ProductDetails() {
 								disabled={currentIndex === product.productImages.length - 1}
 								aria-label="Próxima imagem"
 							>
-								›
+								<FaChevronRight size={16} />
 							</button>
 
 							<div className={styles.indicator}>
