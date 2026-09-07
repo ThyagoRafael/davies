@@ -22,6 +22,6 @@ routes.use("/addresses", addressRoutes);
 routes.use("/orders", orderRoutes);
 routes.use("/payment-cards", paymentCardRoutes);
 routes.use("/payments", paymentsRoutes);
-routes.use("/dashboard", dashboardRoutes);
+routes.use("/admin", dashboardRoutes);
 
 export { routes };
