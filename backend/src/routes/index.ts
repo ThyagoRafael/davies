@@ -9,6 +9,7 @@ import { addressRoutes } from "./shippingAddress.routes.js";
 import { orderRoutes } from "./order.routes.js";
 import { paymentCardRoutes } from "./paymentCard.routes.js";
 import { paymentsRoutes } from "./payment.routes.js";
+import { dashboardRoutes } from "./dashboard.routes.js";
 
 const routes = Router();
 
@@ -21,5 +22,6 @@ routes.use("/addresses", addressRoutes);
 routes.use("/orders", orderRoutes);
 routes.use("/payment-cards", paymentCardRoutes);
 routes.use("/payments", paymentsRoutes);
+routes.use("/dashboard", dashboardRoutes);
 
 export { routes };
