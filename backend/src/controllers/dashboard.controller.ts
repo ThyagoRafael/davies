@@ -26,4 +26,28 @@ export class DashboardController {
 			totalProductStock: totalProductStock._sum.stock,
 		});
 	};
+
+	alert = async (req: Request, res: Response) => {
+		const outOfStockProducts = await prisma.product.count({
+			where: {
+				stock: 0,
+			},
+		});
+
+		const lowStockProducts = await prisma.product.count({
+			where: {
+				stock: {
+					lte: 5,
+				},
+			},
+		});
+
+		const pendingOrders = await prisma.order.count({
+			where: {
+				status: "pending",
+			},
+		});
+
+		res.status(200).json({ outOfStockProducts, lowStockProducts, pendingOrders });
+	};
 }
