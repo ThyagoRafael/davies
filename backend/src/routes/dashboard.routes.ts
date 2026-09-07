@@ -6,5 +6,6 @@ const dashboardController = new DashboardController();
 
 dashboardRoutes.get("/overview", dashboardController.overview);
 dashboardRoutes.get("/alert", dashboardController.alert);
+dashboardRoutes.get("/recent-orders", dashboardController.recentOrders);
 
 export { dashboardRoutes };

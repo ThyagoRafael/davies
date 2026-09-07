@@ -50,4 +50,33 @@ export class DashboardController {
 
 		res.status(200).json({ outOfStockProducts, lowStockProducts, pendingOrders });
 	};
+
+	recentOrders = async (req: Request, res: Response) => {
+		const orders = await prisma.order.findMany({
+			select: {
+				id: true,
+				orderCode: true,
+				status: true,
+				createdAt: true,
+				totalPrice: true,
+
+				user: {
+					select: {
+						name: true,
+					},
+				},
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+			take: 5,
+		});
+
+		const formattedOrders = orders.map((order) => ({
+			...order,
+			user: order.user.name,
+		}));
+
+		res.status(200).json(formattedOrders);
+	};
 }
