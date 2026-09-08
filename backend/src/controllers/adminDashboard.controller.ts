@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 
-export class AdminController {
-	dashboardOverview = async (req: Request, res: Response) => {
+export class AdminDashboardController {
+	overview = async (req: Request, res: Response) => {
 		const totalSales = await prisma.order.aggregate({
 			where: {
 				status: "delivered",
@@ -27,7 +27,7 @@ export class AdminController {
 		});
 	};
 
-	dashboardAlert = async (req: Request, res: Response) => {
+	alert = async (req: Request, res: Response) => {
 		const outOfStockProducts = await prisma.product.count({
 			where: {
 				stock: 0,
@@ -51,7 +51,7 @@ export class AdminController {
 		res.status(200).json({ outOfStockProducts, lowStockProducts, pendingOrders });
 	};
 
-	dashboardRecentOrders = async (req: Request, res: Response) => {
+	recentOrders = async (req: Request, res: Response) => {
 		const orders = await prisma.order.findMany({
 			select: {
 				id: true,
@@ -78,34 +78,5 @@ export class AdminController {
 		}));
 
 		res.status(200).json(formattedOrders);
-	};
-
-	listOrders = async (req: Request, res: Response) => {
-		const orders = await prisma.order.findMany({
-			select: {
-				id: true,
-				orderCode: true,
-				status: true,
-				totalPrice: true,
-				createdAt: true,
-				updatedAt: true,
-
-				shippingAddress: {
-					omit: {
-						id: true,
-						userId: false,
-					},
-				},
-
-				user: {
-					select: {
-						name: true,
-						cpf: true,
-					},
-				},
-			},
-		});
-
-		res.status(200).json(orders);
 	};
 }

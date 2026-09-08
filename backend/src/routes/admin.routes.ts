@@ -1,17 +1,19 @@
 import { Router } from "express";
-import { AdminController } from "../controllers/admin.controller.js";
+import { AdminDashboardController } from "../controllers/adminDashboard.controller.js";
+import { AdminOrderController } from "../controllers/adminOrder.controller.js";
 import { authenticationMiddleware, authorizationMiddleware } from "../middlewares/auth.middleware.js";
 
 const adminRoutes = Router();
-const adminController = new AdminController();
+const adminDashboardController = new AdminDashboardController();
+const adminOrderController = new AdminOrderController();
 
 adminRoutes.use(authenticationMiddleware);
 adminRoutes.use(authorizationMiddleware);
 
-adminRoutes.get("/dashboard/overview", adminController.dashboardOverview);
-adminRoutes.get("/dashboard/alert", adminController.dashboardAlert);
-adminRoutes.get("/dashboard/recent-orders", adminController.dashboardRecentOrders);
+adminRoutes.get("/dashboard/overview", adminDashboardController.overview);
+adminRoutes.get("/dashboard/alert", adminDashboardController.alert);
+adminRoutes.get("/dashboard/recent-orders", adminDashboardController.recentOrders);
 
-adminRoutes.get("/orders", adminController.listOrders);
+adminRoutes.get("/orders", adminOrderController.listOrders);
 
 export { adminRoutes };
