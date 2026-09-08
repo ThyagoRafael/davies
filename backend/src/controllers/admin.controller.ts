@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 
-export class DashboardController {
-	overview = async (req: Request, res: Response) => {
+export class AdminController {
+	dashboardOverview = async (req: Request, res: Response) => {
 		const totalSales = await prisma.order.aggregate({
 			where: {
 				status: "delivered",
@@ -27,7 +27,7 @@ export class DashboardController {
 		});
 	};
 
-	alert = async (req: Request, res: Response) => {
+	dashboardAlert = async (req: Request, res: Response) => {
 		const outOfStockProducts = await prisma.product.count({
 			where: {
 				stock: 0,
@@ -51,7 +51,7 @@ export class DashboardController {
 		res.status(200).json({ outOfStockProducts, lowStockProducts, pendingOrders });
 	};
 
-	recentOrders = async (req: Request, res: Response) => {
+	dashboardRecentOrders = async (req: Request, res: Response) => {
 		const orders = await prisma.order.findMany({
 			select: {
 				id: true,
