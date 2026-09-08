@@ -116,6 +116,7 @@ model Order {
   shippingPrice     Decimal         @map("shipping_price") @db.Decimal(10, 2)
   totalPrice        Decimal         @map("total_price") @db.Decimal(10, 2)
   createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
   deliveredAt       DateTime?       @map("delivered_at")
   shippedAt         DateTime?       @map("shipped_at")
   user              User            @relation(fields: [userId], references: [id], onDelete: Restrict)
