@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 
 export class AdminOrderController {
-	listOrders = async (req: Request, res: Response) => {
+	list = async (req: Request, res: Response) => {
 		const orders = await prisma.order.findMany({
 			select: {
 				id: true,
