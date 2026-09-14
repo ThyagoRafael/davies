@@ -230,7 +230,7 @@ export class OrderController {
 			);
 		}
 
-		const { cardToken, ...cardData } = card;
+		const { cardToken: _cardToken, ...cardData } = card;
 
 		res.status(201).json({
 			order,
