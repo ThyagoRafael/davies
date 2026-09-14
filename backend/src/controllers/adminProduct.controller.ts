@@ -23,7 +23,16 @@ export class AdminProductController {
 			},
 		});
 
-		res.status(200).json(products);
+		const formattedProducts = products.map((product) => {
+			const { productImages, ...productData } = product;
+
+			return {
+				...productData,
+				imageUrl: productImages[0]?.url ?? "",
+			};
+		});
+
+		res.status(200).json(formattedProducts);
 	};
 
 	details = async (req: Request, res: Response) => {
