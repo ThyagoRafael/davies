@@ -15,5 +15,6 @@ adminRoutes.get("/dashboard/alert", adminDashboardController.alert);
 adminRoutes.get("/dashboard/recent-orders", adminDashboardController.recentOrders);
 
 adminRoutes.get("/orders", adminOrderController.list);
+adminRoutes.patch("/orders/:orderId", adminOrderController.updateStatus);
 
 export { adminRoutes };
