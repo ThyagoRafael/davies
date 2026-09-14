@@ -3,6 +3,31 @@ import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 
 export class AdminProductController {
+	create = async (req: Request, res: Response) => {
+		const bodyData = {
+			name: req.body.name,
+			description: req.body.description,
+			price: req.body.price,
+			stock: req.body.stock,
+		};
+
+		if (Object.values(bodyData).some((value) => value === "" || value === undefined || value === null)) {
+			throw new AppError("Todos os campos são obrigatórios", 400);
+		}
+
+		if (bodyData.price <= 0) {
+			throw new AppError("O preço deve ser maior que 0", 400);
+		}
+
+		if (bodyData.stock <= 0) {
+			throw new AppError("O estoque deve ser maior que 0", 400);
+		}
+
+		const newProduct = await prisma.product.create({ data: bodyData });
+
+		res.status(201).json(newProduct);
+	};
+
 	list = async (req: Request, res: Response) => {
 		const products = await prisma.product.findMany({
 			select: {

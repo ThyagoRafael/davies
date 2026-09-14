@@ -19,9 +19,10 @@ adminRoutes.get("/dashboard/recent-orders", adminDashboardController.recentOrder
 adminRoutes.get("/orders", adminOrderController.list);
 adminRoutes.patch("/orders/:orderId", adminOrderController.updateStatus);
 
+adminRoutes.post("/products", adminProductController.create);
 adminRoutes.get("/products", adminProductController.list);
 adminRoutes.get("/products/:productId", adminProductController.details);
-adminRoutes.get("/products/:productId", adminProductController.update);
-adminRoutes.get("/products/:productId", adminProductController.destroy);
+adminRoutes.patch("/products/:productId", adminProductController.update);
+adminRoutes.delete("/products/:productId", adminProductController.destroy);
 
 export { adminRoutes };
