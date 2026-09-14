@@ -21,5 +21,6 @@ adminRoutes.patch("/orders/:orderId", adminOrderController.updateStatus);
 
 adminRoutes.get("/products", adminProductController.list);
 adminRoutes.get("/products/:productId", adminProductController.details);
+adminRoutes.get("/products/:productId", adminProductController.update);
 
 export { adminRoutes };

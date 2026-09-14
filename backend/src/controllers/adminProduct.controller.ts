@@ -63,4 +63,29 @@ export class AdminProductController {
 
 		res.status(200).json(product);
 	};
+
+	update = async (req: Request, res: Response) => {
+		const productId = Number(req.params.productId);
+		const { name, description, price, stock } = req.body;
+		let updateData = {};
+
+		const product = await prisma.product.findUnique({ where: { id: productId } });
+
+		if (!product) {
+			throw new AppError("Produto não encontrado", 404);
+		}
+
+		if (name) updateData = { name };
+		if (description) updateData = { ...updateData, description };
+		if (price) updateData = { ...updateData, price };
+		if (stock) updateData = { ...updateData, stock };
+
+		if (Object.values(updateData).length === 0) {
+			throw new AppError("Nenhuma ", 400);
+		}
+
+		const updatedProduct = await prisma.product.update({ where: { id: product.id }, data: updateData });
+
+		res.status(200).json(updatedProduct);
+	};
 }
