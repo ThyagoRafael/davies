@@ -67,18 +67,4 @@ export class ProductController {
 
 		res.status(200).json(product);
 	};
-
-	destroy = async (req: Request, res: Response) => {
-		const productId = Number(req.params.productId);
-
-		const product = await prisma.product.findUnique({ where: { id: productId } });
-
-		if (!product) {
-			throw new AppError("Produto não encontrado", 404);
-		}
-
-		const deletedProductId = await prisma.product.delete({ where: { id: product.id }, select: { id: true } });
-
-		res.status(200).json(deletedProductId);
-	};
 }
