@@ -25,6 +25,7 @@ O projeto utiliza as tecnologias mais modernas do ecossistema Full Stack para ga
 
 **Integrações & Infraestrutura:**
 * [Cloudinary](https://cloudinary.com/) (Armazenamento de imagens atual)
+* [Stripe](http://stripe.com/) (Gateway de pagamento)
 
 ## 🚀 Funcionalidades e Roadmap
 
@@ -34,8 +35,8 @@ Abaixo está o planejamento de desenvolvimento e o status atual das entregas:
 - [x] Autenticação
 - [x] Catálogo de produtos
 - [x] Carrinho de compras
-- [ ] Checkout
-- [ ] Integração com Stripe
+- [X] Checkout
+- [X] Integração com Stripe
 - [ ] Painel administrativo
 
 ### Infraestrutura
