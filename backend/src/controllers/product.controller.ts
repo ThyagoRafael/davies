@@ -4,7 +4,7 @@ import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 
 export class ProductController {
-	getAll = async (req: Request, res: Response) => {
+	list = async (req: Request, res: Response) => {
 		const products = await prisma.product.findMany({
 			omit: {
 				description: true,
@@ -24,7 +24,7 @@ export class ProductController {
 		res.status(200).json(products);
 	};
 
-	getOne = async (req: Request, res: Response) => {
+	details = async (req: Request, res: Response) => {
 		const productId = Number(req.params.productId);
 
 		const product = await prisma.product.findUnique({
