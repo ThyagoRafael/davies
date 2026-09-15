@@ -1,8 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
-import { uploadToCloudinary } from "../helpers/uploadToCloudinary.js";
-import { deleteFromCloudinary } from "../helpers/deleteFromCloudinary.js";
+import { uploadToCloudinary, deleteFromCloudinary } from "../helpers/cloudinary.js";
 import { type CloudinaryUploadResponse } from "../types/cloudinary.js";
 
 export class ProductImagesController {
