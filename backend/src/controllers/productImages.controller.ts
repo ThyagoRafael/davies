@@ -3,7 +3,7 @@ import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 import { uploadToCloudinary } from "../helpers/uploadToCloudinary.js";
 import { deleteFromCloudinary } from "../helpers/deleteFromCloudinary.js";
-import { type CloudinaryUploadResponse } from "../types/CloudinaryUploadResponse.js";
+import { type CloudinaryUploadResponse } from "../types/cloudinary.js";
 
 export class ProductImagesController {
 	upload = async (req: Request, res: Response) => {
