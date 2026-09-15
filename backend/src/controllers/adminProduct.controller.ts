@@ -1,15 +1,30 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
+import { ProductImagesService } from "../services/productImage.service.js";
+import { createProductSchema } from "../validations/product.validation.js";
 
 export class AdminProductController {
+	private productImageService = new ProductImagesService();
+
 	create = async (req: Request, res: Response) => {
 		const bodyData = {
 			name: req.body.name,
 			description: req.body.description,
 			price: req.body.price,
 			stock: req.body.stock,
+			imagesMeta: JSON.parse(req.body.imagesMeta),
 		};
+
+		let data;
+
+		try {
+			data = createProductSchema.parse(bodyData);
+		} catch {
+			throw new AppError("Body da requisição inválido", 400);
+		}
+
+		const files = req.files;
 
 		if (Object.values(bodyData).some((value) => value === "" || value === undefined || value === null)) {
 			throw new AppError("Todos os campos são obrigatórios", 400);
@@ -23,9 +38,55 @@ export class AdminProductController {
 			throw new AppError("O estoque deve ser maior que 0", 400);
 		}
 
-		const newProduct = await prisma.product.create({ data: bodyData });
+		if (!files || !Array.isArray(files)) {
+			throw new AppError("Imagens não foram enviadas", 400);
+		}
 
-		res.status(201).json(newProduct);
+		const { imagesMeta, ...productData } = data;
+
+		if (imagesMeta.length !== files.length) {
+			throw new AppError("Quantidades de dados e imagens não se correspondem", 400);
+		}
+
+		const fileFieldnames = new Set(files.map((file) => file.fieldname));
+		const hasUnmatchedTempId = imagesMeta.some((meta) => !fileFieldnames.has(meta.tempId));
+
+		if (hasUnmatchedTempId) {
+			throw new AppError("Algum tempId não corresponde a nenhuma imagem enviada", 400);
+		}
+
+		const newProduct = await prisma.product.create({
+			data: productData,
+			select: {
+				id: true,
+			},
+		});
+
+		await this.productImageService.upload(newProduct.id, files, imagesMeta);
+
+		const product = await prisma.product.findUnique({
+			where: {
+				id: newProduct.id,
+			},
+			select: {
+				id: true,
+				name: true,
+				stock: true,
+				price: true,
+
+				productImages: {
+					orderBy: {
+						position: "asc",
+					},
+					take: 1,
+					select: {
+						url: true,
+					},
+				},
+			},
+		});
+
+		res.status(201).json(product);
 	};
 
 	list = async (req: Request, res: Response) => {

@@ -3,6 +3,7 @@ import { AdminDashboardController } from "../controllers/adminDashboard.controll
 import { AdminOrderController } from "../controllers/adminOrder.controller.js";
 import { authenticationMiddleware, authorizationMiddleware } from "../middlewares/auth.middleware.js";
 import { AdminProductController } from "../controllers/adminProduct.controller.js";
+import { uploadMiddleware } from "../middlewares/upload.middleware.js";
 
 const adminRoutes = Router();
 const adminDashboardController = new AdminDashboardController();
@@ -19,7 +20,7 @@ adminRoutes.get("/dashboard/recent-orders", adminDashboardController.recentOrder
 adminRoutes.get("/orders", adminOrderController.list);
 adminRoutes.patch("/orders/:orderId", adminOrderController.updateStatus);
 
-adminRoutes.post("/products", adminProductController.create);
+adminRoutes.post("/products", uploadMiddleware.any(), adminProductController.create);
 adminRoutes.get("/products", adminProductController.list);
 adminRoutes.get("/products/:productId", adminProductController.details);
 adminRoutes.patch("/products/:productId", adminProductController.update);

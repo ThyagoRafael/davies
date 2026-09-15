@@ -1,77 +1,8 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
-import { uploadToCloudinary, deleteFromCloudinary } from "../helpers/cloudinary.js";
-import { type CloudinaryUploadResponse } from "../types/cloudinary.js";
-
+import { deleteFromCloudinary } from "../helpers/cloudinary.js";
 export class ProductImagesController {
-	upload = async (req: Request, res: Response) => {
-		const productId = Number(req.params.productId);
-		const files = req.files as Express.Multer.File[];
-		const tempIds: string[] = Array.isArray(req.body.tempIds)
-			? req.body.tempIds
-			: req.body.tempIds
-				? [req.body.tempIds]
-				: [];
-		let uploadedImages: CloudinaryUploadResponse[] = [];
-
-		if (files.length !== tempIds.length) {
-			throw new AppError("Arquivos e tempIds não correspondem", 400);
-		}
-
-		try {
-			const results = await Promise.all(
-				files.map((file) => {
-					return uploadToCloudinary(file.buffer);
-				}),
-			);
-
-			uploadedImages = results;
-
-			const lastImage = await prisma.productImage.findFirst({
-				where: { productId },
-				orderBy: { position: "desc" },
-				select: { position: true },
-			});
-
-			const startPosition = lastImage ? lastImage.position + 1 : 0;
-
-			const createdImages: { tempId: string; id: number }[] = [];
-
-			for (const [index, file] of results.entries()) {
-				const tempId = tempIds[index];
-
-				if (!tempId) {
-					throw new AppError("tempId não encontrado para o arquivo", 400);
-				}
-
-				const image = await prisma.productImage.create({
-					data: {
-						url: file.secure_url,
-						publicId: file.public_id,
-						position: startPosition + index,
-						productId,
-					},
-				});
-
-				createdImages.push({
-					tempId,
-					id: image.id,
-				});
-			}
-
-			res.status(201).json(createdImages);
-		} catch (error) {
-			console.log(error);
-
-			if (uploadedImages.length > 0) {
-				await Promise.all(uploadedImages.map((image) => deleteFromCloudinary(image.public_id)));
-			}
-
-			throw new AppError("Erro no upload das imagens", 400);
-		}
-	};
-
 	update = async (req: Request, res: Response) => {
 		const productId = Number(req.params.productId);
 		const allResults: Record<string, string> = {};
