@@ -213,8 +213,21 @@ export class AdminProductController {
 			throw new AppError("Produto não encontrado", 404);
 		}
 
-		const deletedProductId = await prisma.product.delete({ where: { id: product.id }, select: { id: true } });
+		const deletedProduct = await prisma.product.delete({
+			where: { id: product.id },
+			select: {
+				id: true,
+				productImages: {
+					select: {
+						id: true,
+						publicId: true,
+					},
+				},
+			},
+		});
 
-		res.status(200).json(deletedProductId);
+		await this.productImageService.deleteAllImages(deletedProduct.productImages);
+
+		res.status(200).json({ id: deletedProduct.id });
 	};
 }

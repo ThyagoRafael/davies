@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
+import type { ProductImage } from "../generated/prisma/client.js";
 import { deleteFromCloudinary, uploadToCloudinary } from "../helpers/cloudinary.js";
 import type { CloudinaryUploadResponse } from "../types/cloudinary.js";
 import type { ImagesAction, ImagesMeta } from "../validations/product.validation.js";
@@ -206,6 +207,16 @@ export class ProductImagesService {
 			}
 
 			throw new AppError("Erro no upload das imagens", 400);
+		}
+	};
+
+	deleteAllImages = async (productImages: Pick<ProductImage, "id" | "publicId">[]) => {
+		try {
+			if (productImages.length <= 0) return;
+
+			await Promise.all(productImages.map((image) => deleteFromCloudinary(image.publicId)));
+		} catch {
+			throw new AppError("Erro na deleção das imagens", 400);
 		}
 	};
 }
