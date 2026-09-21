@@ -23,7 +23,7 @@ adminRoutes.patch("/orders/:orderId", adminOrderController.updateStatus);
 adminRoutes.post("/products", uploadMiddleware.any(), adminProductController.create);
 adminRoutes.get("/products", adminProductController.list);
 adminRoutes.get("/products/:productId", adminProductController.details);
-adminRoutes.patch("/products/:productId", adminProductController.update);
+adminRoutes.patch("/products/:productId", uploadMiddleware.any(), adminProductController.update);
 adminRoutes.delete("/products/:productId", adminProductController.destroy);
 
 export { adminRoutes };

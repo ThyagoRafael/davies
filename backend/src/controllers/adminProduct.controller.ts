@@ -2,7 +2,8 @@ import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import { AppError } from "../errors/AppError.js";
 import { ProductImagesService } from "../services/productImage.service.js";
-import { createProductSchema } from "../validations/product.validation.js";
+import { createProductSchema, updateProductSchema } from "../validations/product.validation.js";
+import { removeUndefined } from "../utils/removeUndefined.js";
 
 export class AdminProductController {
 	private productImageService = new ProductImagesService();
@@ -13,7 +14,7 @@ export class AdminProductController {
 			description: req.body.description,
 			price: req.body.price,
 			stock: req.body.stock,
-			imagesMeta: JSON.parse(req.body.imagesMeta),
+			imagesMeta: req.body.imagesMeta,
 		};
 
 		let data;
@@ -152,8 +153,13 @@ export class AdminProductController {
 
 	update = async (req: Request, res: Response) => {
 		const productId = Number(req.params.productId);
-		const { name, description, price, stock } = req.body;
-		let updateData = {};
+		let bodyData;
+
+		try {
+			bodyData = updateProductSchema.parse(req.body);
+		} catch {
+			throw new AppError("Formato do body está inválido");
+		}
 
 		const product = await prisma.product.findUnique({ where: { id: productId } });
 
@@ -161,16 +167,39 @@ export class AdminProductController {
 			throw new AppError("Produto não encontrado", 404);
 		}
 
-		if (name) updateData = { name };
-		if (description) updateData = { ...updateData, description };
-		if (price) updateData = { ...updateData, price };
-		if (stock) updateData = { ...updateData, stock };
+		const { imagesAction, ...updateData } = bodyData;
 
-		if (Object.values(updateData).length === 0) {
-			throw new AppError("Nenhuma ", 400);
+		const cleanUpdateData = removeUndefined(updateData);
+
+		await prisma.product.update({ where: { id: product.id }, data: cleanUpdateData });
+
+		if (imagesAction) {
+			const files = (req.files ?? []) as Express.Multer.File[];
+
+			await this.productImageService.update(productId, files, imagesAction);
 		}
 
-		const updatedProduct = await prisma.product.update({ where: { id: product.id }, data: updateData });
+		const updatedProduct = await prisma.product.findUnique({
+			where: {
+				id: productId,
+			},
+			select: {
+				id: true,
+				name: true,
+				stock: true,
+				price: true,
+
+				productImages: {
+					orderBy: {
+						position: "asc",
+					},
+					take: 1,
+					select: {
+						url: true,
+					},
+				},
+			},
+		});
 
 		res.status(200).json(updatedProduct);
 	};
