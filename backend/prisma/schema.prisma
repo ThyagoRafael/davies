@@ -101,6 +101,7 @@ model ShippingAddress {
 
 enum OrderStatus {
   pending
+  processing
   shipped
   delivered
   canceled
