@@ -21,9 +21,20 @@ export async function stripeWebhook(req: Request, res: Response) {
 			event.type === "payment_intent.canceled"
 		) {
 			const intent = event.data.object as Stripe.PaymentIntent;
-			await prisma.payment.updateMany({
-				where: { externalId: intent.id },
-				data: { status: mapStripeStatus(intent) },
+			const orderId = Number(intent.metadata.orderId);
+
+			await prisma.$transaction(async (tx) => {
+				await tx.payment.updateMany({
+					where: { externalId: intent.id },
+					data: { status: mapStripeStatus(intent) },
+				});
+
+				if (event.type === "payment_intent.succeeded") {
+					await tx.order.update({
+						where: { id: orderId },
+						data: { status: "processing" },
+					});
+				}
 			});
 		}
 	} catch (error) {
