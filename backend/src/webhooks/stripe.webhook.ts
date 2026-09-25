@@ -11,7 +11,7 @@ export async function stripeWebhook(req: Request, res: Response) {
 	let event: Stripe.Event;
 	try {
 		event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-	} catch (error) {
+	} catch {
 		return res.status(400).send("Webhook signature inválida");
 	}
 
