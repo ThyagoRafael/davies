@@ -1,4 +1,3 @@
-// src/webhooks/stripe.webhook.ts
 import type { Request, Response } from "express";
 import Stripe from "stripe";
 import { prisma } from "../config/prisma.js";
