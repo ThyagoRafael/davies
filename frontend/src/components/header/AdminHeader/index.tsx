@@ -2,6 +2,7 @@ import { FaUser } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 import logo from "../../../assets/logo.png";
 import styles from "./AdminHeader.module.css";
+import { Link } from "react-router-dom";
 
 export default function AdminHeader() {
 	return (
@@ -10,12 +11,15 @@ export default function AdminHeader() {
 				<MdMenu size={25} />
 			</button>
 
-			<div className={styles.logoContainer}>
+			<Link
+				to="/"
+				className={styles.logoContainer}
+			>
 				<img
 					src={logo}
 					alt="Logo da Davies Ecommerce"
 				/>
-			</div>
+			</Link>
 
 			<button className={styles.button}>
 				<FaUser size={25} />
