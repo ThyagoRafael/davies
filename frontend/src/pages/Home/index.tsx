@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
 import type { Product } from "../../types/Product";
-import { formatPrice } from "../../utils/formatPrice";
+import { formatMoney } from "../../utils/formatMoney";
 import { getAllProducts } from "../../services/api/products";
 import { FaCartPlus } from "react-icons/fa";
 import { BsCartCheck } from "react-icons/bs";
@@ -77,7 +77,7 @@ export default function Home() {
 
 								<div className={styles.cardFooter}>
 									<p className={styles.productPrice}>
-										<strong>{formatPrice(product.price)}</strong>
+										<strong>{formatMoney(product.price)}</strong>
 									</p>
 
 									<button

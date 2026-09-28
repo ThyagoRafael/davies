@@ -1,4 +1,4 @@
-import { formatPrice } from "../../../../utils/formatPrice";
+import { formatMoney } from "../../../../utils/formatMoney";
 import styles from "./OrderItemCard.module.css";
 import type { OrderItem } from "../../../../types/api/order";
 
@@ -20,7 +20,7 @@ export default function OrderItemCard({ item }: OrderItemCardProps) {
 
 				<footer className={styles.descriptionFooter}>
 					<p>Quantidade: {item.quantity}</p>
-					<strong>{formatPrice(item.unitPrice)}</strong>
+					<strong>{formatMoney(item.unitPrice)}</strong>
 				</footer>
 			</div>
 		</div>

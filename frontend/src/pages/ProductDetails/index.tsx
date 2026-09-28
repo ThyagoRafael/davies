@@ -4,7 +4,7 @@ import Button from "../../components/form/Button";
 import { useEffect, useState, useRef } from "react";
 import type { Product } from "../../types/Product";
 import axios from "axios";
-import { formatPrice } from "../../utils/formatPrice";
+import { formatMoney } from "../../utils/formatMoney";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { AppError } from "../../errors/AppError";
 import { addToCart } from "../../services/api/cartItem";
@@ -125,7 +125,7 @@ export default function ProductDetails() {
 
 							<div className={styles.paymentContainer}>
 								<p className={styles.paymentPrice}>
-									<strong>{formatPrice(product.price)}</strong>
+									<strong>{formatMoney(product.price)}</strong>
 								</p>
 
 								<div className={styles.actionsContainer}>

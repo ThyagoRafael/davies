@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { formatPrice } from "../../../utils/formatPrice";
+import { formatMoney } from "../../../utils/formatMoney";
 import styles from "./Orders.module.css";
 import type { OrdersList } from "../../../types/api/order";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
@@ -62,7 +62,7 @@ export default function Orders() {
 										</p>
 									</div>
 
-									<strong>{formatPrice(order.totalPrice)}</strong>
+									<strong>{formatMoney(order.totalPrice)}</strong>
 								</div>
 							</article>
 						</li>

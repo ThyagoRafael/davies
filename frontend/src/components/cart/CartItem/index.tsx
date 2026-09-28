@@ -1,5 +1,5 @@
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
-import { formatPrice } from "../../../utils/formatPrice";
+import { formatMoney } from "../../../utils/formatMoney";
 import styles from "./CartItem.module.css";
 import { Link } from "react-router-dom";
 import type { UpdateAction } from "../../../types/cartItem/updateAction";
@@ -41,7 +41,7 @@ export default function CartItem({
 			<div className={styles.cartItemContent}>
 				<p>{name}</p>
 
-				<strong>{formatPrice(price)}</strong>
+				<strong>{formatMoney(price)}</strong>
 
 				<div>
 					<p>{stock > 0 ? "Em estoque" : "Esgotado"}</p>
