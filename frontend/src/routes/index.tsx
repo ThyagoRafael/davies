@@ -10,6 +10,10 @@ import Checkout from "../pages/Order/Checkout";
 import OrderConfirmation from "../pages/Order/OrderConfirmation";
 import Orders from "../pages/User/Orders";
 import OrderDetails from "../pages/User/Orders/Details";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminProducts from "../pages/Admin/AdminProducts";
+import AdminOrders from "../pages/Admin/AdminOrders";
+import AdminLayout from "../templates/AdminLayout";
 
 export default function Router() {
 	return (
@@ -64,6 +68,24 @@ export default function Router() {
 				<Route
 					path="cadastro"
 					element={<Register />}
+				/>
+			</Route>
+
+			<Route
+				path="admin"
+				element={<AdminLayout />}
+			>
+				<Route
+					path="dashboard"
+					element={<AdminDashboard />}
+				/>
+				<Route
+					path="pedidos"
+					element={<AdminOrders />}
+				/>
+				<Route
+					path="produtos"
+					element={<AdminProducts />}
 				/>
 			</Route>
 
