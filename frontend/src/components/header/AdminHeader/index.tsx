@@ -4,7 +4,11 @@ import logo from "../../../assets/logo.png";
 import styles from "./AdminHeader.module.css";
 import { Link } from "react-router-dom";
 
-export default function AdminHeader() {
+interface AdminHeaderProps {
+	onOpenDrawer: () => void;
+}
+
+export default function AdminHeader({ onOpenDrawer }: AdminHeaderProps) {
 	return (
 		<header className={styles.container}>
 			<button className={styles.button}>
@@ -21,7 +25,10 @@ export default function AdminHeader() {
 				/>
 			</Link>
 
-			<button className={styles.button}>
+			<button
+				className={styles.button}
+				onClick={onOpenDrawer}
+			>
 				<FaUser size={25} />
 			</button>
 		</header>
