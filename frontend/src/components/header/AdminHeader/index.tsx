@@ -5,13 +5,17 @@ import styles from "./AdminHeader.module.css";
 import { Link } from "react-router-dom";
 
 interface AdminHeaderProps {
-	onOpenDrawer: () => void;
+	onOpenProfileDrawer: () => void;
+	onOpenAdminDrawer: () => void;
 }
 
-export default function AdminHeader({ onOpenDrawer }: AdminHeaderProps) {
+export default function AdminHeader({ onOpenProfileDrawer, onOpenAdminDrawer }: AdminHeaderProps) {
 	return (
 		<header className={styles.container}>
-			<button className={styles.button}>
+			<button
+				className={styles.button}
+				onClick={onOpenAdminDrawer}
+			>
 				<MdMenu size={25} />
 			</button>
 
@@ -27,7 +31,7 @@ export default function AdminHeader({ onOpenDrawer }: AdminHeaderProps) {
 
 			<button
 				className={styles.button}
-				onClick={onOpenDrawer}
+				onClick={onOpenProfileDrawer}
 			>
 				<FaUser size={25} />
 			</button>

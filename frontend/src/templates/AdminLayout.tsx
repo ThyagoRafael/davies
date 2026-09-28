@@ -4,13 +4,18 @@ import styles from "./Layout.module.css";
 import AdminHeader from "../components/header/AdminHeader";
 import ProfileDrawer from "../components/profile/ProfileDrawer";
 import { useState } from "react";
+import AdminDrawer from "../components/admin/AdminDrawer";
 
 export default function AdminLayout() {
-	const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false);
+	const [isProfileDrawerOpened, setIsProfileDrawerOpened] = useState<boolean>(false);
+	const [isAdminDrawerOpened, setIsAdminDrawerOpened] = useState<boolean>(false);
 
 	return (
 		<div className={styles.container}>
-			<AdminHeader onOpenDrawer={() => setIsDrawerOpened(true)} />
+			<AdminHeader
+				onOpenProfileDrawer={() => setIsProfileDrawerOpened(true)}
+				onOpenAdminDrawer={() => setIsAdminDrawerOpened(true)}
+			/>
 
 			<main className={styles.main}>
 				<Outlet />
@@ -19,8 +24,13 @@ export default function AdminLayout() {
 			<Footer />
 
 			<ProfileDrawer
-				isOpen={isDrawerOpened}
-				onClose={() => setIsDrawerOpened(false)}
+				isOpen={isProfileDrawerOpened}
+				onClose={() => setIsProfileDrawerOpened(false)}
+			/>
+
+			<AdminDrawer
+				isOpen={isAdminDrawerOpened}
+				onClose={() => setIsAdminDrawerOpened(false)}
 			/>
 		</div>
 	);
