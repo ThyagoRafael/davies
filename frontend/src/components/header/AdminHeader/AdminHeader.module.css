@@ -1,0 +1,24 @@
+.container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 1rem 0.75rem;
+
+	background-color: var(--secondary-color);
+}
+
+.button {
+	all: unset;
+	padding: 0.5rem;
+}
+
+.logoContainer {
+	padding: 0.5rem;
+}
+
+.logoContainer img {
+	height: 18px;
+	width: auto;
+}
