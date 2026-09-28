@@ -20,7 +20,7 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
+						transition={{ duration: 0.4 }}
 					>
 						<motion.button
 							type="button"
@@ -41,7 +41,7 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 						animate={{ x: 0 }}
 						exit={{ x: "100%" }}
 						transition={{
-							duration: 0.1,
+							duration: 0.2,
 							ease: "easeOut",
 						}}
 					>
