@@ -51,7 +51,7 @@ export default function AdminOrders() {
 				{ordersMock.map((order) => (
 					<li key={order.id}>
 						<Link
-							to={`/admin/${order.orderCode}`}
+							to={`/admin/pedidos/${order.orderCode}`}
 							className={styles.orderCard}
 						>
 							<div className={styles.orderCardHeader}>
