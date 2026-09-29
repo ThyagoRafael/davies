@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { OrderStatus } from "../../../types/api/order";
 import { formatMoney } from "../../../utils/formatMoney";
 import { getOrderStatusLabel } from "../../../utils/orderStatus";
@@ -48,25 +49,27 @@ export default function AdminOrders() {
 
 			<ul className={styles.ordersList}>
 				{ordersMock.map((order) => (
-					<li
-						className={styles.orderCard}
-						key={order.id}
-					>
-						<div className={styles.orderCardHeader}>
-							<h3>{order.orderCode}</h3>
-							<p>{getOrderStatusLabel(order.status)}</p>
-						</div>
-
-						<div className={styles.orderCardContent}>
-							<p>{order.customerName}</p>
-
-							<div>
-								<p>{order.orderDate}</p>
-								<p>
-									<strong>{formatMoney(order.price)}</strong>
-								</p>
+					<li key={order.id}>
+						<Link
+							to={`/admin/${order.orderCode}`}
+							className={styles.orderCard}
+						>
+							<div className={styles.orderCardHeader}>
+								<h3>{order.orderCode}</h3>
+								<p>{getOrderStatusLabel(order.status)}</p>
 							</div>
-						</div>
+
+							<div className={styles.orderCardContent}>
+								<p>{order.customerName}</p>
+
+								<div>
+									<p>{order.orderDate}</p>
+									<p>
+										<strong>{formatMoney(order.price)}</strong>
+									</p>
+								</div>
+							</div>
+						</Link>
 					</li>
 				))}
 			</ul>
