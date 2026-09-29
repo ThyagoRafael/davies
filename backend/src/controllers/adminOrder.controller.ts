@@ -10,27 +10,26 @@ export class AdminOrderController {
 				id: true,
 				orderCode: true,
 				status: true,
-				totalPrice: true,
 				createdAt: true,
-				updatedAt: true,
-
-				shippingAddress: {
-					omit: {
-						id: true,
-						userId: false,
-					},
-				},
+				totalPrice: true,
 
 				user: {
 					select: {
 						name: true,
-						cpf: true,
 					},
 				},
 			},
+			orderBy: {
+				createdAt: "desc",
+			},
 		});
 
-		res.status(200).json(orders);
+		const formattedOrders = orders.map((order) => ({
+			...order,
+			user: order.user.name,
+		}));
+
+		res.status(200).json(formattedOrders);
 	};
 
 	updateStatus = async (req: Request, res: Response) => {
