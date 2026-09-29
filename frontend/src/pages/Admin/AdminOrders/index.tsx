@@ -1,66 +1,74 @@
+import type { OrderStatus } from "../../../types/api/order";
 import { formatMoney } from "../../../utils/formatMoney";
+import { getOrderStatusLabel } from "../../../utils/orderStatus";
+import styles from "./AdminOrders.module.css";
+
+interface OrderMock {
+	id: number;
+	orderCode: string;
+	status: OrderStatus;
+	customerName: string;
+	orderDate: string;
+	price: string;
+}
+
+const ordersMock: OrderMock[] = [
+	{
+		id: 1,
+		orderCode: "PED-12345",
+		status: "pending",
+		customerName: "Nome do cliente",
+		orderDate: "20/02/2027",
+		price: "200.00",
+	},
+	{
+		id: 2,
+		orderCode: "PED-12346",
+		status: "processing",
+		customerName: "Nome do cliente",
+		orderDate: "20/02/2027",
+		price: "200.00",
+	},
+	{
+		id: 3,
+		orderCode: "PED-12347",
+		status: "processing",
+		customerName: "Nome do cliente",
+		orderDate: "20/02/2027",
+		price: "200.00",
+	},
+];
 
 export default function AdminOrders() {
 	return (
-		<main>
+		<main className={styles.container}>
 			<header>
 				<h1>Pedidos</h1>
 			</header>
 
-			<ul>
-				<li>
-					<div>
-						<h3>{"PED-12345"}</h3>
-						<p>{"Pendente"}</p>
-					</div>
-
-					<div>
-						<p>{"Nome do cliente"}</p>
-
-						<div>
-							<p>{"20/02/2027"}</p>
-							<p>
-								<strong>{formatMoney("200.00")}</strong>
-							</p>
+			<ul className={styles.ordersList}>
+				{ordersMock.map((order) => (
+					<li
+						className={styles.orderCard}
+						key={order.id}
+					>
+						<div className={styles.orderCardHeader}>
+							<h3>{order.orderCode}</h3>
+							<p>{getOrderStatusLabel(order.status)}</p>
 						</div>
-					</div>
-				</li>
 
-				<li>
-					<div>
-						<h3>{"PED-12347"}</h3>
-						<p>{"Em processamento"}</p>
-					</div>
+						<div className={styles.orderCardContent}>
+							<p>{order.customerName}</p>
 
-					<div>
-						<p>{"Nome do cliente"}</p>
-
-						<div>
-							<p>{"20/02/2027"}</p>
-							<p>
-								<strong>{formatMoney("200.00")}</strong>
-							</p>
+							<div>
+								<p>{order.orderDate}</p>
+								<p>
+									<strong>{formatMoney(order.price)}</strong>
+								</p>
+							</div>
 						</div>
-					</div>
-				</li>
-
-				<li>
-					<div>
-						<h3>{"PED-12346"}</h3>
-						<p>{"Em processamento"}</p>
-					</div>
-
-					<div>
-						<p>{"Nome do cliente"}</p>
-
-						<div>
-							<p>{"20/02/2027"}</p>
-							<p>
-								<strong>{formatMoney("200.00")}</strong>
-							</p>
-						</div>
-					</div>
-				</li>
+					</li>
+				))}
 			</ul>
 		</main>
 	);
