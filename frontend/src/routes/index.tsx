@@ -14,6 +14,7 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminProducts from "../pages/Admin/AdminProducts";
 import AdminOrders from "../pages/Admin/AdminOrders";
 import AdminLayout from "../templates/AdminLayout";
+import AdminOrderDetails from "../pages/Admin/AdminOrders/AdminOrderDetails";
 
 export default function Router() {
 	return (
@@ -83,6 +84,12 @@ export default function Router() {
 					path="pedidos"
 					element={<AdminOrders />}
 				/>
+
+				<Route
+					path="pedidos/:orderId"
+					element={<AdminOrderDetails />}
+				/>
+
 				<Route
 					path="produtos"
 					element={<AdminProducts />}
