@@ -14,6 +14,8 @@ export class AdminDashboardController {
 
 		const totalOrders = await prisma.order.count();
 
+		const totalProducts = await prisma.product.count();
+
 		const totalProductStock = await prisma.product.aggregate({
 			_sum: {
 				stock: true,
@@ -23,6 +25,7 @@ export class AdminDashboardController {
 		res.status(200).json({
 			totalSales: totalSales._sum.totalPrice,
 			totalOrders,
+			totalProducts,
 			totalProductStock: totalProductStock._sum.stock,
 		});
 	};
