@@ -77,6 +77,15 @@ export default function Router() {
 				element={<AdminLayout />}
 			>
 				<Route
+					index
+					element={
+						<Navigate
+							to="dashboard"
+							replace
+						/>
+					}
+				/>
+				<Route
 					path="dashboard"
 					element={<AdminDashboard />}
 				/>
