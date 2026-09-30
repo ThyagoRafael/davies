@@ -89,7 +89,7 @@ export default function AdminOrderDetails() {
 					</section>
 
 					<div className={styles.stickyButtonContainer}>
-						<button>Alterar Status</button>
+						<button>Atualizar Status</button>
 					</div>
 				</>
 			) : (
