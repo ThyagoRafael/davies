@@ -42,48 +42,56 @@ export default function AdminOrderDetails() {
 			</header>
 
 			{orderDetails ? (
-				<section className={styles.detailsContainer}>
-					<header className={styles.detailsHeader}>
-						<div className={styles.orderInfo}>
-							<h2>
-								{getOrderDisplayStatus(
-									orderDetails.order.status,
-									orderDetails.payment.status,
-									orderDetails.order.deliveredAt,
-								)}
-							</h2>
+				<>
+					<section className={styles.detailsContainer}>
+						<header className={styles.detailsHeader}>
+							<div className={styles.orderInfo}>
+								<h2>
+									{getOrderDisplayStatus(
+										orderDetails.order.status,
+										orderDetails.payment.status,
+										orderDetails.order.deliveredAt,
+									)}
+								</h2>
 
-							<div>
-								<p>Pedido realizado em {new Date(orderDetails.order.createdAt).toLocaleDateString("pt-BR")}</p>
-								<p>Código do pedido #{orderDetails.order.orderCode}</p>
+								<div>
+									<p>
+										Pedido realizado em {new Date(orderDetails.order.createdAt).toLocaleDateString("pt-BR")}
+									</p>
+									<p>Código do pedido #{orderDetails.order.orderCode}</p>
+								</div>
 							</div>
-						</div>
 
-						<PriceCard
-							priceData={{
-								itemsPrice: orderDetails.order.itemsPrice,
-								shippingPrice: orderDetails.order.shippingPrice,
-								totalPrice: orderDetails.order.totalPrice,
-							}}
-						/>
-					</header>
+							<PriceCard
+								priceData={{
+									itemsPrice: orderDetails.order.itemsPrice,
+									shippingPrice: orderDetails.order.shippingPrice,
+									totalPrice: orderDetails.order.totalPrice,
+								}}
+							/>
+						</header>
 
-					<section className={styles.detailsSection}>
-						<h2>Pagamento</h2>
+						<section className={styles.detailsSection}>
+							<h2>Pagamento</h2>
 
-						<article className={styles.paymentCard}>
-							<h3 className={styles.paymentHeader}>
-								Cartão - {orderDetails.card.cardBrand} ****{orderDetails.card.lastDigits}
-							</h3>
+							<article className={styles.paymentCard}>
+								<h3 className={styles.paymentHeader}>
+									Cartão - {orderDetails.card.cardBrand} ****{orderDetails.card.lastDigits}
+								</h3>
 
-							<p className={styles.cardHolder}>{orderDetails.card.holderName}</p>
-						</article>
+								<p className={styles.cardHolder}>{orderDetails.card.holderName}</p>
+							</article>
+						</section>
+
+						<AddressCard selectedAddress={orderDetails.address} />
+
+						<OrderItemsContainer items={orderDetails.orderItems} />
 					</section>
 
-					<AddressCard selectedAddress={orderDetails.address} />
-
-					<OrderItemsContainer items={orderDetails.orderItems} />
-				</section>
+					<div className={styles.stickyButtonContainer}>
+						<button>Alterar Status</button>
+					</div>
+				</>
 			) : (
 				<p>Erro no carregamento do pedido</p>
 			)}
