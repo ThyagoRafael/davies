@@ -1,7 +1,8 @@
 import { IoMdClose } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./ProfileDrawer.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface ProfileDrawerProps {
 	isOpen: boolean;
@@ -9,6 +10,15 @@ interface ProfileDrawerProps {
 }
 
 export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
+	const navigate = useNavigate();
+	const { user, logout } = useAuth();
+
+	const handleLogout = () => {
+		logout();
+		onClose();
+		navigate("/entrar");
+	};
+
 	return (
 		<AnimatePresence>
 			{isOpen && (
@@ -46,38 +56,65 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
 						}}
 					>
 						<div className={styles.content}>
-							<div className={styles.mainContent}>
-								<header className={styles.header}>
-									<p>Olá, João</p>
+							{user ? (
+								<>
+									<div className={styles.mainContent}>
+										<header className={styles.header}>
+											<p>Olá, {user.username}</p>
+											<h2>
+												<Link
+													to="/usuario"
+													className={styles.link}
+													onClick={onClose}
+												>
+													Sua conta
+												</Link>
+											</h2>
+										</header>
+
+										<nav className={styles.navigation}>
+											<ul>
+												<li>
+													<Link
+														to="/usuario/pedidos"
+														className={styles.link}
+														onClick={onClose}
+													>
+														Seus pedidos
+													</Link>
+												</li>
+												<li>
+													<button className={styles.link}>Suas formas de pagamento</button>
+												</li>
+												<li>
+													<button className={styles.link}>Seus endereços</button>
+												</li>
+											</ul>
+										</nav>
+									</div>
+									<footer className={styles.footer}>
+										<button
+											type="button"
+											onClick={handleLogout}
+										>
+											Sair da conta
+										</button>
+									</footer>{" "}
+								</>
+							) : (
+								<div className={styles.loggedOut}>
+									<p>Olá</p>
 									<h2>
-										<button>Sua conta</button>
+										<Link
+											to="/entrar"
+											className={styles.link}
+											onClick={onClose}
+										>
+											Fazer login
+										</Link>
 									</h2>
-								</header>
-
-								<nav className={styles.navigation}>
-									<ul>
-										<li>
-											<Link
-												to="/usuario/pedidos"
-												className={styles.link}
-												onClick={onClose}
-											>
-												Seus pedidos
-											</Link>
-										</li>
-										<li>
-											<button className={styles.link}>Suas formas de pagamento</button>
-										</li>
-										<li>
-											<button className={styles.link}>Seus endereços</button>
-										</li>
-									</ul>
-								</nav>
-							</div>
-
-							<footer className={styles.footer}>
-								<button type="button">Sair da conta</button>
-							</footer>
+								</div>
+							)}
 						</div>
 					</motion.aside>
 				</div>

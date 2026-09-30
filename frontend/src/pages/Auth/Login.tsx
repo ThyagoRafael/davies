@@ -5,6 +5,7 @@ import styles from "./Auth.module.css";
 import { useEffect, useState, type FormEvent } from "react";
 import axios from "axios";
 import { redirectAfterLogin } from "../../helpers/logout";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Login() {
 	const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function Login() {
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
+	const { login } = useAuth();
 
 	useEffect(() => {
 		const prefilledEmail = localStorage.getItem("prefilled_email");
@@ -41,7 +43,8 @@ export default function Login() {
 			setIsLoading(true);
 
 			const response = await axios.post("http://localhost:3000/api/users/login", formData);
-			localStorage.setItem("user", JSON.stringify(response.data));
+			login(response.data);
+			redirectAfterLogin(navigate);
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				return alert(error.response?.data.message);
@@ -52,8 +55,6 @@ export default function Login() {
 		} finally {
 			setIsLoading(false);
 		}
-
-		redirectAfterLogin(navigate);
 	};
 
 	return (
