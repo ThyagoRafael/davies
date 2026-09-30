@@ -27,6 +27,10 @@ api.interceptors.response.use(
 			logoutAndRedirectToLogin();
 		}
 
+		if (error.response?.status === 403) {
+			window.location.replace("/");
+		}
+
 		return Promise.reject(error);
 	},
 );
