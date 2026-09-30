@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
-import type { OrderStatus } from "../generated/prisma/enums.js";
 import { AppError } from "../errors/AppError.js";
+import type { OrderStatus } from "../generated/prisma/enums.js";
 
 export class AdminOrderController {
 	list = async (req: Request, res: Response) => {
@@ -34,7 +34,6 @@ export class AdminOrderController {
 
 	updateStatus = async (req: Request, res: Response) => {
 		const orderId = Number(req.params.orderId);
-		const { status } = req.body as { status: OrderStatus };
 
 		const order = await prisma.order.findUnique({
 			where: {
@@ -49,16 +48,29 @@ export class AdminOrderController {
 			throw new AppError("Pedido não encontrado", 404);
 		}
 
-		if (order.status === "shipped" && (status === "pending" || status === "shipped")) {
-			throw new AppError("Não é possível voltar o status do pedido", 400);
-		}
+		let status: OrderStatus;
 
-		if (order.status === "delivered") {
-			throw new AppError("Pedido já foi entregue", 400);
-		}
+		switch (order.status) {
+			case "pending":
+				status = "processing";
+				break;
 
-		if (order.status === "canceled") {
-			throw new AppError("Pedido já foi cancelado", 400);
+			case "processing":
+				status = "shipped";
+				break;
+
+			case "shipped":
+				status = "delivered";
+				break;
+
+			case "delivered":
+				throw new AppError("Pedido já foi entregue", 400);
+
+			case "canceled":
+				throw new AppError("Pedido já foi cancelado", 400);
+
+			default:
+				throw new AppError("Status do pedido inválido", 400);
 		}
 
 		const updatedStatus = await prisma.order.update({
@@ -67,11 +79,10 @@ export class AdminOrderController {
 				status,
 			},
 			select: {
-				id: true,
 				status: true,
 			},
 		});
 
-		res.status(200).json(updatedStatus);
+		res.status(200).json({ newStatus: updatedStatus.status });
 	};
 }
