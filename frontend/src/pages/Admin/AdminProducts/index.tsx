@@ -5,14 +5,14 @@ import { formatMoney } from "../../../utils/formatMoney";
 
 export default function AdminProducts() {
 	return (
-		<main>
-			<header>
+		<main className={styles.container}>
+			<header className={styles.header}>
 				<h1>Produtos</h1>
 			</header>
 
-			<section>
-				<div>
-					<button>
+			<section className={styles.productsSection}>
+				<div className={styles.actionButtonContainer}>
+					<button className={styles.actionButton}>
 						<AiOutlinePlusCircle size={16} />
 						<span>Criar novo produto</span>
 					</button>
@@ -21,7 +21,7 @@ export default function AdminProducts() {
 				<ul className={styles.list}>
 					{[1, 2, 3].map((item) => (
 						<li key={item}>
-							<div className={styles.container}>
+							<div className={styles.productCard}>
 								<div className={styles.imageWrapper}>
 									<img
 										src={imagemTeste}
