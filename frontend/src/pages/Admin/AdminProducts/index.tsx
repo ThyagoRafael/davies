@@ -1,9 +1,27 @@
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import styles from "./AdminProducts.module.css";
-import imagemTeste from "../../../assets/imagem-teste.png";
 import { formatMoney } from "../../../utils/formatMoney";
+import { useEffect, useState } from "react";
+import type { ProductsList } from "../../../types/api/admin/products";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { getProductsList } from "../../../services/api/admin/products";
 
 export default function AdminProducts() {
+	const [products, setProducts] = useState<ProductsList>([]);
+
+	useEffect(() => {
+		const loadProducts = async () => {
+			try {
+				const data = await getProductsList();
+				setProducts(data);
+			} catch (error) {
+				alert(getErrorMessage(error));
+			}
+		};
+
+		loadProducts();
+	}, []);
+
 	return (
 		<main className={styles.container}>
 			<header className={styles.header}>
@@ -19,21 +37,21 @@ export default function AdminProducts() {
 				</div>
 
 				<ul className={styles.list}>
-					{[1, 2, 3].map((item) => (
-						<li key={item}>
+					{products.map((product) => (
+						<li key={product.id}>
 							<div className={styles.productCard}>
 								<div className={styles.imageWrapper}>
 									<img
-										src={imagemTeste}
-										alt=""
+										src={product.imageUrl}
+										alt={product.name}
 									/>
 								</div>
 								<div className={styles.descriptionContainer}>
-									<h3>{"Produto tal azul"}</h3>
+									<h3>{product.name}</h3>
 
 									<footer className={styles.descriptionFooter}>
-										<p>Estoque: {50}</p>
-										<strong>{formatMoney("225.00")}</strong>
+										<p>Estoque: {product.stock}</p>
+										<strong>{formatMoney(product.price)}</strong>
 									</footer>
 								</div>
 							</div>
