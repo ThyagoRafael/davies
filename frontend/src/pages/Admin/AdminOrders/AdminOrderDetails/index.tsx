@@ -5,14 +5,21 @@ import PriceCard from "../../../../components/order/PriceCard";
 import AddressCard from "../../../../components/order/AddressCard";
 import OrderItemsContainer from "../../../../components/order/OrderItemsContainer";
 import { useEffect, useState } from "react";
-import type { OrderDetails } from "../../../../types/api/order";
+import type { OrderDetails, OrderStatus } from "../../../../types/api/order";
 import { getOrderDetails } from "../../../../services/api/order";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import { getOrderDisplayStatus } from "../../../../utils/orderDisplayStatus";
+import { updateOrderStatus } from "../../../../services/api/admin/orders";
+
+const mapUpdateStatus: Record<Exclude<OrderStatus, "delivered" | "canceled">, string> = {
+	pending: "Pendente -> Em processamento",
+	processing: "Em processamento -> Enviado",
+	shipped: "Enviado -> Entregue",
+};
 
 export default function AdminOrderDetails() {
 	const { orderId } = useParams();
-	const [orderDetails, setOrderDetails] = useState<OrderDetails>();
+	const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
 
 	useEffect(() => {
 		async function loadOrderData() {
@@ -27,6 +34,37 @@ export default function AdminOrderDetails() {
 
 		loadOrderData();
 	}, [orderId]);
+
+	const handleUpdateStatus = async () => {
+		if (!orderDetails) {
+			alert("Erro ao carregar os detalhes do pedido");
+			return;
+		}
+
+		const status = orderDetails.order.status;
+
+		if (status === "delivered" || status === "canceled") {
+			return;
+		}
+
+		const confirmation = confirm(`Você tem certeza? ${mapUpdateStatus[status]}`);
+
+		if (!confirmation) {
+			return;
+		}
+
+		try {
+			const data = await updateOrderStatus(Number(orderId));
+
+			setOrderDetails((prev) => {
+				if (!prev) return prev;
+
+				return { ...prev, order: { ...prev.order, status: data.newStatus } };
+			});
+		} catch (error) {
+			alert(getErrorMessage(error));
+		}
+	};
 
 	return (
 		<section className={styles.container}>
@@ -89,7 +127,16 @@ export default function AdminOrderDetails() {
 					</section>
 
 					<div className={styles.stickyButtonContainer}>
-						<button>Atualizar Status</button>
+						<button
+							onClick={handleUpdateStatus}
+							disabled={
+								orderDetails.order.status === "pending" ||
+								orderDetails.order.status === "delivered" ||
+								orderDetails.order.status === "canceled"
+							}
+						>
+							Atualizar Status
+						</button>
 					</div>
 				</>
 			) : (
