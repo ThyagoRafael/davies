@@ -52,8 +52,7 @@ export class AdminOrderController {
 
 		switch (order.status) {
 			case "pending":
-				status = "processing";
-				break;
+				throw new AppError("Aguardando confirmação do pagamento", 400);
 
 			case "processing":
 				status = "shipped";
