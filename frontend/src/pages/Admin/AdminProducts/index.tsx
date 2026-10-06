@@ -13,6 +13,7 @@ import { IoClose } from "react-icons/io5";
 
 export default function AdminProducts() {
 	const [products, setProducts] = useState<ProductsList>([]);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		const loadProducts = async () => {
@@ -35,7 +36,10 @@ export default function AdminProducts() {
 
 			<section className={styles.productsSection}>
 				<div className={styles.actionButtonContainer}>
-					<button className={styles.actionButton}>
+					<button
+						className={styles.actionButton}
+						onClick={() => setIsModalOpen(true)}
+					>
 						<AiOutlinePlusCircle size={16} />
 						<span>Criar novo produto</span>
 					</button>
@@ -66,93 +70,115 @@ export default function AdminProducts() {
 			</section>
 
 			<AnimatePresence>
-				<motion.div
-					initial={{ scale: 0 }}
-					animate={{ scale: 1 }}
-					exit={{ scale: 0 }}
-					transition={{ duration: 0.3 }}
-				>
-					<h1>Criar produto</h1>
+				{isModalOpen && (
+					<motion.div
+						className={styles.overlay}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.2 }}
+					>
+						<motion.div
+							className={styles.modalContainer}
+							initial={{ scale: 0.9, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.9, opacity: 0 }}
+							transition={{ duration: 0.3 }}
+						>
+							<h2>Criar produto</h2>
 
-					<form>
-						<Field
-							label="Nome do produto"
-							name="name"
-							handleChange={(name, value) => {
-								console.log(name, value);
-							}}
-							placeholder="Ex: Blusa Laranja"
-						/>
+							<form>
+								<div className={styles.formFields}>
+									<Field
+										label="Nome do produto"
+										name="name"
+										handleChange={(name, value) => {
+											console.log(name, value);
+										}}
+										placeholder="Ex: Blusa Laranja"
+									/>
 
-						<div>
-							<Field
-								label="Estoque"
-								name="stock"
-								handleChange={(name, value) => {
-									console.log(name, value);
-								}}
-								placeholder="Ex: 50"
-							/>
+									<div className={styles.inlineInputs}>
+										<Field
+											label="Estoque"
+											name="stock"
+											handleChange={(name, value) => {
+												console.log(name, value);
+											}}
+											placeholder="Ex: 50"
+										/>
 
-							<div>
-								<label htmlFor="price">Preço</label>
+										<div className={styles.priceField}>
+											<label htmlFor="price">Preço (R$)</label>
 
-								<div>
-									<div>
-										<p>R$</p>
+											<input
+												id="price"
+												placeholder="Ex: 150,00"
+											/>
+										</div>
 									</div>
 
-									<input
-										id="price"
-										placeholder="150,00"
-									/>
+									<div className={styles.descriptionField}>
+										<label htmlFor="description">Descrição do produto</label>
+										<textarea
+											id="description"
+											placeholder="Blusa laranja tamanho G"
+										/>
+									</div>
+
+									<div className={styles.imagesField}>
+										<label>Imagens do produto (máx. 6)</label>
+
+										<ul>
+											{[1, 2, 3, 4].map((item) => (
+												<li
+													key={item}
+													className={styles.imagePreview}
+												>
+													<img
+														src={imagemTeste}
+														alt=""
+													/>
+
+													<button type="button">
+														<IoClose size={20} />
+													</button>
+												</li>
+											))}
+
+											<li className={styles.imageInput}>
+												<label>
+													<input
+														type="file"
+														accept="image/png, image/jpeg"
+													/>
+
+													<FaPlus size={24} />
+												</label>
+											</li>
+										</ul>
+									</div>
 								</div>
-							</div>
-						</div>
 
-						<div>
-							<label htmlFor="description">Descrição do produto</label>
-							<textarea
-								id="description"
-								placeholder="Blusa laranja tamanho G"
-							/>
-						</div>
-
-						<div>
-							<label>Imagens do produto (máx. 6)</label>
-
-							<ul>
-								{[1, 2, 3, 4].map((item) => (
-									<li key={item}>
-										<img
-											src={imagemTeste}
-											alt=""
-										/>
-
-										<button>
-											<IoClose />
-										</button>
-									</li>
-								))}
-								<li>
-									<label>
-										<input
-											type="file"
-											accept="image/png, image/jpeg"
-										/>
-
-										<FaPlus size={24} />
-									</label>
-								</li>
-							</ul>
-						</div>
-
-						<div>
-							<button type="submit">Criar produto</button>
-							<button type="button">Cancelar</button>
-						</div>
-					</form>
-				</motion.div>
+								<div className={styles.formButtonsContainer}>
+									<button
+										type="submit"
+										className={styles.primaryButton}
+									>
+										Criar produto
+									</button>
+									<button
+										type="button"
+										className={styles.secondaryButton}
+										onClick={() => setIsModalOpen(false)}
+									>
+										Cancelar
+									</button>
+								</div>
+							</form>
+						</motion.div>
+					</motion.div>
+				)}
 			</AnimatePresence>
 		</main>
 	);
