@@ -2,18 +2,19 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import styles from "./AdminProducts.module.css";
 import { formatMoney } from "../../../utils/formatMoney";
 import { useEffect, useState } from "react";
-import type { ProductsList } from "../../../types/api/admin/products";
+import type { CreateProductData, ProductData, ProductsList } from "../../../types/api/admin/products";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { getProductsList } from "../../../services/api/admin/products";
-import { AnimatePresence, motion } from "framer-motion";
-import Field from "../../../components/form/Field";
-import imagemTeste from "../../../assets/imagem-teste.png";
-import { FaPlus } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
+import { getProductData, getProductsList } from "../../../services/api/admin/products";
+import AdminProductModal from "../../../components/modal/AdminProductModal";
+
+interface ModalData {
+	mode: "create" | "update";
+	product?: ProductData;
+}
 
 export default function AdminProducts() {
 	const [products, setProducts] = useState<ProductsList>([]);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [modalData, setModalData] = useState<ModalData | null>(null);
 
 	useEffect(() => {
 		const loadProducts = async () => {
@@ -28,6 +29,36 @@ export default function AdminProducts() {
 		loadProducts();
 	}, []);
 
+	const handleOpenModal = async (id?: number) => {
+		if (!id) {
+			setModalData({ mode: "create" });
+			return;
+		}
+
+		try {
+			const data = await getProductData(id);
+
+			setModalData({ mode: "update", product: data });
+		} catch (error) {
+			alert(getErrorMessage(error));
+		}
+	};
+
+	const handleAddProduct = (data: CreateProductData) => {
+		setProducts((prev) => [
+			{
+				id: data.id,
+				name: data.name,
+				stock: data.stock,
+				price: data.price,
+				imageUrl: data.productImages[0].url,
+			},
+			...prev,
+		]);
+
+		setModalData(null);
+	};
+
 	return (
 		<main className={styles.container}>
 			<header className={styles.header}>
@@ -38,7 +69,7 @@ export default function AdminProducts() {
 				<div className={styles.actionButtonContainer}>
 					<button
 						className={styles.actionButton}
-						onClick={() => setIsModalOpen(true)}
+						onClick={() => handleOpenModal()}
 					>
 						<AiOutlinePlusCircle size={16} />
 						<span>Criar novo produto</span>
@@ -48,7 +79,10 @@ export default function AdminProducts() {
 				<ul className={styles.list}>
 					{products.map((product) => (
 						<li key={product.id}>
-							<div className={styles.productCard}>
+							<button
+								className={styles.productCard}
+								onClick={() => handleOpenModal(product.id)}
+							>
 								<div className={styles.imageWrapper}>
 									<img
 										src={product.imageUrl}
@@ -63,123 +97,19 @@ export default function AdminProducts() {
 										<strong>{formatMoney(product.price)}</strong>
 									</footer>
 								</div>
-							</div>
+							</button>
 						</li>
 					))}
 				</ul>
 			</section>
 
-			<AnimatePresence>
-				{isModalOpen && (
-					<motion.div
-						className={styles.overlay}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
-					>
-						<motion.div
-							className={styles.modalContainer}
-							initial={{ scale: 0.9, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							exit={{ scale: 0.9, opacity: 0 }}
-							transition={{ duration: 0.3 }}
-						>
-							<h2>Criar produto</h2>
-
-							<form>
-								<div className={styles.formFields}>
-									<Field
-										label="Nome do produto"
-										name="name"
-										handleChange={(name, value) => {
-											console.log(name, value);
-										}}
-										placeholder="Ex: Blusa Laranja"
-									/>
-
-									<div className={styles.inlineInputs}>
-										<Field
-											label="Estoque"
-											name="stock"
-											handleChange={(name, value) => {
-												console.log(name, value);
-											}}
-											placeholder="Ex: 50"
-										/>
-
-										<div className={styles.priceField}>
-											<label htmlFor="price">Preço (R$)</label>
-
-											<input
-												id="price"
-												placeholder="Ex: 150,00"
-											/>
-										</div>
-									</div>
-
-									<div className={styles.descriptionField}>
-										<label htmlFor="description">Descrição do produto</label>
-										<textarea
-											id="description"
-											placeholder="Blusa laranja tamanho G"
-										/>
-									</div>
-
-									<div className={styles.imagesField}>
-										<label>Imagens do produto (máx. 6)</label>
-
-										<ul>
-											{[1, 2, 3, 4].map((item) => (
-												<li
-													key={item}
-													className={styles.imagePreview}
-												>
-													<img
-														src={imagemTeste}
-														alt=""
-													/>
-
-													<button type="button">
-														<IoClose size={20} />
-													</button>
-												</li>
-											))}
-
-											<li className={styles.imageInput}>
-												<label>
-													<input
-														type="file"
-														accept="image/png, image/jpeg"
-													/>
-
-													<FaPlus size={24} />
-												</label>
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<div className={styles.formButtonsContainer}>
-									<button
-										type="submit"
-										className={styles.primaryButton}
-									>
-										Criar produto
-									</button>
-									<button
-										type="button"
-										className={styles.secondaryButton}
-										onClick={() => setIsModalOpen(false)}
-									>
-										Cancelar
-									</button>
-								</div>
-							</form>
-						</motion.div>
-					</motion.div>
-				)}
-			</AnimatePresence>
+			{modalData && (
+				<AdminProductModal
+					product={modalData.product ? modalData.product : null}
+					onAdd={handleAddProduct}
+					onClose={() => setModalData(null)}
+				/>
+			)}
 		</main>
 	);
 }
