@@ -202,7 +202,19 @@ export class AdminProductController {
 			},
 		});
 
-		res.status(200).json(updatedProduct);
+		if (!updatedProduct) {
+			throw new AppError("Produto atualizado não encontrado", 400);
+		}
+
+		const formattedUpdatedProduct = {
+			id: updatedProduct.id,
+			name: updatedProduct.name,
+			stock: updatedProduct.stock,
+			price: updatedProduct.price,
+			imageUrl: updatedProduct.productImages[0]?.url,
+		};
+
+		res.status(200).json(formattedUpdatedProduct);
 	};
 
 	destroy = async (req: Request, res: Response) => {
