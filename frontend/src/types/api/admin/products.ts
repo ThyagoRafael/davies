@@ -9,6 +9,7 @@ interface ProductsListData {
 export type ProductsList = ProductsListData[];
 
 export interface ProductData {
+	id: number;
 	name: string;
 	description: string;
 	price: string;
@@ -26,4 +27,12 @@ export interface CreateProductData {
 	stock: number;
 	productImages: { url: string }[];
 	id: number;
+}
+
+export interface UpdateProductData {
+	id: number;
+	name: string;
+	price: string;
+	stock: number;
+	imageUrl: string;
 }

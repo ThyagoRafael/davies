@@ -2,7 +2,12 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import styles from "./AdminProducts.module.css";
 import { formatMoney } from "../../../utils/formatMoney";
 import { useEffect, useState } from "react";
-import type { CreateProductData, ProductData, ProductsList } from "../../../types/api/admin/products";
+import type {
+	CreateProductData,
+	ProductData,
+	ProductsList,
+	UpdateProductData,
+} from "../../../types/api/admin/products";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getProductData, getProductsList } from "../../../services/api/admin/products";
 import AdminProductModal from "../../../components/modal/AdminProductModal";
@@ -59,6 +64,11 @@ export default function AdminProducts() {
 		setModalData(null);
 	};
 
+	const handleUpdateProduct = (data: UpdateProductData) => {
+		setProducts((prev) => prev.map((product) => (product.id === data.id ? data : product)));
+		setModalData(null);
+	};
+
 	return (
 		<main className={styles.container}>
 			<header className={styles.header}>
@@ -107,6 +117,7 @@ export default function AdminProducts() {
 				<AdminProductModal
 					product={modalData.product ? modalData.product : null}
 					onAdd={handleAddProduct}
+					onUpdate={handleUpdateProduct}
 					onClose={() => setModalData(null)}
 				/>
 			)}

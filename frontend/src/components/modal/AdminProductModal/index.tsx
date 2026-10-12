@@ -2,16 +2,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import styles from "./AdminProductModal.module.css";
-import type { CreateProductData, ProductData } from "../../../types/api/admin/products";
+import type { CreateProductData, ProductData, UpdateProductData } from "../../../types/api/admin/products";
 import Field from "../../form/Field";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { createProduct } from "../../../services/api/admin/products";
+import { createProduct, updateProduct } from "../../../services/api/admin/products";
 
 interface AdminProductModalProps {
 	product: ProductData | null;
 	onAdd: (data: CreateProductData) => void;
+	onUpdate: (data: UpdateProductData) => void;
 	onClose: () => void;
 }
 
@@ -37,7 +38,7 @@ interface NewImageData {
 
 type ImagesData = (ExistingImageData | NewImageData)[];
 
-export default function AdminProductModal({ product, onAdd, onClose }: AdminProductModalProps) {
+export default function AdminProductModal({ product, onAdd, onUpdate, onClose }: AdminProductModalProps) {
 	const isEditing = !!product;
 
 	const [formData, setFormData] = useState<ProductFormData>({
@@ -54,6 +55,7 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 		})),
 	);
 	const [deletedImages, setDeletedImages] = useState<number[]>([]);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const handleChange = (name: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [name]: value }));
@@ -95,18 +97,41 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 		body.append("description", formData.description);
 
 		try {
+			setLoading(true);
+
 			let data;
 
-			if (!isEditing) {
+			if (isEditing) {
+				const reorder = images.map((image, index) => {
+					if (!("file" in image)) {
+						return {
+							...image,
+							position: index,
+						};
+					}
+
+					body.append(image.tempId, image.file);
+
+					return {
+						tempId: image.tempId,
+						position: index,
+					};
+				});
+
+				const imagesAction = { destroy: deletedImages, reorder };
+
+				body.append("imagesAction", JSON.stringify(imagesAction));
+
+				data = await updateProduct(product.id, body);
+				onUpdate(data);
+			} else {
 				const imagesMeta = images.map((image, index) => {
 					if (!("file" in image)) return;
 
-					const tempId = "tempId" + index;
-
-					body.append(tempId, image.file);
+					body.append(image.tempId, image.file);
 
 					return {
-						tempId,
+						tempId: image.tempId,
 						position: index,
 					};
 				});
@@ -118,6 +143,8 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 			}
 		} catch (error) {
 			alert(getErrorMessage(error));
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -225,6 +252,7 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 							<button
 								type="submit"
 								className={styles.primaryButton}
+								disabled={loading}
 							>
 								{product ? "Atualizar" : "Criar"} produto
 							</button>
@@ -232,6 +260,7 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 								type="button"
 								className={styles.secondaryButton}
 								onClick={onClose}
+								disabled={loading}
 							>
 								Cancelar
 							</button>
