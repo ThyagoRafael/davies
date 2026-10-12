@@ -22,48 +22,66 @@ interface ProductFormData {
 	description: string;
 }
 
-// interface ImageData {
-// 	id: number;
-// 	position: number;
-// 	url: string;
-// }
+interface ExistingImageData {
+	kind: "existing";
+	id: number;
+	url: string;
+}
 
 interface NewImageData {
+	kind: "new";
+	tempId: string;
 	file: File;
 	preview: string;
 }
 
+type ImagesData = (ExistingImageData | NewImageData)[];
+
 export default function AdminProductModal({ product, onAdd, onClose }: AdminProductModalProps) {
+	const isEditing = !!product;
+
 	const [formData, setFormData] = useState<ProductFormData>({
 		name: product?.name ?? "",
 		stock: product ? String(product.stock) : "",
 		price: product?.price ?? "",
 		description: product?.description ?? "",
 	});
-	// const [existingImages, setExistingImages] = useState<ImageData[]>(product?.productImages ?? []);
-	const [newImages, setNewImages] = useState<NewImageData[]>([]);
+	const [images, setImages] = useState<ImagesData>(() =>
+		(product?.productImages ?? []).map((img) => ({
+			kind: "existing" as const,
+			id: img.id,
+			url: img.url,
+		})),
+	);
+	const [deletedImages, setDeletedImages] = useState<number[]>([]);
 
 	const handleChange = (name: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleAddImage = (e: ChangeEvent<HTMLInputElement>) => {
-		if (!e.target.files) return;
+		const file = e.target.files?.[0];
+		if (!file) return;
 
-		const file = e.target.files[0];
-
-		const image = {
+		const image: NewImageData = {
+			kind: "new",
+			tempId: crypto.randomUUID(),
 			file,
 			preview: URL.createObjectURL(file),
 		};
 
-		setNewImages((prev) => [...prev, { ...image }]);
+		setImages((prev) => [...prev, image]);
 		e.target.value = "";
 	};
 
-	const handleDeleteNew = (preview: string) => {
-		URL.revokeObjectURL(preview);
-		setNewImages((prev) => prev.filter((image) => image.preview !== preview));
+	const handleDeleteImage = (imageData: ExistingImageData | NewImageData) => {
+		if (imageData.kind === "new") {
+			URL.revokeObjectURL(imageData.preview);
+		} else {
+			setDeletedImages((prev) => [...prev, imageData.id]);
+		}
+
+		setImages((prev) => prev.filter((image) => image !== imageData));
 	};
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -71,27 +89,33 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 
 		const body = new FormData();
 
-		const imagesMeta = newImages.map((image, index) => {
-			const tempId = "tempId" + index;
-
-			body.append(tempId, image.file);
-
-			return {
-				tempId,
-				position: index,
-			};
-		});
-
 		body.append("name", formData.name);
 		body.append("stock", formData.stock);
 		body.append("price", formData.price);
 		body.append("description", formData.description);
-		body.append("imagesMeta", JSON.stringify(imagesMeta));
 
 		try {
-			const data = await createProduct(body);
+			let data;
 
-			onAdd(data);
+			if (!isEditing) {
+				const imagesMeta = images.map((image, index) => {
+					if (!("file" in image)) return;
+
+					const tempId = "tempId" + index;
+
+					body.append(tempId, image.file);
+
+					return {
+						tempId,
+						position: index,
+					};
+				});
+
+				body.append("imagesMeta", JSON.stringify(imagesMeta));
+
+				data = await createProduct(body);
+				onAdd(data);
+			}
 		} catch (error) {
 			alert(getErrorMessage(error));
 		}
@@ -162,36 +186,20 @@ export default function AdminProductModal({ product, onAdd, onClose }: AdminProd
 								<label>Imagens do produto (máx. 6)</label>
 
 								<ul>
-									{/* {existingImages.map((image) => (
+									{images.map((image) => (
 										<li
-											key={image.id}
+											key={image.kind === "existing" ? image.id : image.tempId}
 											className={styles.imagePreview}
 										>
 											<img
-												src={image.url}
-												alt={product?.name}
-											/>
-
-											<button type="button">
-												<IoClose size={20} />
-											</button>
-										</li>
-									))} */}
-
-									{newImages.map((image) => (
-										<li
-											key={image.preview}
-											className={styles.imagePreview}
-										>
-											<img
-												src={image.preview}
+												src={image.kind === "existing" ? image.url : image.preview}
 												alt={product?.name}
 											/>
 
 											<button
 												type="button"
-												aria-label="Remover imagem"
-												onClick={() => handleDeleteNew(image.preview)}
+												aria-label="Remover produto"
+												onClick={() => handleDeleteImage(image)}
 											>
 												<IoClose size={20} />
 											</button>
