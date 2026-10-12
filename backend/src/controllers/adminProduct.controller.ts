@@ -128,6 +128,7 @@ export class AdminProductController {
 		const product = await prisma.product.findUnique({
 			where: { id: productId },
 			select: {
+				id: true,
 				name: true,
 				description: true,
 				price: true,
