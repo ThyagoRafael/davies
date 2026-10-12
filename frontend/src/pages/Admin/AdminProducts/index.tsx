@@ -69,6 +69,11 @@ export default function AdminProducts() {
 		setModalData(null);
 	};
 
+	const handleDeleteProduct = (data: { id: number }) => {
+		setProducts((prev) => prev.filter((product) => product.id !== data.id));
+		setModalData(null);
+	};
+
 	return (
 		<main className={styles.container}>
 			<header className={styles.header}>
@@ -118,6 +123,7 @@ export default function AdminProducts() {
 					product={modalData.product ? modalData.product : null}
 					onAdd={handleAddProduct}
 					onUpdate={handleUpdateProduct}
+					onDelete={handleDeleteProduct}
 					onClose={() => setModalData(null)}
 				/>
 			)}

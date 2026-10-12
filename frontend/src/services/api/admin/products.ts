@@ -24,8 +24,14 @@ export async function createProduct(body: FormData): Promise<CreateProductData> 
 	return data;
 }
 
-export async function updateProduct(id: number, body: FormData): Promise<UpdateProductData> {
-	const { data } = await api.patch(`/admin/products/${id}`, body);
+export async function updateProduct(productId: number, body: FormData): Promise<UpdateProductData> {
+	const { data } = await api.patch(`/admin/products/${productId}`, body);
+
+	return data;
+}
+
+export async function deleteProduct(productId: number): Promise<{ id: number }> {
+	const { data } = await api.delete(`/admin/products/${productId}`);
 
 	return data;
 }

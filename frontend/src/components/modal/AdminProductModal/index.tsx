@@ -7,12 +7,13 @@ import Field from "../../form/Field";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { createProduct, updateProduct } from "../../../services/api/admin/products";
+import { createProduct, deleteProduct, updateProduct } from "../../../services/api/admin/products";
 
 interface AdminProductModalProps {
 	product: ProductData | null;
 	onAdd: (data: CreateProductData) => void;
 	onUpdate: (data: UpdateProductData) => void;
+	onDelete: (data: { id: number }) => void;
 	onClose: () => void;
 }
 
@@ -38,7 +39,7 @@ interface NewImageData {
 
 type ImagesData = (ExistingImageData | NewImageData)[];
 
-export default function AdminProductModal({ product, onAdd, onUpdate, onClose }: AdminProductModalProps) {
+export default function AdminProductModal({ product, onAdd, onUpdate, onDelete, onClose }: AdminProductModalProps) {
 	const isEditing = !!product;
 
 	const [formData, setFormData] = useState<ProductFormData>({
@@ -141,6 +142,22 @@ export default function AdminProductModal({ product, onAdd, onUpdate, onClose }:
 				data = await createProduct(body);
 				onAdd(data);
 			}
+		} catch (error) {
+			alert(getErrorMessage(error));
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleDeleteProduct = async () => {
+		if (!product) return;
+
+		try {
+			setLoading(true);
+
+			const data = await deleteProduct(product.id);
+
+			onDelete(data);
 		} catch (error) {
 			alert(getErrorMessage(error));
 		} finally {
@@ -268,6 +285,7 @@ export default function AdminProductModal({ product, onAdd, onUpdate, onClose }:
 								<button
 									type="button"
 									className={styles.terciaryButton}
+									onClick={handleDeleteProduct}
 									disabled={loading}
 								>
 									Excluir produto
