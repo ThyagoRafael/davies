@@ -264,6 +264,15 @@ export default function AdminProductModal({ product, onAdd, onUpdate, onClose }:
 							>
 								Cancelar
 							</button>
+							{isEditing && (
+								<button
+									type="button"
+									className={styles.terciaryButton}
+									disabled={loading}
+								>
+									Excluir produto
+								</button>
+							)}
 						</div>
 					</form>
 				</motion.div>
