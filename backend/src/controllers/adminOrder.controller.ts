@@ -5,6 +5,9 @@ import type { OrderStatus } from "../generated/prisma/enums.js";
 
 export class AdminOrderController {
 	list = async (req: Request, res: Response) => {
+		const page = Number(req.query.page ?? 1);
+		const take = 10;
+
 		const orders = await prisma.order.findMany({
 			select: {
 				id: true,
@@ -22,6 +25,8 @@ export class AdminOrderController {
 			orderBy: {
 				createdAt: "desc",
 			},
+			take,
+			skip: page * take - take,
 		});
 
 		const formattedOrders = orders.map((order) => ({
@@ -29,7 +34,9 @@ export class AdminOrderController {
 			user: order.user.name,
 		}));
 
-		res.status(200).json(formattedOrders);
+		const ordersCount = await prisma.order.count();
+
+		res.status(200).json({ orders: formattedOrders, count: ordersCount });
 	};
 
 	updateStatus = async (req: Request, res: Response) => {
