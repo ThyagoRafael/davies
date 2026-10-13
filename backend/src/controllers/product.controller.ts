@@ -6,9 +6,11 @@ import { AppError } from "../errors/AppError.js";
 export class ProductController {
 	list = async (req: Request, res: Response) => {
 		const products = await prisma.product.findMany({
+			where: { status: "active" },
 			omit: {
 				description: true,
 				stock: true,
+				status: true,
 			},
 			orderBy: { id: "asc" },
 			include: {
@@ -28,7 +30,7 @@ export class ProductController {
 		const productId = Number(req.params.productId);
 
 		const product = await prisma.product.findUnique({
-			where: { id: productId },
+			where: { id: productId, status: "active" },
 			include: {
 				productImages: {
 					orderBy: { position: "asc" },

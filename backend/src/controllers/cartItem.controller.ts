@@ -30,6 +30,7 @@ export class CartItemController {
 		const product = await prisma.product.findUnique({
 			where: {
 				id: productId,
+				status: "active",
 			},
 		});
 
@@ -112,6 +113,7 @@ export class CartItemController {
 		const product = await prisma.product.findUnique({
 			where: {
 				id: productId,
+				status: "active",
 			},
 			select: {
 				price: true,

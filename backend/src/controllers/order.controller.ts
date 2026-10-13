@@ -37,6 +37,7 @@ export class OrderController {
 				},
 				include: {
 					cartItems: {
+						where: { product: { status: "active" } },
 						include: {
 							product: true,
 						},

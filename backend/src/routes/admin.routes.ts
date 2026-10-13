@@ -24,6 +24,6 @@ adminRoutes.post("/products", uploadMiddleware.any(), adminProductController.cre
 adminRoutes.get("/products", adminProductController.list);
 adminRoutes.get("/products/:productId", adminProductController.details);
 adminRoutes.patch("/products/:productId", uploadMiddleware.any(), adminProductController.update);
-adminRoutes.delete("/products/:productId", adminProductController.destroy);
+adminRoutes.patch("/products/:productId/status", adminProductController.toggleStatus);
 
 export { adminRoutes };

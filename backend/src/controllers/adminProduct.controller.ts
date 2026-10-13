@@ -97,6 +97,7 @@ export class AdminProductController {
 				name: true,
 				stock: true,
 				price: true,
+				status: true,
 
 				productImages: {
 					orderBy: {
@@ -133,6 +134,7 @@ export class AdminProductController {
 				description: true,
 				price: true,
 				stock: true,
+				status: true,
 
 				productImages: {
 					orderBy: { position: "asc" },
@@ -217,7 +219,7 @@ export class AdminProductController {
 		res.status(200).json(formattedUpdatedProduct);
 	};
 
-	destroy = async (req: Request, res: Response) => {
+	toggleStatus = async (req: Request, res: Response) => {
 		const productId = Number(req.params.productId);
 
 		const product = await prisma.product.findUnique({ where: { id: productId } });
@@ -226,21 +228,15 @@ export class AdminProductController {
 			throw new AppError("Produto não encontrado", 404);
 		}
 
-		const deletedProduct = await prisma.product.delete({
-			where: { id: product.id },
-			select: {
-				id: true,
-				productImages: {
-					select: {
-						id: true,
-						publicId: true,
-					},
-				},
+		const updatedProduct = await prisma.product.update({
+			where: {
+				id: productId,
+			},
+			data: {
+				status: product.status === "active" ? "inactive" : "active",
 			},
 		});
 
-		await this.productImageService.deleteAllImages(deletedProduct.productImages);
-
-		res.status(200).json({ id: deletedProduct.id });
+		res.status(200).json({ id: updatedProduct.id, status: updatedProduct.status });
 	};
 }
