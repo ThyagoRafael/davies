@@ -6,6 +6,7 @@ import type {
 	CreateProductData,
 	ProductData,
 	ProductsList,
+	ToggleProductStatusData,
 	UpdateProductData,
 } from "../../../types/api/admin/products";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
@@ -57,6 +58,7 @@ export default function AdminProducts() {
 				stock: data.stock,
 				price: data.price,
 				imageUrl: data.productImages[0].url,
+				status: "active",
 			},
 			...prev,
 		]);
@@ -65,12 +67,14 @@ export default function AdminProducts() {
 	};
 
 	const handleUpdateProduct = (data: UpdateProductData) => {
-		setProducts((prev) => prev.map((product) => (product.id === data.id ? data : product)));
+		setProducts((prev) => prev.map((product) => (product.id === data.id ? { ...product, ...data } : product)));
 		setModalData(null);
 	};
 
-	const handleDeleteProduct = (data: { id: number }) => {
-		setProducts((prev) => prev.filter((product) => product.id !== data.id));
+	const handleToggleProductStatus = (data: ToggleProductStatusData) => {
+		setProducts((prev) =>
+			prev.map((product) => (product.id === data.id ? { ...product, status: data.status } : product)),
+		);
 		setModalData(null);
 	};
 
@@ -95,7 +99,7 @@ export default function AdminProducts() {
 					{products.map((product) => (
 						<li key={product.id}>
 							<button
-								className={styles.productCard}
+								className={`${styles.productCard}`}
 								onClick={() => handleOpenModal(product.id)}
 							>
 								<div className={styles.imageWrapper}>
@@ -123,7 +127,7 @@ export default function AdminProducts() {
 					product={modalData.product ? modalData.product : null}
 					onAdd={handleAddProduct}
 					onUpdate={handleUpdateProduct}
-					onDelete={handleDeleteProduct}
+					onToggleStatus={handleToggleProductStatus}
 					onClose={() => setModalData(null)}
 				/>
 			)}

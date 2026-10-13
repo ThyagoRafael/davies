@@ -3,6 +3,7 @@ import type {
 	CreateProductData,
 	ProductData,
 	ProductsList,
+	ToggleProductStatusData,
 	UpdateProductData,
 } from "../../../types/api/admin/products";
 
@@ -30,8 +31,8 @@ export async function updateProduct(productId: number, body: FormData): Promise<
 	return data;
 }
 
-export async function deleteProduct(productId: number): Promise<{ id: number }> {
-	const { data } = await api.delete(`/admin/products/${productId}`);
+export async function toggleProductStatus(productId: number): Promise<ToggleProductStatusData> {
+	const { data } = await api.patch(`/admin/products/${productId}/status`);
 
 	return data;
 }

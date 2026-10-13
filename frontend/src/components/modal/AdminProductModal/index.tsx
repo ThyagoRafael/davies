@@ -2,18 +2,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import styles from "./AdminProductModal.module.css";
-import type { CreateProductData, ProductData, UpdateProductData } from "../../../types/api/admin/products";
+import type {
+	CreateProductData,
+	ProductData,
+	ToggleProductStatusData,
+	UpdateProductData,
+} from "../../../types/api/admin/products";
 import Field from "../../form/Field";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { createProduct, deleteProduct, updateProduct } from "../../../services/api/admin/products";
+import { createProduct, toggleProductStatus, updateProduct } from "../../../services/api/admin/products";
 
 interface AdminProductModalProps {
 	product: ProductData | null;
 	onAdd: (data: CreateProductData) => void;
 	onUpdate: (data: UpdateProductData) => void;
-	onDelete: (data: { id: number }) => void;
+	onToggleStatus: (data: ToggleProductStatusData) => void;
 	onClose: () => void;
 }
 
@@ -39,7 +44,13 @@ interface NewImageData {
 
 type ImagesData = (ExistingImageData | NewImageData)[];
 
-export default function AdminProductModal({ product, onAdd, onUpdate, onDelete, onClose }: AdminProductModalProps) {
+export default function AdminProductModal({
+	product,
+	onAdd,
+	onUpdate,
+	onToggleStatus,
+	onClose,
+}: AdminProductModalProps) {
 	const isEditing = !!product;
 
 	const [formData, setFormData] = useState<ProductFormData>({
@@ -149,15 +160,15 @@ export default function AdminProductModal({ product, onAdd, onUpdate, onDelete, 
 		}
 	};
 
-	const handleDeleteProduct = async () => {
+	const handleToggleProductStatus = async () => {
 		if (!product) return;
 
 		try {
 			setLoading(true);
 
-			const data = await deleteProduct(product.id);
+			const data = await toggleProductStatus(product.id);
 
-			onDelete(data);
+			onToggleStatus(data);
 		} catch (error) {
 			alert(getErrorMessage(error));
 		} finally {
@@ -285,10 +296,10 @@ export default function AdminProductModal({ product, onAdd, onUpdate, onDelete, 
 								<button
 									type="button"
 									className={styles.terciaryButton}
-									onClick={handleDeleteProduct}
+									onClick={handleToggleProductStatus}
 									disabled={loading}
 								>
-									Excluir produto
+									{product.status === "active" ? "Desativar" : "Ativar"} produto
 								</button>
 							)}
 						</div>
