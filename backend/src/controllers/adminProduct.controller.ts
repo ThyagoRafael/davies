@@ -92,6 +92,9 @@ export class AdminProductController {
 
 	list = async (req: Request, res: Response) => {
 		const products = await prisma.product.findMany({
+			orderBy: {
+				status: "asc",
+			},
 			select: {
 				id: true,
 				name: true,
