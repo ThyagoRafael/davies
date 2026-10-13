@@ -188,8 +188,15 @@
 	border: none;
 	padding: 0.5rem;
 	font-size: 1rem;
-	color: var(--danger-color);
 	cursor: pointer;
+}
+
+.terciaryButton.active {
+	color: var(--danger-color);
+}
+
+.terciaryButton.inactive {
+	color: var(--success-color);
 }
 
 .terciaryButton:hover {

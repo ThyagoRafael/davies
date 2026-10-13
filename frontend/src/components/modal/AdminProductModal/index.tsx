@@ -295,7 +295,7 @@ export default function AdminProductModal({
 							{isEditing && (
 								<button
 									type="button"
-									className={styles.terciaryButton}
+									className={`${styles.terciaryButton} ${product.status === "active" ? styles.active : styles.inactive}`}
 									onClick={handleToggleProductStatus}
 									disabled={loading}
 								>

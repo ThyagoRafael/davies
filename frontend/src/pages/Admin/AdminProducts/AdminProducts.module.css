@@ -58,6 +58,7 @@
 	padding: 0.5rem;
 	width: 100%;
 	text-align: left;
+	background-color: var(--light-color);
 
 	border: 2px solid var(--primary-color);
 	transition: background-color 0.2s ease;
@@ -65,6 +66,10 @@
 
 .productCard:hover {
 	background-color: var(--secondary-color);
+}
+
+.productCard.inactive {
+	background-color: #cfcfcf;
 }
 
 .imageWrapper {

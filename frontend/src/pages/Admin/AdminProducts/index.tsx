@@ -99,7 +99,7 @@ export default function AdminProducts() {
 					{products.map((product) => (
 						<li key={product.id}>
 							<button
-								className={`${styles.productCard}`}
+								className={`${styles.productCard} ${product.status === "inactive" ? styles.inactive : ""}`}
 								onClick={() => handleOpenModal(product.id)}
 							>
 								<div className={styles.imageWrapper}>
