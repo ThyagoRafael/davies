@@ -29,12 +29,18 @@ model User {
   @@map("users")
 }
 
+enum ProductStatus {
+  active
+  inactive
+}
+
 model Product {
   id            Int            @id @default(autoincrement())
   name          String         @db.VarChar(255)
   description   String         @db.VarChar(500)
   price         Decimal        @db.Decimal(10, 2)
   stock         Int
+  status        ProductStatus  @default(active)
   productImages ProductImage[]
   cartItems     CartItem[]
   orderItems    OrderItem[]
