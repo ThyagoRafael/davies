@@ -35,8 +35,9 @@ export class AdminOrderController {
 		}));
 
 		const ordersCount = await prisma.order.count();
+		const pageCount = Math.ceil(ordersCount / take);
 
-		res.status(200).json({ orders: formattedOrders, count: ordersCount });
+		res.status(200).json({ orders: formattedOrders, pageCount });
 	};
 
 	updateStatus = async (req: Request, res: Response) => {
