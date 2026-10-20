@@ -37,14 +37,13 @@ Abaixo está o planejamento de desenvolvimento e o status atual das entregas:
 - [x] Carrinho de compras
 - [X] Checkout
 - [X] Integração com Stripe
-- [ ] Painel administrativo
+- [X] Painel administrativo
 
 ### Infraestrutura
-- [ ] Deploy inicial da aplicação
-- [ ] Containerização com Docker
-- [ ] Implantação em AWS EC2
-- [ ] Cache com Redis
+- [X] Containerização com Docker
+- [ ] Deploy da aplicação (AWS / Vercel)
 - [ ] Migração do armazenamento para AWS S3
+- [ ] Cache com Redis
 
 ## ⚙️ Como executar o projeto localmente
 
